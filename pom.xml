@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.kekru.struktogrammeditor</groupId>
+	<artifactId>struktogrammeditor</artifactId>
+	<version>1.7.2-SNAPSHOT</version>
+	<name>Struktogrammeditor</name>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.apple</groupId>
+			<artifactId>AppleJavaExtensions</artifactId>
+			<version>1.5</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>imagej</id>
+			<name>imagej</name>
+			<url>http://maven.imagej.net/content/repositories/public/</url>
+		</repository>
+	</repositories>
+
+</project>
