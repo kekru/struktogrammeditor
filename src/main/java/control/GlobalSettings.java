@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import view.CodeErzeuger;
 import view.EinstellungsDialog;
-import de.whiledo.updater.WhiledoUpdater;
+import other.Helpers;
 
 public class GlobalSettings implements Konstanten{
 
@@ -75,7 +75,7 @@ public class GlobalSettings implements Konstanten{
 		//Wenn eine alte Einstellungsdatei (bis einschlieﬂlich Version 1.4) existiert, diese laden...
 		File f = new File(einstellungsDateiPfadBisVersion1Punkt4);
 		if(f.exists()){
-			String[] einstellungsdaten = WhiledoUpdater.leseTxt(einstellungsDateiPfadBisVersion1Punkt4);
+			String[] einstellungsdaten = Helpers.readTextFile(einstellungsDateiPfadBisVersion1Punkt4);
 
 			if (einstellungsdaten != null){
 				for(int i=0; i < einstellungsdaten.length; i++){

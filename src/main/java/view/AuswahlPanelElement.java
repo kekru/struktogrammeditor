@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 
 import control.GlobalSettings;
 
-import de.whiledo.updater.WhiledoUpdater;
+import other.Helpers;
 
 public class AuswahlPanelElement extends JLabel{
    
@@ -29,8 +29,7 @@ public class AuswahlPanelElement extends JLabel{
       super();
       
       this.typ = typ;
-      //setIcon(new ImageIcon(gibBildpfad()));
-      setIcon(WhiledoUpdater.ladeImageIconAusResource(gibBildpfad(),this));
+      setIcon(Helpers.getIcon(gibBildpfad()));
       setFont(new Font("monospaced", Font.PLAIN, 15));//Monospaced, damit alle Buchstaben gleich Breit sind; es werden automatisch alle Labels auf dem AuswahlPanel zentriert, damit sie die gleiche x-Position haben, erhalten sie alle die gleiche Anzahl an Zeichen für ihren Text
       setText(GlobalSettings.getCurrentElementBeschriftungsstil()[typ]);
    }

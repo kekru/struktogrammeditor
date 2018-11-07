@@ -22,6 +22,10 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
+import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import other.Helpers;
 import other.XActionCommands;
 import struktogrammelemente.StruktogrammElement;
 import view.CodeErzeuger;
@@ -29,11 +33,6 @@ import view.EinstellungsDialog;
 import view.FontChooser;
 import view.GUI;
 import view.ZoomEinstellungen;
-
-import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
-
-import de.whiledo.updater.WhiledoUpdater;
 
 public class Controlling implements Konstanten, ActionListener, WindowListener, KeyListener {
 
@@ -287,19 +286,19 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			break;
 
 		case homepage:
-			WhiledoUpdater.homepageAufrufen("http://whiledo.de/index.php?p=struktogrammeditor");
+			Helpers.openWebsite("http://whiledo.de/index.php?p=struktogrammeditor");
 			break;
 
 		case changelog:
-			WhiledoUpdater.homepageAufrufen("http://strukt.whiledo.de/changelog.html");
+			Helpers.openWebsite("http://strukt.whiledo.de/changelog.html");
 			break;
 
 		case kontaktformular:
-			WhiledoUpdater.homepageAufrufen("http://strukt.whiledo.de/kontakt.php");
+			Helpers.openWebsite("http://strukt.whiledo.de/kontakt.php");
 			break;
 
 		case hilfe:
-			WhiledoUpdater.homepageAufrufen("http://strukt.whiledo.de/hilfe.html");
+			Helpers.openWebsite("http://strukt.whiledo.de/hilfe.html");
 			break;
 
 		case info:

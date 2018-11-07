@@ -29,7 +29,7 @@ import org.jdom.Document;
 import control.Controlling;
 import control.GlobalSettings;
 import control.Struktogramm;
-import de.whiledo.updater.WhiledoUpdater;
+import other.Helpers;
 
 
 public class AuswahlPanel extends JPanel implements DropTargetListener, DragGestureListener, DragSourceListener{
@@ -140,7 +140,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 				muelleimerIstAuf = false;
 			}
 
-			muelleimer.setIcon(WhiledoUpdater.ladeImageIconAusResource(AuswahlPanelElement.iconOrdner + bildname, this));
+			muelleimer.setIcon(Helpers.getIcon(AuswahlPanelElement.iconOrdner + bildname));
 		}
 	}
 
@@ -157,7 +157,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 				kopierFeldIstAuf = false;
 			}
 
-			kopierFeld.setIcon(WhiledoUpdater.ladeImageIconAusResource(AuswahlPanelElement.iconOrdner + bildname, this));
+			kopierFeld.setIcon(Helpers.getIcon(AuswahlPanelElement.iconOrdner + bildname));
 		}
 	}
 	
