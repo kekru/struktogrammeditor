@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
 
 
 public class EinstellungsDialog extends JDialog{

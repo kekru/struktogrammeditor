@@ -1,6 +1,9 @@
-package other;
-import javax.swing.*;
-import java.awt.*;
+package de.kekru.struktogrammeditor.other;
+import java.awt.Container;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 public class JListEasy extends JList {
    

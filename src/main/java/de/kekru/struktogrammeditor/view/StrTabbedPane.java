@@ -1,9 +1,13 @@
-package view;
-import javax.swing.*;
-import javax.swing.event.*;
+package de.kekru.struktogrammeditor.view;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JViewport;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import control.Controlling;
-import control.Struktogramm;
+import de.kekru.struktogrammeditor.control.Controlling;
+import de.kekru.struktogrammeditor.control.Struktogramm;
 
 public class StrTabbedPane extends JTabbedPane implements ChangeListener{
    

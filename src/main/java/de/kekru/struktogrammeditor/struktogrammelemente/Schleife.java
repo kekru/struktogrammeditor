@@ -1,7 +1,9 @@
-package struktogrammelemente;
+package de.kekru.struktogrammeditor.struktogrammelemente;
 
-import java.awt.*;
-import org.jdom.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import org.jdom.Element;
 
 
 public abstract class Schleife extends StruktogrammElement { //abstrakte Klasse -> kann nicht erzeugt werden; erbt von Struktogrammelement

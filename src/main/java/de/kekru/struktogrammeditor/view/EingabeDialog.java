@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,11 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import other.JListEasy;
-import other.JTextAreaEasy;
-import struktogrammelemente.Fallauswahl;
-import struktogrammelemente.StruktogrammElement;
-import struktogrammelemente.Verzweigung;
+import de.kekru.struktogrammeditor.other.JListEasy;
+import de.kekru.struktogrammeditor.other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
+import de.kekru.struktogrammeditor.struktogrammelemente.Verzweigung;
 
 
 public class EingabeDialog extends JDialog {

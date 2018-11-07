@@ -1,4 +1,4 @@
-package control;
+package de.kekru.struktogrammeditor.control;
 
 import javax.swing.ImageIcon;
 

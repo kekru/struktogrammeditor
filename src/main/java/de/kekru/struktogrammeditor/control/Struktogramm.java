@@ -1,4 +1,4 @@
-package control;
+package de.kekru.struktogrammeditor.control;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -46,23 +46,23 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import struktogrammelemente.Anweisung;
-import struktogrammelemente.Aufruf;
-import struktogrammelemente.Aussprung;
-import struktogrammelemente.DoUntilSchleife;
-import struktogrammelemente.Endlosschleife;
-import struktogrammelemente.Fallauswahl;
-import struktogrammelemente.ForSchleife;
-import struktogrammelemente.LeerElement;
-import struktogrammelemente.Schleife;
-import struktogrammelemente.StruktogrammElement;
-import struktogrammelemente.StruktogrammElementListe;
-import struktogrammelemente.Verzweigung;
-import struktogrammelemente.WhileSchleife;
-import view.EingabeDialog;
-import view.StrFileFilter;
-import view.StrTabbedPane;
-import view.StruktogrammPopup;
+import de.kekru.struktogrammeditor.struktogrammelemente.Anweisung;
+import de.kekru.struktogrammeditor.struktogrammelemente.Aufruf;
+import de.kekru.struktogrammeditor.struktogrammelemente.Aussprung;
+import de.kekru.struktogrammeditor.struktogrammelemente.DoUntilSchleife;
+import de.kekru.struktogrammeditor.struktogrammelemente.Endlosschleife;
+import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
+import de.kekru.struktogrammeditor.struktogrammelemente.ForSchleife;
+import de.kekru.struktogrammeditor.struktogrammelemente.LeerElement;
+import de.kekru.struktogrammeditor.struktogrammelemente.Schleife;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElementListe;
+import de.kekru.struktogrammeditor.struktogrammelemente.Verzweigung;
+import de.kekru.struktogrammeditor.struktogrammelemente.WhileSchleife;
+import de.kekru.struktogrammeditor.view.EingabeDialog;
+import de.kekru.struktogrammeditor.view.StrFileFilter;
+import de.kekru.struktogrammeditor.view.StrTabbedPane;
+import de.kekru.struktogrammeditor.view.StruktogrammPopup;
 
 
 public class Struktogramm extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, DropTargetListener/*zum Empfangen von Drop*/, DragGestureListener, DragSourceListener /*letzten Beiden sind zum Auslösen von Drags*/{

@@ -1,7 +1,10 @@
-package other;
+package de.kekru.struktogrammeditor.other;
+import java.awt.Container;
+import java.awt.Font;
+
 //Quelle: http://www.dpunkt.de/java/Referenz/Das_Paket_javax.swing/28.html
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class JTextAreaEasy extends JTextArea {
     

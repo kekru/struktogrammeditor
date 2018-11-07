@@ -1,11 +1,10 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.Font;
 
 import javax.swing.JLabel;
 
-import control.GlobalSettings;
-
-import other.Helpers;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.other.Helpers;
 
 public class AuswahlPanelElement extends JLabel{
    

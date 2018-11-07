@@ -1,4 +1,4 @@
-package other;
+package de.kekru.struktogrammeditor.other;
 
 public enum XActionCommands {
 	neu, oeffnen, speichern, speicherUnter, bildSpeichern, bildInZwischenAblage, quellcodeErzeugen,

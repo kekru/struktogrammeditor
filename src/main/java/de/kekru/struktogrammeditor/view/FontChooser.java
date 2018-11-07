@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,9 +15,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import control.Controlling;
-import control.GlobalSettings;
-import control.Struktogramm;
+import de.kekru.struktogrammeditor.control.Controlling;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.Struktogramm;
 
 
 public class FontChooser extends JDialog {	

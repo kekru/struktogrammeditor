@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -12,8 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import other.JNumberField;
-import control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.other.JNumberField;
 
 public class ZoomEinstellungen extends JDialog {
 	private static final long serialVersionUID = -4780523744293396039L;

@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

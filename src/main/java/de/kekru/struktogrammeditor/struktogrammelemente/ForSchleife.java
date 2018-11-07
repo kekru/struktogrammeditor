@@ -1,11 +1,11 @@
-package struktogrammelemente;
+package de.kekru.struktogrammeditor.struktogrammelemente;
 
 import java.awt.Graphics2D;
 
-import other.JTextAreaEasy;
-import view.CodeErzeuger;
-import control.GlobalSettings;
-import control.Struktogramm;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.view.CodeErzeuger;
 
 public class ForSchleife extends WhileSchleife { //erbt von WhileSchleife
 

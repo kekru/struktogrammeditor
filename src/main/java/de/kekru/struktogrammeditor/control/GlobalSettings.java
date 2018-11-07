@@ -1,4 +1,4 @@
-package control;
+package de.kekru.struktogrammeditor.control;
 
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -11,9 +11,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import view.CodeErzeuger;
-import view.EinstellungsDialog;
-import other.Helpers;
+import de.kekru.struktogrammeditor.other.Helpers;
+import de.kekru.struktogrammeditor.view.CodeErzeuger;
+import de.kekru.struktogrammeditor.view.EinstellungsDialog;
 
 public class GlobalSettings implements Konstanten{
 

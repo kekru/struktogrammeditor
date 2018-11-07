@@ -1,4 +1,4 @@
-package other;
+package de.kekru.struktogrammeditor.other;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;

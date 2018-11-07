@@ -1,14 +1,19 @@
-package view;
-import javax.swing.*;
-import javax.swing.event.*;
+package de.kekru.struktogrammeditor.view;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import control.Struktogramm;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
-import struktogrammelemente.Fallauswahl;
-import struktogrammelemente.StruktogrammElement;
-import struktogrammelemente.Verzweigung;
-
-import java.awt.event.*;
+import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
+import de.kekru.struktogrammeditor.struktogrammelemente.Verzweigung;
 
 //http://download.oracle.com/javase/tutorial/uiswing/components/menu.html
 //http://download.oracle.com/javase/tutorial/uiswing/examples/components/MenuDemoProject/src/components/MenuDemo.java

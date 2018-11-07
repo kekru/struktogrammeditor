@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -18,10 +18,10 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
-import other.XActionCommands;
-import control.Controlling;
-import control.GlobalSettings;
-import control.Konstanten;
+import de.kekru.struktogrammeditor.control.Controlling;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.Konstanten;
+import de.kekru.struktogrammeditor.other.XActionCommands;
 
 /**
  *

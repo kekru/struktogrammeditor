@@ -1,4 +1,4 @@
-package struktogrammelemente;
+package de.kekru.struktogrammeditor.struktogrammelemente;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.jdom.Element;
 
-import other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.other.JTextAreaEasy;
 
 
 

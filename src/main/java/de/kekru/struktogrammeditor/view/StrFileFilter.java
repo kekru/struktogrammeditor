@@ -1,6 +1,7 @@
-package view;
-import javax.swing.filechooser.*;
+package de.kekru.struktogrammeditor.view;
 import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 
 //FileFilter für Dateitypen zum Abspeichern des Struktogramms und Dateitypen zum Abspeichern als Bilddatei
 //http://www.java2s.com/Code/JavaAPI/javax.swing/JFileChoosersetFileFilterFileFilterfilter.htm

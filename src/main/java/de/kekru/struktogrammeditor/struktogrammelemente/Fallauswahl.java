@@ -1,4 +1,4 @@
-package struktogrammelemente;
+package de.kekru.struktogrammeditor.struktogrammelemente;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import org.jdom.Element;
 
-import other.JTextAreaEasy;
-import view.CodeErzeuger;
-import control.GlobalSettings;
-import control.Struktogramm;
-import control.XMLLeser;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.control.XMLLeser;
+import de.kekru.struktogrammeditor.other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.view.CodeErzeuger;
 
 public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammElement
 	//private Struktogramm str; //wird in hier gebraucht, um auf die Einstellung zugreifen zu können, ob die letzten Elemente bei Bedarf gestreckt werden sollen

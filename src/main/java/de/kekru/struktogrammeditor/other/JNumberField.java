@@ -1,8 +1,10 @@
-package other;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
+package de.kekru.struktogrammeditor.other;
+import java.awt.AWTEvent;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.Locale;
+
+import javax.swing.JTextField;
 
 /**
 Swing-component for input and output of numeric values.

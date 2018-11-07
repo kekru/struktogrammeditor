@@ -47,7 +47,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										control.Main
+										de.kekru.struktogrammeditor.control.Main
 									</mainClass>
 								</manifest>
 							</archive>

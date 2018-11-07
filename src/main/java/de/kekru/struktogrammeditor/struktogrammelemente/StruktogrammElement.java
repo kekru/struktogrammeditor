@@ -1,12 +1,15 @@
-package struktogrammelemente;
-import java.awt.*;
-import org.jdom.*;
+package de.kekru.struktogrammeditor.struktogrammelemente;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 
-import other.JTextAreaEasy;
-import view.CodeErzeuger;
+import org.jdom.Element;
 
-import control.Struktogramm;
-import control.XMLLeser;
+import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.control.XMLLeser;
+import de.kekru.struktogrammeditor.other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.view.CodeErzeuger;
 
 public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte davon erzeugbar
 	protected String[] text; //Textzeilen, die im Kopfbereich des jeweiligen StruktogrammElementes angzeigt werden

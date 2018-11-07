@@ -1,4 +1,4 @@
-package control;
+package de.kekru.struktogrammeditor.control;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -10,10 +10,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import struktogrammelemente.Fallauswahl;
-import struktogrammelemente.Schleife;
-import struktogrammelemente.StruktogrammElement;
-import struktogrammelemente.StruktogrammElementListe;
+import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
+import de.kekru.struktogrammeditor.struktogrammelemente.Schleife;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElementListe;
 
 //XML erstellen: http://www.ibm.com/developerworks/java/library/j-jdom/
 //XML auslesen: http://www.javabeginners.de/XML/XML-Datei_lesen.php

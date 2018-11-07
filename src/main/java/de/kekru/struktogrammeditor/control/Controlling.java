@@ -1,4 +1,4 @@
-package control;
+package de.kekru.struktogrammeditor.control;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -25,14 +25,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import other.Helpers;
-import other.XActionCommands;
-import struktogrammelemente.StruktogrammElement;
-import view.CodeErzeuger;
-import view.EinstellungsDialog;
-import view.FontChooser;
-import view.GUI;
-import view.ZoomEinstellungen;
+import de.kekru.struktogrammeditor.other.Helpers;
+import de.kekru.struktogrammeditor.other.XActionCommands;
+import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
+import de.kekru.struktogrammeditor.view.CodeErzeuger;
+import de.kekru.struktogrammeditor.view.EinstellungsDialog;
+import de.kekru.struktogrammeditor.view.FontChooser;
+import de.kekru.struktogrammeditor.view.GUI;
+import de.kekru.struktogrammeditor.view.ZoomEinstellungen;
 
 public class Controlling implements Konstanten, ActionListener, WindowListener, KeyListener {
 

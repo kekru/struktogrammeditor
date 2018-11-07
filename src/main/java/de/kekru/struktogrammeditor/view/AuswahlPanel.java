@@ -1,4 +1,4 @@
-package view;
+package de.kekru.struktogrammeditor.view;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -26,10 +26,10 @@ import javax.swing.JPanel;
 
 import org.jdom.Document;
 
-import control.Controlling;
-import control.GlobalSettings;
-import control.Struktogramm;
-import other.Helpers;
+import de.kekru.struktogrammeditor.control.Controlling;
+import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.other.Helpers;
 
 
 public class AuswahlPanel extends JPanel implements DropTargetListener, DragGestureListener, DragSourceListener{
