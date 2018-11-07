@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/kekru/struktogrammeditor.svg?branch=master)](https://travis-ci.org/kekru/struktogrammeditor)  
 # Struktogrammeditor
 Visual editor to create nassi-shneiderman diagrams.
 
