@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.kekru.struktogrammeditor.other.Helpers;
 import de.kekru.struktogrammeditor.other.XActionCommands;

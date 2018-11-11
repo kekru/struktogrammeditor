@@ -14,5 +14,6 @@ buildNumber.properties
 .classpath
 .project
 .settings
+settings.json
 
 struktogrammeditor.properties
