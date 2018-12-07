@@ -27,3 +27,6 @@ chmod +x mvnw
 When finished a file `target/struktogrammeditor-1.7.2-SNAPSHOT-jar-with-dependencies.jar` is generated.  
 When you have Java installed locally, then you can run it by double click   
 or run `java -jar struktogrammeditor-1.7.2-SNAPSHOT-jar-with-dependencies.jar` in the terminal.   
+
+## Download via Jitpack
+Download of the latest runnable jar of master branch [struktogrammeditor.jar](https://jitpack.io/com/github/kekru/struktogrammeditor/master-SNAPSHOT/struktogrammeditor-master-SNAPSHOT-jar-with-dependencies.jar), [Buildlog](https://jitpack.io/com/github/kekru/struktogrammeditor/master-SNAPSHOT/build.log)  
