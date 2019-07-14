@@ -27,7 +27,7 @@ public class ZoomEinstellungen extends JDialog {
 
 		setLayout(new BorderLayout(10,10));
 
-		add(new JLabel("<html><b>Wie viele Pixel soll das zu vergrˆﬂernde oder das zu verkleinernde Element pro Schritt in die jeweilige Richtung vergˆﬂert oder verkleinert werden?<b></html>;"), BorderLayout.NORTH);
+		add(new JLabel("<html><b>Wie viele Pixel soll das zu vergr√∂√üernde oder das zu verkleinernde Element pro Schritt in die jeweilige Richtung verg√∂√üert oder verkleinert werden?<b></html>;"), BorderLayout.NORTH);
 
 		JPanel panel;
 		JButton button;
@@ -35,10 +35,10 @@ public class ZoomEinstellungen extends JDialog {
 		panel = new JPanel();
 		{
 			panel.setLayout(new GridLayout(2,2));
-			panel.add(new JLabel("Waagerechte Grˆﬂen‰nderung:"));
+			panel.add(new JLabel("Waagerechte Gr√∂√üen√§nderung:"));
 			panel.add(numberfieldX = new JNumberField());
 			numberfieldX.setInt(GlobalSettings.getXZoomProSchritt());
-			panel.add(new JLabel("Senkrechte Grˆﬂen‰nderung:"));
+			panel.add(new JLabel("Senkrechte Gr√∂√üen√§nderung:"));
 			panel.add(numberfieldY = new JNumberField());
 			numberfieldY.setInt(GlobalSettings.getYZoomProSchritt());
 		}

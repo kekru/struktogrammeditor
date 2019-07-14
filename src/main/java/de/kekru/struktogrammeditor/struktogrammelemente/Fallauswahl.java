@@ -14,10 +14,10 @@ import de.kekru.struktogrammeditor.other.JTextAreaEasy;
 import de.kekru.struktogrammeditor.view.CodeErzeuger;
 
 public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammElement
-	//private Struktogramm str; //wird in hier gebraucht, um auf die Einstellung zugreifen zu können, ob die letzten Elemente bei Bedarf gestreckt werden sollen
+	//private Struktogramm str; //wird in hier gebraucht, um auf die Einstellung zugreifen zu kÃ¶nnen, ob die letzten Elemente bei Bedarf gestreckt werden sollen
 	protected int xVerschiebungFuerTrennlinie; //legt fest, wie weit vom linken Rand der Fallauswahl die Trennlinie zwischen Vorletztem- und Sonst-Fall sein soll
 	protected int yVerschiebungFuerTrennLinie; //legt fest, wie hoch die oben genannte Trennlinie sein soll
-	protected ArrayList<StruktogrammElementListe> listen; //Liste von StruktogrammElementListen, für die einzelnen Fälle; als Generische ArrayList: http://www.theserverside.de/java-generics-generische-methoden-klassen-und-interfaces/
+	protected ArrayList<StruktogrammElementListe> listen; //Liste von StruktogrammElementListen, fÃ¼r die einzelnen FÃ¤lle; als Generische ArrayList: http://www.theserverside.de/java-generics-generische-methoden-klassen-und-interfaces/
 
 	public Fallauswahl(Graphics2D g){
 		this(g,3);//anderen Konstruktor aufrufen
@@ -35,7 +35,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 		listen.get(listen.size() -1).setzeBeschreibung("Sonst");
 
-		obererRandZusatz = 40; //der Kopfteil soll 40 Pixel plus die Höhe des Textes sein
+		obererRandZusatz = 40; //der Kopfteil soll 40 Pixel plus die HÃ¶he des Textes sein
 
 		setzeText(GlobalSettings.gibElementBeschriftung(Struktogramm.typFallauswahl));
 	}
@@ -64,16 +64,16 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 			break;
 		}
 
-		textarea.hinzufuegen(wandleZuAusgabe(vorher,typ,anzahlEingerueckt,alsKommentar)); //Kopfteil ausgeben, alles passend eingerückt und Kommentare bei Bedarf eingefügt
+		textarea.hinzufuegen(wandleZuAusgabe(vorher,typ,anzahlEingerueckt,alsKommentar)); //Kopfteil ausgeben, alles passend eingerÃ¼ckt und Kommentare bei Bedarf eingefÃ¼gt
 
-		//einzelnen Fälle ausgeben
+		//einzelnen FÃ¤lle ausgeben
 		for(int i=0; i < listen.size(); i++){//Listen durchgehen
 			switch(typ){
 			case CodeErzeuger.typJava:
 				if(i < listen.size()-1){
 					fall = "case "+co("kommentar")+listen.get(i).gibBeschreibung()+co("kommentarzu")+":\n";//case und dann der Fallname
 				}else{
-					fall = "default: "+co("zwangkommentar")+listen.get(i).gibBeschreibung()+co("zwangkommentarzu")+"\n";//Sonsts-Fall erhält default, Beschriftung ist nicht relevant für fertigen Code, also auf jeden Fall Kommentare setzen
+					fall = "default: "+co("zwangkommentar")+listen.get(i).gibBeschreibung()+co("zwangkommentarzu")+"\n";//Sonsts-Fall erhÃ¤lt default, Beschriftung ist nicht relevant fÃ¼r fertigen Code, also auf jeden Fall Kommentare setzen
 				}
 				fallEnde = einruecken("break;\n",anzahlEinzuruecken);
 				break;
@@ -90,9 +90,9 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 				break;
 			}
 
-			textarea.hinzufuegen(wandleZuAusgabe(fall,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Anfang für den aktuellen Fall ausgeben
+			textarea.hinzufuegen(wandleZuAusgabe(fall,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Anfang fÃ¼r den aktuellen Fall ausgeben
 			listen.get(i).quellcodeAllerUnterelementeGenerieren(typ,anzahlEingerueckt+anzahlEinzuruecken*2,anzahlEinzuruecken,alsKommentar,textarea);//Unterelemente ausgeben
-			textarea.hinzufuegen(wandleZuAusgabe(fallEnde,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Ende für den Fall ausgeben
+			textarea.hinzufuegen(wandleZuAusgabe(fallEnde,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Ende fÃ¼r den Fall ausgeben
 		}
 
 		textarea.hinzufuegen(wandleZuAusgabe(nachher,typ,anzahlEingerueckt,alsKommentar));//Ende der Fallauswahl ausgeben
@@ -101,7 +101,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 
-	//alle Listen werden gelöscht und Neue werden erzeugt
+	//alle Listen werden gelÃ¶scht und Neue werden erzeugt
 	public void erstelleNeueListen(int anzahlListen){
 		listen = new ArrayList<StruktogrammElementListe>();
 
@@ -143,23 +143,23 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 	public void entferneSpalte(int index){
-		if ((index >= 0) && (index < listen.size()) && (listen.size() > 2)){//wenn mehr als 2 Spalten da sind, darf eine gelöscht werden
+		if ((index >= 0) && (index < listen.size()) && (listen.size() > 2)){//wenn mehr als 2 Spalten da sind, darf eine gelÃ¶scht werden
 			listen.remove(index);
 		}
 	}
 
 
 
-	//zusätzliche XML Daten sind die Daten zu den Fall-Listen
+	//zusÃ¤tzliche XML Daten sind die Daten zu den Fall-Listen
 	@Override
 	protected void zusaetzlicheXMLDatenSchreiben(Element aktuelles){
 		Element unterelement;
 
 		for (int i=0; i < listen.size(); i++){
-			unterelement = new Element("fall").setAttribute("fallname",XMLLeser.encodeS(listen.get(i).gibBeschreibung()));//für jeden Fall wird ein neuer fall-Tag generiert mit dem Fallnamen als Attribut (codiert)
+			unterelement = new Element("fall").setAttribute("fallname",XMLLeser.encodeS(listen.get(i).gibBeschreibung()));//fÃ¼r jeden Fall wird ein neuer fall-Tag generiert mit dem Fallnamen als Attribut (codiert)
 
 			listen.get(i).schreibeXMLDatenAllerUnterElemente(unterelement);//in den neuen fall-Tag werden die xml-Daten der Unterelemente geschrieben
-			aktuelles.addContent(unterelement);//fall-Tag wird in den strelem-Tag geschrieben, der zu dieser Fallauswahl gehört
+			aktuelles.addContent(unterelement);//fall-Tag wird in den strelem-Tag geschrieben, der zu dieser Fallauswahl gehÃ¶rt
 		}
 
 	}
@@ -167,7 +167,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 
-	//prüft, ob eventuellesUnterelement irgendwo innerhalb einer der Fall-Listen steht
+	//prÃ¼ft, ob eventuellesUnterelement irgendwo innerhalb einer der Fall-Listen steht
 	@Override
 	public boolean istUnterelement(StruktogrammElement eventuellesUnterelement){
 		for (int i=0; i < listen.size(); i++){//Fall-Listen durchgehen
@@ -181,7 +181,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 
-	//gibt die Fallbeschreibungen als String-Array zurück
+	//gibt die Fallbeschreibungen als String-Array zurÃ¼ck
 	@Override
 	public String[] gibFaelle(){
 		String[] faelle = new String[listen.size()];
@@ -220,7 +220,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 	@Override
 	public boolean neuesElementMussOberhalbPlatziertWerden(int y){
-		return y < gibY() + getObererRand()/2;//ist die Maus im oberen Teil des Kopfteils, so soll ein neues StruktogrammElement oberhalb eingefügt werden, sonst unterhalb
+		return y < gibY() + getObererRand()/2;//ist die Maus im oberen Teil des Kopfteils, so soll ein neues StruktogrammElement oberhalb eingefÃ¼gt werden, sonst unterhalb
 	}
 
 
@@ -235,7 +235,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 	@Override
-	public void setzeBreite(int neueBreite){//FallAuswahl wird horizontal getreckt, einzelne Fall-Listen müssen mitgestreckt werden
+	public void setzeBreite(int neueBreite){//FallAuswahl wird horizontal getreckt, einzelne Fall-Listen mÃ¼ssen mitgestreckt werden
 
 		int gesamtbreiteDerListen = 0;
 		int neueSpaltenbreite = 0;
@@ -246,7 +246,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 			if (i <= listen.size() -2){
 
-				//Rechnung: neueGesamtbreite / alteGesamtbreite = neueSpaltenbreite / alteSpaltenbreite //-> Verhältnisse sollen gleich bleiben
+				//Rechnung: neueGesamtbreite / alteGesamtbreite = neueSpaltenbreite / alteSpaltenbreite //-> VerhÃ¤ltnisse sollen gleich bleiben
 				//<=> neueSpaltenbreite = neueGesamtbreite * alteSpaltenbreite / alte Gesamtbreite
 				neueSpaltenbreite = neueBreite * listen.get(i).gibBreite() / gibBreite();
 
@@ -295,13 +295,13 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 				tmp = listen.get(i).gibElementAnPos(x,y,nurListe);
 				if (objGesetzt(tmp)){
-					return tmp; //eine Liste oder ein StruktogrammElement wurde gefunden, welches den Punkt enthält
+					return tmp; //eine Liste oder ein StruktogrammElement wurde gefunden, welches den Punkt enthÃ¤lt
 				}
 
 			}
 
 			if (!nurListe){
-				return this; //der Punkt ist nicht in einem der Fall-Listen, also, wenn nicht nur nach Listen gefragt ist, diese Fallauswahl zurückgeben
+				return this; //der Punkt ist nicht in einem der Fall-Listen, also, wenn nicht nur nach Listen gefragt ist, diese Fallauswahl zurÃ¼ckgeben
 			}
 		}
 
@@ -329,7 +329,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 	private int gibPassendeYKoordFuerLinie(int x){
-		//herausfinden, bei welcher y-Koordinate die senkrechten Linien der Fallauswahl oben enden müssen
+		//herausfinden, bei welcher y-Koordinate die senkrechten Linien der Fallauswahl oben enden mÃ¼ssen
 		//y = m * x + b
 		//m = (y2 - y1)/(x2-x1)
 		double m = (double)(gibY() - (gibY()+getObererRand()+yVerschiebungFuerTrennLinie)) / (double)(gibX() - (gibX() + xVerschiebungFuerTrennlinie));
@@ -354,7 +354,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 		}
 
 
-		//die beiden Schrägen Linien zeichnen
+		//die beiden SchrÃ¤gen Linien zeichnen
 		g.drawLine(gibX(),gibY(),gibX() + xVerschiebungFuerTrennlinie, gibY() +getObererRand() +yVerschiebungFuerTrennLinie);
 		g.drawLine(gibX() + xVerschiebungFuerTrennlinie, gibY() +getObererRand() +yVerschiebungFuerTrennLinie, gibX() + gibBreite(), gibY());
 
@@ -374,13 +374,13 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 			}
 
 			//Fallbeschreibungen zeichnen
-			if (this instanceof Verzweigung){//ein bischen rumtricksen... bei der Verzweigung soll Ja und Nein ja ganz an den Rändern stehen
+			if (this instanceof Verzweigung){//ein bischen rumtricksen... bei der Verzweigung soll Ja und Nein ja ganz an den RÃ¤ndern stehen
 				if (i==0){
 					x = gibX() + 5; //5 Pixel von linken Rand entfernt
 				}else{
 					x = tmp.gibRechterRand() - 5 - gibTextbreite(tmp.gibBeschreibung()); //5 Pixel vom rechten Rand entfernt
 				}
-			}else{ //bei der Fallauswahl sollen die Überschriften mittig über den Zeilen stehen
+			}else{ //bei der Fallauswahl sollen die Ãœberschriften mittig Ã¼ber den Zeilen stehen
 				x = tmp.gibX() + gibXVerschiebungFuerMittig(tmp.gibBeschreibung(), tmp.gibRechterRand() -tmp.gibX());
 			}
 
@@ -407,7 +407,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 			Rectangle rectListe = listen.get(i).zeichenbereichAllerElementeAktualisieren(x + gesamtbreiteDerListen, y + getObererRand());//Zeichenbereich der einzelnen Listen aktualisieren, die x-Position ist immer der rechte Rand der vorherigen Liste
 			gesamtbreiteDerListen += rectListe.width;
 
-			//Höhe der größten Liste ermitteln
+			//HÃ¶he der grÃ¶ÃŸten Liste ermitteln
 			if (rectListe.height > groessteHoeheDerListen){
 				groessteHoeheDerListen = rectListe.height;
 			}
@@ -425,8 +425,8 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 		}
 
 
-		if(GlobalSettings.gibLetzteElementeStrecken()){//wenn der User diese Einstellung gewählt hat...
-			setzeHoehe(getObererRand() + groessteHoeheDerListen);//...Höhe setzen und somit das letzte Element jeder Liste strecken
+		if(GlobalSettings.gibLetzteElementeStrecken()){//wenn der User diese Einstellung gewÃ¤hlt hat...
+			setzeHoehe(getObererRand() + groessteHoeheDerListen);//...HÃ¶he setzen und somit das letzte Element jeder Liste strecken
 		}
 
 

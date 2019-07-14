@@ -43,7 +43,7 @@ public class XMLLeser {
 		// String s;
 
 		for(int i=0; i < alleTextzeilen.size(); i++){
-			//eine Textzeile besteht aus Zahlen mit ";" getrennt, eine Zahl steht für das entsprechende Unicode-Zeichen
+			//eine Textzeile besteht aus Zahlen mit ";" getrennt, eine Zahl steht fÃ¼r das entsprechende Unicode-Zeichen
 			textzeilen[i] = decodeS(((Element)alleTextzeilen.get(i)).getText());//Zahlen wieder in Zeichen umwandeln
 		}
 
@@ -51,7 +51,7 @@ public class XMLLeser {
 
 
 
-		if (tmp instanceof Schleife){ //wenn das StruktogrammElement eine Schleife ist, müssen ihre Unterelemente generiert werden
+		if (tmp instanceof Schleife){ //wenn das StruktogrammElement eine Schleife ist, mÃ¼ssen ihre Unterelemente generiert werden
 			listenelementeErstellen(elem.getChild("schleifeninhalt"),((Schleife)tmp).gibListe()); //Unterelemente sind im schleifeninhalt-Tag
 
 		}else if(tmp instanceof Fallauswahl){ //Fallauswahl oder Verzweigung
@@ -63,7 +63,7 @@ public class XMLLeser {
 
 			for (int i=0; i < alleFaelle.size(); i++){
 				fallauswahl.gibListe(i).setzeBeschreibung(decodeS(((Element)alleFaelle.get(i)).getAttributeValue("fallname"))); //Beschreibung wird aus dem fall-Tag gelesen und in der Liste gesetzt
-				listenelementeErstellen((Element)alleFaelle.get(i), fallauswahl.gibListe(i)); //die Liste i der Fallauswahl erhält den entsprechenden fall-Tag und erstellt ihre Unterelemente
+				listenelementeErstellen((Element)alleFaelle.get(i), fallauswahl.gibListe(i)); //die Liste i der Fallauswahl erhÃ¤lt den entsprechenden fall-Tag und erstellt ihre Unterelemente
 			}
 		}
 
@@ -71,8 +71,8 @@ public class XMLLeser {
 
 
 
-	/*erstellt aus einem Element ein StruktogrammElement mit Unterelementen und gibt es zurück,
-     wird gebraucht für die Kopier-Funktion*/
+	/*erstellt aus einem Element ein StruktogrammElement mit Unterelementen und gibt es zurÃ¼ck,
+     wird gebraucht fÃ¼r die Kopier-Funktion*/
 	private StruktogrammElementListe wurzelStruktogrammElementErstellen(Element elem){
 		StruktogrammElementListe liste = new StruktogrammElementListe(null);
 		
@@ -103,9 +103,9 @@ public class XMLLeser {
 
 			setAttribute(neues,tmp);
 
-			liste.hinzufuegen(neues); //...und der übergebenen Liste anhängen
+			liste.hinzufuegen(neues); //...und der Ã¼bergebenen Liste anhÃ¤ngen
 
-			erstelleElementeRek((Element)alleUnterelemente.get(i),neues); //Text und Unterelemente des StruktogrammElementes setzen, entsprechender strelem-Tag wird übergeben
+			erstelleElementeRek((Element)alleUnterelemente.get(i),neues); //Text und Unterelemente des StruktogrammElementes setzen, entsprechender strelem-Tag wird Ã¼bergeben
 		}
 	}
 
@@ -153,7 +153,7 @@ public class XMLLeser {
 
 			this.struktogramm = struktogramm;
 
-			//Schriftart für dieses Struktgramm einlesen
+			//Schriftart fÃ¼r dieses Struktgramm einlesen
 			String fontFamily, fontSize, fontStyle;
 			fontFamily = element.getAttributeValue("fontfamily");
 			fontSize = element.getAttributeValue("fontsize");
@@ -170,7 +170,7 @@ public class XMLLeser {
 			}
 
 			struktogramm.gibListe().alleEntfernen(); //Liste des Struktogramms leeren
-			listenelementeErstellen(element,struktogramm.gibListe()); //Struktogramm mit neuen Elementen füllen, Ausgangspunkt ist das Wurzelelement der XML-Datei
+			listenelementeErstellen(element,struktogramm.gibListe()); //Struktogramm mit neuen Elementen fÃ¼llen, Ausgangspunkt ist das Wurzelelement der XML-Datei
 
 
 			if(struktogramm.gibGraphics() != null){
@@ -188,7 +188,7 @@ public class XMLLeser {
 
 
 
-	//Für Kopier-Funktion: erstellt aus dem Document ein StruktogrammElement mit Unterelementen
+	//FÃ¼r Kopier-Funktion: erstellt aus dem Document ein StruktogrammElement mit Unterelementen
 	public StruktogrammElementListe erstelleStruktogrammElementListe(Document document, Struktogramm struktogramm){
 
 		if(document != null){
@@ -237,7 +237,7 @@ public class XMLLeser {
 		int zeichenNummer;
 
 		for (int i=0; i < textzeileAlsZahlen.length; i++){
-			zeichenNummer = Integer.parseInt(textzeileAlsZahlen[i]);//einzelne Arrayeinträge beinhalten die Unicode-Zahlen
+			zeichenNummer = Integer.parseInt(textzeileAlsZahlen[i]);//einzelne ArrayeintrÃ¤ge beinhalten die Unicode-Zahlen
 
 			if (zeichenNummer == -1){
 				s = ""; //zeichenNummer ist -1, also eine leere Zeile -> s wird zum leeren String

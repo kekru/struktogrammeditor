@@ -29,17 +29,17 @@ public class CodeErzeuger extends JDialog {
 
 	private static final long serialVersionUID = 6073577055724789562L;
 	// Anfang Attribute
-	private ButtonGroup buttongroup = new ButtonGroup();//ButtonGroup für die RadioButtons
-	private JRadioButton javaButton = new JRadioButton();//RadioButton zum auswählen von Java-Quellcode
-	private JRadioButton delphiButton = new JRadioButton();//RadioButton zum auswählen von Delphi-Quellcode
+	private ButtonGroup buttongroup = new ButtonGroup();//ButtonGroup fÃ¼r die RadioButtons
+	private JRadioButton javaButton = new JRadioButton();//RadioButton zum auswÃ¤hlen von Java-Quellcode
+	private JRadioButton delphiButton = new JRadioButton();//RadioButton zum auswÃ¤hlen von Delphi-Quellcode
 	private JTextAreaEasy textarea;//Textarea zum Ausgeben des Quellcodes
-	private JCheckBox checkboxKommentare = new JCheckBox();//Checkbox, um festzulegen, ob die Bechriftungen der StruktogrammElemente als Kommentare oder einfach so in den generierten Quellcode eingefügt werden sollen
-	private JLabel jLabel1 = new JLabel();//Label für die Beschriftung von numberfieldEinrueckung
-	private JNumberField numberfieldEinrueckung = new JNumberField();//gibt an, wie weit die erste Zeile im generierten Quellcode eingerückt werden soll
-	private JLabel jLabel2 = new JLabel();//Label für die Beschriftung von numberfieldZeichenzahl
-	private JNumberField numberfieldZeichenzahl = new JNumberField();//gibt an, wie viele Leerzeichen pro Einrückung genutzt werden sollen
+	private JCheckBox checkboxKommentare = new JCheckBox();//Checkbox, um festzulegen, ob die Bechriftungen der StruktogrammElemente als Kommentare oder einfach so in den generierten Quellcode eingefÃ¼gt werden sollen
+	private JLabel jLabel1 = new JLabel();//Label fÃ¼r die Beschriftung von numberfieldEinrueckung
+	private JNumberField numberfieldEinrueckung = new JNumberField();//gibt an, wie weit die erste Zeile im generierten Quellcode eingerÃ¼ckt werden soll
+	private JLabel jLabel2 = new JLabel();//Label fÃ¼r die Beschriftung von numberfieldZeichenzahl
+	private JNumberField numberfieldZeichenzahl = new JNumberField();//gibt an, wie viele Leerzeichen pro EinrÃ¼ckung genutzt werden sollen
 	private JButton buttonCodeErzeugen = new JButton();//Button um das Quellcode-Erzeugen zu starten
-	private JButton buttonSchliessen = new JButton();//Button zum Schließen
+	private JButton buttonSchliessen = new JButton();//Button zum SchlieÃŸen
 	private Struktogramm str;//das Struktogramm, zu dem Quellcode generiert werden soll
 
 	//Konstanten, die definieren, in welcher Sprache der Quellcode generiert werden soll
@@ -75,14 +75,14 @@ public class CodeErzeuger extends JDialog {
 		checkboxKommentare.setSelected(GlobalSettings.isCodeErzeugerAlsKommentar());
 		cp.add(checkboxKommentare);
 		jLabel1.setBounds(16, 296, 323, 16);
-		jLabel1.setText("Erste Zeile soll wie viele Stellen weit eingerückt sein?");
+		jLabel1.setText("Erste Zeile soll wie viele Stellen weit eingerÃ¼ckt sein?");
 		jLabel1.setFont(new Font("MS Sans Serif", Font.PLAIN, 13));
 		cp.add(jLabel1);
 		numberfieldEinrueckung.setBounds(344, 296, 49, 24);
 		numberfieldEinrueckung.setText(""+GlobalSettings.getCodeErzeugerEinrueckungGesamt());
 		cp.add(numberfieldEinrueckung);
 		jLabel2.setBounds(16, 328, 244, 16);
-		jLabel2.setText("Anzahl der Leerzeichen pro Einrückung:");
+		jLabel2.setText("Anzahl der Leerzeichen pro EinrÃ¼ckung:");
 		jLabel2.setFont(new Font("MS Sans Serif", Font.PLAIN, 13));
 		cp.add(jLabel2);
 		numberfieldZeichenzahl.setBounds(344, 328, 49, 24);
@@ -98,7 +98,7 @@ public class CodeErzeuger extends JDialog {
 		});
 		cp.add(buttonCodeErzeugen);
 		buttonSchliessen.setBounds(296, 368, 91, 25);
-		buttonSchliessen.setText("Schließen");
+		buttonSchliessen.setText("SchlieÃŸen");
 		buttonSchliessen.setMargin(new Insets(2, 2, 2, 2));
 		buttonSchliessen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -108,7 +108,7 @@ public class CodeErzeuger extends JDialog {
 		cp.add(buttonSchliessen);
 
 
-		//RadioButtons der ButtonGroup hinzufügen
+		//RadioButtons der ButtonGroup hinzufÃ¼gen
 		buttongroup.add(javaButton);
 		buttongroup.add(delphiButton);
 
@@ -151,7 +151,7 @@ public class CodeErzeuger extends JDialog {
 
 	//Button Code erzeugen wurde angeklickt
 	public void buttonCodeErzeugen_ActionPerformed(ActionEvent evt) {
-		if (numberfieldEinrueckung.isNumeric() && numberfieldZeichenzahl.isNumeric()){//Prüfen, ob in den NumberFields gültige Zahlen stehen
+		if (numberfieldEinrueckung.isNumeric() && numberfieldZeichenzahl.isNumeric()){//PrÃ¼fen, ob in den NumberFields gÃ¼ltige Zahlen stehen
 
 			JRadioButton radioB = getSelectedRadioButton(buttongroup);
 
@@ -183,7 +183,7 @@ public class CodeErzeuger extends JDialog {
 	}
 
 
-	//gibt an, welche Symbole in der jeweiligen Sprache für Kommentare genutzt werden
+	//gibt an, welche Symbole in der jeweiligen Sprache fÃ¼r Kommentare genutzt werden
 	public static String gibKommentarZeichen(boolean kommentarStart, int codeTyp){
 		switch(codeTyp){
 		case typJava:
@@ -206,7 +206,7 @@ public class CodeErzeuger extends JDialog {
 	}
 
 
-	//gibt an, welche Zeichen in der jeweiligen Sprache für Befehlsblockanfang und -ende genutzt werden
+	//gibt an, welche Zeichen in der jeweiligen Sprache fÃ¼r Befehlsblockanfang und -ende genutzt werden
 	public static String gibBlockZeichen(boolean blockStart, int codeTyp){
 		switch(codeTyp){
 		case typJava:
@@ -228,7 +228,7 @@ public class CodeErzeuger extends JDialog {
 		return "";
 	}
 
-	//bei Delphi setze ich das begin in die nächste Zeile, es muss daher eingerückt werden
+	//bei Delphi setze ich das begin in die nÃ¤chste Zeile, es muss daher eingerÃ¼ckt werden
 	public static boolean mussBlockanfangEinruecken(int typ){
 		return typ == typDelphi;
 	}

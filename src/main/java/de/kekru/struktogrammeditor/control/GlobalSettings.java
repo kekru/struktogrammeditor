@@ -26,7 +26,7 @@ public class GlobalSettings implements Konstanten{
 	
 	private static final String[][] elementAuswahlBeschriftungen = {
 		{"Anweisung","if (Verzweigung)","switch (Auswahl)","For Schleife","While Schleife","Do-While Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
-		{"Anweisung","Verzweigung","Fallauswahl","Z‰hlergesteuerte Schleife","Kopfgesteuerte Schleife","Fuﬂgesteuerte Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
+		{"Anweisung","Verzweigung","Fallauswahl","Z√§hlergesteuerte Schleife","Kopfgesteuerte Schleife","Fu√ügesteuerte Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
 		{"A","I","S","F","W","D","E","B","M","Leeres Element"}
 	};
 	private static int beschriftungsStilAktuell = 1;
@@ -35,7 +35,7 @@ public class GlobalSettings implements Konstanten{
 	private static String zuletztGenutzterSpeicherpfad = "";
 	private static String zuletztGenutzterPfadFuerBild = "";
 	private static boolean letzteElementeStrecken = false;
-	//private String[] elementBeschriftungen = EinstellungsDialog.standardWerte;//hier wird ja nur der Zeiger kopiert (wie bei Objekten ¸blich), nicht der Inhalt
+	//private String[] elementBeschriftungen = EinstellungsDialog.standardWerte;//hier wird ja nur der Zeiger kopiert (wie bei Objekten √ºblich), nicht der Inhalt
 	private static String[] elementBeschriftungenZumEinfuegenInDasStruktogramm = new String[EinstellungsDialog.anzahlStruktogrammElemente];
 	public static final Font fontStandard = new Font("serif", Font.PLAIN, 15);
 	private static final String einstellungsDateiPfad = "struktogrammeditor.properties";
@@ -72,7 +72,7 @@ public class GlobalSettings implements Konstanten{
 	
 	
 	private static void loadSettings(){
-		//Wenn eine alte Einstellungsdatei (bis einschlieﬂlich Version 1.4) existiert, diese laden...
+		//Wenn eine alte Einstellungsdatei (bis einschlie√ülich Version 1.4) existiert, diese laden...
 		File f = new File(einstellungsDateiPfadBisVersion1Punkt4);
 		if(f.exists()){
 			String[] einstellungsdaten = Helpers.readTextFile(einstellungsDateiPfadBisVersion1Punkt4);
@@ -83,7 +83,7 @@ public class GlobalSettings implements Konstanten{
 				}
 			}
 			
-			if(!f.delete()){//...und anschlieﬂend lˆschen
+			if(!f.delete()){//...und anschlie√üend l√∂schen
 				f.deleteOnExit();
 			}
 			

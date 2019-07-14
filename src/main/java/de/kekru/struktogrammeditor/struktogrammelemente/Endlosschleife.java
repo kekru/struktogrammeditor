@@ -26,7 +26,7 @@ public class Endlosschleife extends Schleife {//erbt von Schleife
 
       switch(typ){
          case CodeErzeuger.typJava:
-            vorher = "while(true)"+co("zwangkommentar")+co("text")+co("zwangkommentarzu")+"{\n";//zwangkommentar bedeutet, es soll auf jeden Fall ein Kommentarzeichen eingefügt werden, egal was der User ausgewählt hat
+            vorher = "while(true)"+co("zwangkommentar")+co("text")+co("zwangkommentarzu")+"{\n";//zwangkommentar bedeutet, es soll auf jeden Fall ein Kommentarzeichen eingefÃ¼gt werden, egal was der User ausgewÃ¤hlt hat
             nachher = "}\n";
             break;
 

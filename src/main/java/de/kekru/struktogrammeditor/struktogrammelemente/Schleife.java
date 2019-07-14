@@ -31,7 +31,7 @@ public abstract class Schleife extends StruktogrammElement { //abstrakte Klasse 
 	protected void zusaetzlicheXMLDatenSchreiben(Element aktuelles){
 		Element neues = new Element("schleifeninhalt"); //neuer schleifeninhalt-Tag...
 		liste.schreibeXMLDatenAllerUnterElemente(neues); //...in den die einzelnen Unterelemente gespeichert werden
-		aktuelles.addContent(neues); //schleifeninhalt-Tag in eigenen strelem-Tag einfügen
+		aktuelles.addContent(neues); //schleifeninhalt-Tag in eigenen strelem-Tag einfÃ¼gen
 	}
 
 
@@ -122,7 +122,7 @@ public abstract class Schleife extends StruktogrammElement { //abstrakte Klasse 
 
 
 		int gesamtbreite;
-		//Prüfen, ob die Breite der Liste größer oder gleich der Mindestbreite ist...
+		//PrÃ¼fen, ob die Breite der Liste grÃ¶ÃŸer oder gleich der Mindestbreite ist...
 		if (rectListe.width >= gibMindestbreite()){
 			gesamtbreite = rectListe.width;
 		}else{
