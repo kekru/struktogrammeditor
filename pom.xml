@@ -8,7 +8,7 @@
 	<name>Struktogrammeditor</name>
 
 	<properties>
-    	<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	</properties>
 
 	<scm>

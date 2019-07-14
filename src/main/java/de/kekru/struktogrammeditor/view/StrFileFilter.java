@@ -3,7 +3,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-//FileFilter für Dateitypen zum Abspeichern des Struktogramms und Dateitypen zum Abspeichern als Bilddatei
+//FileFilter fÃ¼r Dateitypen zum Abspeichern des Struktogramms und Dateitypen zum Abspeichern als Bilddatei
 //http://www.java2s.com/Code/JavaAPI/javax.swing/JFileChoosersetFileFilterFileFilterfilter.htm
 public class StrFileFilter extends FileFilter {
 	private int filtertyp;
@@ -14,13 +14,13 @@ public class StrFileFilter extends FileFilter {
 		this.filtertyp = filtertyp;
 	}
 
-	//accept(...)-Methode überschreiben, damit der JFileChooser weis, ob er eine bestimmte Datei anzeigen soll
+	//accept(...)-Methode Ã¼berschreiben, damit der JFileChooser weis, ob er eine bestimmte Datei anzeigen soll
 	public boolean accept(File f){
 		return f.isDirectory() || dateiAkzeptiert(f.getAbsolutePath());//Ordner anzeigen und Dateien anzeigen die durch dateiAkzeptiert(...) akzeptiert werden
 	}
 
 
-	//Beschreibungen für die einzelnen Filtertypen
+	//Beschreibungen fÃ¼r die einzelnen Filtertypen
 	public String getDescription(){
 		switch(filtertyp){
 		case filterAlleSpeicherdateien: return "XML Dateien und strk Dateien";

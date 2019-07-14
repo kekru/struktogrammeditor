@@ -56,7 +56,7 @@ public class ColorDialog extends JDialog {
 			});
 			panel.add(button);
 			
-			button = new JButton("Weiﬂ");
+			button = new JButton("Wei√ü");
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

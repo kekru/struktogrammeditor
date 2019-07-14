@@ -29,7 +29,7 @@ public class AuswahlPanelElement extends JLabel{
       
       this.typ = typ;
       setIcon(Helpers.getIcon(gibBildpfad()));
-      setFont(new Font("monospaced", Font.PLAIN, 15));//Monospaced, damit alle Buchstaben gleich Breit sind; es werden automatisch alle Labels auf dem AuswahlPanel zentriert, damit sie die gleiche x-Position haben, erhalten sie alle die gleiche Anzahl an Zeichen für ihren Text
+      setFont(new Font("monospaced", Font.PLAIN, 15));//Monospaced, damit alle Buchstaben gleich Breit sind; es werden automatisch alle Labels auf dem AuswahlPanel zentriert, damit sie die gleiche x-Position haben, erhalten sie alle die gleiche Anzahl an Zeichen fÃ¼r ihren Text
       setText(GlobalSettings.getCurrentElementBeschriftungsstil()[typ]);
    }
    

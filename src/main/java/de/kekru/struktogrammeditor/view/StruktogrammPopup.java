@@ -22,7 +22,7 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 
 	private static final long serialVersionUID = -6394669590636692950L;
 	private int typ;
-	private StruktogrammElement element; //das Element, bei dem das PopupMenü geöffnet wurde
+	private StruktogrammElement element; //das Element, bei dem das PopupMenÃ¼ geÃ¶ffnet wurde
 	private Struktogramm struktogramm;
 
 	public StruktogrammPopup(StruktogrammElement element, Struktogramm struktogramm){
@@ -36,42 +36,42 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 		typ = Struktogramm.strElementZuTypnummer(element);
 
 		StrPopupUntermenue untermenue = unterMenueEinfuegen("Zoom");
-		untermenue.einfuegen("Größer",8,-1);
+		untermenue.einfuegen("GrÃ¶ÃŸer",8,-1);
 		untermenue.einfuegen("Kleiner",9,-1);
 		untermenue.add(new JSeparator());
 		untermenue.einfuegen("Breiter",10,-1);
 		untermenue.einfuegen("Schmaler",11,-1);
 		untermenue.add(new JSeparator());
-		untermenue.einfuegen("Höher",12,-1);
+		untermenue.einfuegen("HÃ¶her",12,-1);
 		untermenue.einfuegen("Weniger hoch",13,-1);
 		add(new JSeparator());
 
-		einfuegen("Text ändern",0);//die Nummer ist die Id, welche fest legt, was beim Klick passieren soll (siehe actionPerformed(...))
+		einfuegen("Text Ã¤ndern",0);//die Nummer ist die Id, welche fest legt, was beim Klick passieren soll (siehe actionPerformed(...))
 		einfuegen("Kopieren",7);
-		einfuegen("Löschen...",1);
+		einfuegen("LÃ¶schen...",1);
 
 		switch(typ){
-		case Struktogramm.typVerzweigung: //Bei Verzweigung diesen Menüpunkt hinzufügen:
+		case Struktogramm.typVerzweigung: //Bei Verzweigung diesen MenÃ¼punkt hinzufÃ¼gen:
 			add(new JSeparator());
 			einfuegen("Ja- und Neinseite vertauschen",2);
 			break;
 
-		case Struktogramm.typFallauswahl: //Bei Fallauswahl diese Menüpunkte hinzufügen:
+		case Struktogramm.typFallauswahl: //Bei Fallauswahl diese MenÃ¼punkte hinzufÃ¼gen:
 			add(new JSeparator());
 
-			einfuegen("Neuen Fall einfügen",3);
+			einfuegen("Neuen Fall einfÃ¼gen",3);
 
 			String[] faelle = element.gibFaelle();
 
 			for (int i=0; i < faelle.length; i++){
 
-				untermenue = unterMenueEinfuegen("Fall: "+faelle[i]);//Untermenüs für jeden Fall
+				untermenue = unterMenueEinfuegen("Fall: "+faelle[i]);//UntermenÃ¼s fÃ¼r jeden Fall
 
-				if (i > 0)//alle außer den Linkesten kann man nach links schieben
+				if (i > 0)//alle auÃŸer den Linkesten kann man nach links schieben
 					untermenue.einfuegen("Fall \""+faelle[i]+"\" nach links verschieben", 4, i);
 
 
-				if (i < faelle.length -1){//Sonst-Fall kann man nicht löschen und nicht nach rechts verschieben
+				if (i < faelle.length -1){//Sonst-Fall kann man nicht lÃ¶schen und nicht nach rechts verschieben
 					untermenue.einfuegen("Fall \""+faelle[i]+"\" nach rechts verschieben", 5, i);
 					untermenue.einfuegen("Fall \""+faelle[i]+"\" entfernen", 6, i);
 				}
@@ -158,13 +158,13 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 
 			boolean mussSpeicherpunktSetzen = true;
 			
-			//passende Aktion tätigen
+			//passende Aktion tÃ¤tigen
 			switch(id){
-			case 0: struktogramm.elementBefuellen(element); //EingabeDialog öffnen, hier drin wird schon ein Rückgängigpunkt gesetzt
+			case 0: struktogramm.elementBefuellen(element); //EingabeDialog Ã¶ffnen, hier drin wird schon ein RÃ¼ckgÃ¤ngigpunkt gesetzt
 			mussSpeicherpunktSetzen = false;
 			break;
 
-			case 1: struktogramm.elementLoeschen(element, true); //dieses Element löschen, hier drin wird schon ein Rückgängigpunkt gesetzt
+			case 1: struktogramm.elementLoeschen(element, true); //dieses Element lÃ¶schen, hier drin wird schon ein RÃ¼ckgÃ¤ngigpunkt gesetzt
 			mussSpeicherpunktSetzen = false;
 			break;
 
@@ -180,8 +180,8 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 			case 5: ((Fallauswahl)element).spalteVerschieben(false,fallnummer); //Spalte nach rechts verschieben
 			break;
 
-			case 6: String fallname = ((Fallauswahl)element).gibFaelle()[fallnummer]; //Spalte bzw. Fall löschen
-			if (JOptionPane.showConfirmDialog(null, "Den Fall \""+fallname+"\" mit dessen Unterelementen löschen?", "Fall entfernen", JOptionPane.YES_NO_OPTION) == 0){
+			case 6: String fallname = ((Fallauswahl)element).gibFaelle()[fallnummer]; //Spalte bzw. Fall lÃ¶schen
+			if (JOptionPane.showConfirmDialog(null, "Den Fall \""+fallname+"\" mit dessen Unterelementen lÃ¶schen?", "Fall entfernen", JOptionPane.YES_NO_OPTION) == 0){
 				((Fallauswahl)element).entferneSpalte(fallnummer);
 			}else{
 				mussSpeicherpunktSetzen = false;
@@ -192,7 +192,7 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 			mussSpeicherpunktSetzen = false;
 			break;
 
-			case 8: //Größer (x-Richtung und y-Richtung)
+			case 8: //GrÃ¶ÃŸer (x-Richtung und y-Richtung)
 				struktogramm.zoom(1, 1, element);
 				break;
 				
@@ -208,7 +208,7 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 				struktogramm.zoom(-1, 0, element);
 				break;
 				
-			case 12: //Höher (y-Richtung)
+			case 12: //HÃ¶her (y-Richtung)
 				struktogramm.zoom(0, 1, element);
 				break;
 				

@@ -14,18 +14,18 @@ import de.kekru.struktogrammeditor.other.JTextAreaEasy;
 public class LeerElement extends Anweisung {//erbt von Anweisung
 
    public LeerElement(Graphics2D g){
-      super(GlobalSettings.gibElementBeschriftung(Struktogramm.typLeerElement),g); //"ø"
+      super(GlobalSettings.gibElementBeschriftung(Struktogramm.typLeerElement),g); //"Ã¸"
    }
    
    /*@Override
    public void setzeText(String[] text){
-      //Text kann nicht geändert werden
+      //Text kann nicht geÃ¤ndert werden
    }*/
 
    
    @Override
    public Rectangle gibVorschauRect(Point vorschauPoint){
-      return new Rectangle(gibX(),gibY(),gibBreite(),gibHoehe());//Voraschaurect geht über das ganze LeerElement, um zu zeigen, dass es beim Einfügen ersetzt wird
+      return new Rectangle(gibX(),gibY(),gibBreite(),gibHoehe());//Voraschaurect geht Ã¼ber das ganze LeerElement, um zu zeigen, dass es beim EinfÃ¼gen ersetzt wird
    }
    
    

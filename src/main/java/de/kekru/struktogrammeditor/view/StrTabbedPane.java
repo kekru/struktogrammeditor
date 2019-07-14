@@ -53,7 +53,7 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
 
          String titel = getTitleAt(getSelectedIndex());
       
-         if (bearbeitet){//"*" anh‰ngen
+         if (bearbeitet){//"*" anh√§ngen
             if (titel.charAt(titel.length() -1) != '*'){
                titel += "*";
             }
@@ -69,7 +69,7 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
    
    
    public void aktuellesStruktogrammschliessen(){
-      switch(JOptionPane.showConfirmDialog(controlling.getGUI(), "Vor dem Schlieﬂen aktuelles Struktogramm speichern?", "Vorher speichern?", JOptionPane.YES_NO_CANCEL_OPTION)){
+      switch(JOptionPane.showConfirmDialog(controlling.getGUI(), "Vor dem Schlie√üen aktuelles Struktogramm speichern?", "Vorher speichern?", JOptionPane.YES_NO_CANCEL_OPTION)){
          case JOptionPane.YES_OPTION:
             controlling.speichern(false);
             remove(getSelectedIndex());
@@ -94,7 +94,7 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
    
    
    public void stateChanged(ChangeEvent e){
-//      if (stateChangedFreigegeben && (getTabCount() > 1)){//wenn es das erste ist (nach Schlieﬂen), wird diese Methode aufgerufen und graphicsInitialisieren klappt noch nicht, darum nicht zulassen
+//      if (stateChangedFreigegeben && (getTabCount() > 1)){//wenn es das erste ist (nach Schlie√üen), wird diese Methode aufgerufen und graphicsInitialisieren klappt noch nicht, darum nicht zulassen
 //
 //
 //         Struktogramm str = gibAktuellesStruktogramm();

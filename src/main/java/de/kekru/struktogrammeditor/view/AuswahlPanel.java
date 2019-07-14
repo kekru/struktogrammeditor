@@ -70,7 +70,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 
-		for (int i = 0; i < panelElemente.length; i++){//Label für mit den einzelnen Elementen erzeugen
+		for (int i = 0; i < panelElemente.length; i++){//Label fÃ¼r mit den einzelnen Elementen erzeugen
 			panelElemente[i] = new AuswahlPanelElement(i);
 			//panelElemente[i].setLocation(20,10+20*i);
 			add(panelElemente[i], c);
@@ -80,12 +80,12 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 
-		//Mülleimer erzeugen
+		//MÃ¼lleimer erzeugen
 		muelleimer = new JLabel();
 		muelleimerIstAuf = true;   //erst true setzen...
-		muelleimerAuf(!muelleimerIstAuf); //dann mit ! einfuegen, weil in der Methode überprüft wird, ob er Parameter != muelleimerIstAuf ist
+		muelleimerAuf(!muelleimerIstAuf); //dann mit ! einfuegen, weil in der Methode Ã¼berprÃ¼ft wird, ob er Parameter != muelleimerIstAuf ist
 		muelleimer.setFont(new Font("monospaced", Font.PLAIN, 15));
-		muelleimer.setText("Wegschmeißen");
+		muelleimer.setText("WegschmeiÃŸen");
 		add(muelleimer, c);
 
 		c.gridy++;
@@ -101,7 +101,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 		add(kopierFeld, c);
 
 
-		//für Drag & Drop Aktionen vorbereiten
+		//fÃ¼r Drag & Drop Aktionen vorbereiten
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
 
@@ -129,7 +129,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 	private void muelleimerAuf(boolean oeffnen){
-		if(muelleimerIstAuf != oeffnen){//damit nicht ständig das Icon neu geladen wird, kommt hier diese Sperre rein
+		if(muelleimerIstAuf != oeffnen){//damit nicht stÃ¤ndig das Icon neu geladen wird, kommt hier diese Sperre rein
 			String bildname;
 
 			if (oeffnen){
@@ -146,7 +146,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 	private void kopierFeldAuf(boolean oeffnen){
-		if(kopierFeldIstAuf != oeffnen){//damit nicht ständig das Icon neu geladen wird, kommt hier diese Sperre rein
+		if(kopierFeldIstAuf != oeffnen){//damit nicht stÃ¤ndig das Icon neu geladen wird, kommt hier diese Sperre rein
 			String bildname;
 
 			if (oeffnen){
@@ -170,28 +170,28 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 
-	//Methoden Drag ausgelöst
+	//Methoden Drag ausgelÃ¶st
 	//http://www.java2s.com/Code/Java/Swing-JFC/MakingaComponentDraggable.htm
 	public void dragGestureRecognized(DragGestureEvent evt){//User hat angefangen ein Objekt zu ziehen
 
 		Point mausPos = bildschirmKoordZuLokalenKoord(evt.getDragOrigin());//Kordinaten der Maus auf dem AuswahlPanel
 
-		Object element = getComponentAt(mausPos);//Komponente ermitteln, über der die Maus ist
+		Object element = getComponentAt(mausPos);//Komponente ermitteln, Ã¼ber der die Maus ist
 
-		if (element instanceof AuswahlPanelElement){//ist die Komponente ein AuswahlPanelElement (der User will ein neues StruktogrammElement einfügen)...
+		if (element instanceof AuswahlPanelElement){//ist die Komponente ein AuswahlPanelElement (der User will ein neues StruktogrammElement einfÃ¼gen)...
 
-			int typ = ((AuswahlPanelElement)element).gibTyp();//Typnummer für das entsprechende StruktogrammElement ermitteln
+			int typ = ((AuswahlPanelElement)element).gibTyp();//Typnummer fÃ¼r das entsprechende StruktogrammElement ermitteln
 
 
-			Transferable t = new StringSelection("n"+typ);//Drag-Daten setzen, n steht für neues Element, und typ ist der Typ des neuen Elementes
+			Transferable t = new StringSelection("n"+typ);//Drag-Daten setzen, n steht fÃ¼r neues Element, und typ ist der Typ des neuen Elementes
 
-			dragSource.startDrag(evt, DragSource.DefaultCopyDrop, t, this);//Drag wird ausgelöst
+			dragSource.startDrag(evt, DragSource.DefaultCopyDrop, t, this);//Drag wird ausgelÃ¶st
 
 		}else if((element == kopierFeld) && (kopiertesStrElement != null)){//ist die Komponente das kopierFeld und ist ein Document in kopiertesStrElement abgelegt...
 
-			Transferable t = new StringSelection("k");//Drag-Daten setzen, k für Element aus dem kopierFeld
+			Transferable t = new StringSelection("k");//Drag-Daten setzen, k fÃ¼r Element aus dem kopierFeld
 
-			dragSource.startDrag(evt, DragSource.DefaultCopyDrop, t, this);//Drag wird ausgelöst
+			dragSource.startDrag(evt, DragSource.DefaultCopyDrop, t, this);//Drag wird ausgelÃ¶st
 		}
 
 	}
@@ -241,10 +241,10 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 			Component dropUeberComponent = getComponentAt(bildschirmKoordZuLokalenKoord(event.getLocation()));
 			Struktogramm str = controlling.gibAktuellesStruktogramm();
 
-			if (dragTyp.charAt(0) == 'z'){//z -> ein Drag wurde ausgelöst, indem ein StruktogrammElement aus dem Struktogramm gezogen wurde
+			if (dragTyp.charAt(0) == 'z'){//z -> ein Drag wurde ausgelÃ¶st, indem ein StruktogrammElement aus dem Struktogramm gezogen wurde
 
 				if(dropUeberComponent == muelleimer){
-					//ein Element wurde aus dem aktuellen Struktogramm auf den Mülleimer gezogen -> aus dem Zwischenlager des Struktogramms entfernen
+					//ein Element wurde aus dem aktuellen Struktogramm auf den MÃ¼lleimer gezogen -> aus dem Zwischenlager des Struktogramms entfernen
 
 					str.elementAusZwischenlagerGanzEntfernen();
 					str.zeichenbereichAktualisieren();
@@ -283,8 +283,8 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 	public void dragOver(DropTargetDragEvent evt){
 		Component tmp = getComponentAt(bildschirmKoordZuLokalenKoord(evt.getLocation())); //Komponente ermitteln, die unter der Maus ist
 
-		muelleimerAuf(tmp == muelleimer); //wenn die Komponente unter der Maus das Mülleimer-Label ist, dann geöffneten Mülleimer zeigen, sonst den Geschlossenen
-		kopierFeldAuf(tmp == kopierFeld); //wie beim Mülleimer
+		muelleimerAuf(tmp == muelleimer); //wenn die Komponente unter der Maus das MÃ¼lleimer-Label ist, dann geÃ¶ffneten MÃ¼lleimer zeigen, sonst den Geschlossenen
+		kopierFeldAuf(tmp == kopierFeld); //wie beim MÃ¼lleimer
 	}
 
 
@@ -293,7 +293,7 @@ public class AuswahlPanel extends JPanel implements DropTargetListener, DragGest
 
 
 
-	//die Drag & Drop Methoden liefern Mauskoordinaten für den ganzen Bildschirm, hier werden sie zu Koordinaten des AuswahlPanel konvertiert
+	//die Drag & Drop Methoden liefern Mauskoordinaten fÃ¼r den ganzen Bildschirm, hier werden sie zu Koordinaten des AuswahlPanel konvertiert
 	//siehe: http://www.tutego.de/java/articles/Absolute-Koordinaten-Swing-Element.html
 	public Point bildschirmKoordZuLokalenKoord(Point bildschirmKoord){
 		return new Point(bildschirmKoord.x - getX(), bildschirmKoord.y - getY());

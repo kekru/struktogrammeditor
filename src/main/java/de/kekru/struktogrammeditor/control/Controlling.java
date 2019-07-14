@@ -142,7 +142,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		Struktogramm str = gibAktuellesStruktogramm();
 
 		if(str != null){
-			GlobalSettings.setzeSpeicherpfad(str.speichern(neuenSpeicherpfadAuswaehlenLassen,GlobalSettings.getZuletztGenutzterSpeicherpfad()));//Struktogramm wird gespeichert (zuletztGenutzterSpeicherpfad wird dabei �bergeben, damit der JFileChooser, sofern er genutzt wird, dort startet) und der neue Speicherpfad wird gesichert
+			GlobalSettings.setzeSpeicherpfad(str.speichern(neuenSpeicherpfadAuswaehlenLassen,GlobalSettings.getZuletztGenutzterSpeicherpfad()));//Struktogramm wird gespeichert (zuletztGenutzterSpeicherpfad wird dabei übergeben, damit der JFileChooser, sofern er genutzt wird, dort startet) und der neue Speicherpfad wird gesichert
 			GlobalSettings.saveSettings();
 			titelleisteAktualisieren();
 		}
@@ -150,7 +150,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 	public void laden(){
 
-		String pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);//Parameter ist der Startordner f�r den OpenDialog
+		String pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);//Parameter ist der Startordner für den OpenDialog
 
 		if(!pfad.equals("")){
 			openStruktogramm(pfad);
@@ -372,7 +372,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	private void changeLookAndFeel(int beschriftungsStilIndex){
 		GlobalSettings.setLookAndFeelAktuell(beschriftungsStilIndex);
 		GlobalSettings.saveSettings();
-		JOptionPane.showMessageDialog(gui, "Die �nderungen werden beim Neustart des Programms wirksam.", "Look And Feel �nderung", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(gui, "Die Änderungen werden beim Neustart des Programms wirksam.", "Look And Feel Änderung", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
@@ -394,7 +394,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		JOptionPane.showMessageDialog(gui,
 				"Struktogrammeditor "+GlobalSettings.versionsString+separator+
 				"Kevin Krummenauer - 2011-2012"+separator+
-				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/M�rz 2011"+separator+	
+				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/März 2011"+separator+				
 				separator+
 				"Git Hash: " + GlobalSettings.buildInfoGitHash +separator+
 				"Build-Zeit: " + GlobalSettings.buildInfoBuildTime +separator+

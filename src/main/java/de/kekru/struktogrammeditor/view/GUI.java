@@ -83,7 +83,7 @@ public class GUI extends JFrame implements Konstanten{
 			JMenu menu = createMenu("Datei", KeyEvent.VK_D);
 			{
 				menu.add(createMenuItem("Neu", XActionCommands.neu, KeyEvent.VK_N, KeyEvent.VK_N));
-				menu.add(createMenuItem("�ffnen...", XActionCommands.oeffnen, KeyEvent.VK_F, KeyEvent.VK_O));
+				menu.add(createMenuItem("Öffnen...", XActionCommands.oeffnen, KeyEvent.VK_F, KeyEvent.VK_O));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Speichern", XActionCommands.speichern, KeyEvent.VK_S, KeyEvent.VK_S));
 				menu.add(createMenuItem("Speichern unter...", XActionCommands.speicherUnter, KeyEvent.VK_U));
@@ -93,7 +93,7 @@ public class GUI extends JFrame implements Konstanten{
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Quellcode erzeugen", XActionCommands.quellcodeErzeugen, KeyEvent.VK_Q));
 				menu.add(new JSeparator());
-				menu.add(createMenuItem("Struktogramm Schlie�en", XActionCommands.struktogrammSchliessen, KeyEvent.VK_K));
+				menu.add(createMenuItem("Struktogramm Schließen", XActionCommands.struktogrammSchliessen, KeyEvent.VK_K));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Programm beenden",	XActionCommands.programmBeenden, KeyEvent.VK_P));
 			}
@@ -101,14 +101,14 @@ public class GUI extends JFrame implements Konstanten{
 
 			menu = createMenu("Bearbeiten", KeyEvent.VK_B);
 			{
-				menu.add(createMenuItem("R�ckg�ngig", XActionCommands.rueckgaengig, KeyEvent.VK_R, KeyEvent.VK_Z));
+				menu.add(createMenuItem("Rückgängig", XActionCommands.rueckgaengig, KeyEvent.VK_R, KeyEvent.VK_Z));
 				menu.add(createMenuItem("Widerrufen", XActionCommands.widerrufen, KeyEvent.VK_W, KeyEvent.VK_Y));
 				menu.add(new JSeparator());
-				menu.add(createMenuItem("Struktogrammname hinzuf�gen", XActionCommands.struktogrammbeschreibungHinzufuegen, KeyEvent.VK_S));
+				menu.add(createMenuItem("Struktogrammname hinzufügen", XActionCommands.struktogrammbeschreibungHinzufuegen, KeyEvent.VK_S));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Ganzes Struktogramm kopieren", XActionCommands.ganzesStruktogrammKopieren, KeyEvent.VK_G));
 				menu.add(createMenuItem("Element unter der Maus kopieren", XActionCommands.elementUnterDerMausKopieren, KeyEvent.VK_K, KeyEvent.VK_C));
-				menu.add(createMenuItem("Kopiertes Element an Mausposition einf�gen", XActionCommands.elementEinfuegen, KeyEvent.VK_E, KeyEvent.VK_V));
+				menu.add(createMenuItem("Kopiertes Element an Mausposition einfügen", XActionCommands.elementEinfuegen, KeyEvent.VK_E, KeyEvent.VK_V));
 			}
 			menubar.add(menu);
 
@@ -121,7 +121,7 @@ public class GUI extends JFrame implements Konstanten{
 				{
 					ButtonGroup group = new ButtonGroup();
 
-					JRadioButtonMenuItem radioMenuitem = new JRadioButtonMenuItem("Java-�hnlich");
+					JRadioButtonMenuItem radioMenuitem = new JRadioButtonMenuItem("Java-ähnlich");
 					radioMenuitem.addActionListener(controlling);
 					radioMenuitem.setActionCommand(XActionCommands.beschriftungsStilJava.toString());
 					radioMenuitem.setSelected(GlobalSettings.getBeschriftungsStilAktuell() == beschriftungsStilJava);
@@ -178,16 +178,16 @@ public class GUI extends JFrame implements Konstanten{
 				}
 				menu.add(menu2);
 
-				menu.add(createMenuItem("Startbeschriftungen �ndern...", XActionCommands.startbeschriftungAendern, KeyEvent.VK_S));
-				menu.add(createMenuItem("Schriftart �ndern...", XActionCommands.schriftartAendern, KeyEvent.VK_F));
+				menu.add(createMenuItem("Startbeschriftungen ändern...", XActionCommands.startbeschriftungAendern, KeyEvent.VK_S));
+				menu.add(createMenuItem("Schriftart ändern...", XActionCommands.schriftartAendern, KeyEvent.VK_F));
 				menu.add(new JSeparator());
-				menu.add(createMenuItem("Gr��e von Elementen mit Mausrad �ndern", XActionCommands.groesseAendernMitMausrad, KeyEvent.VK_G, GlobalSettings.isBeiMausradGroesseAendern()));
+				menu.add(createMenuItem("Größe von Elementen mit Mausrad ändern", XActionCommands.groesseAendernMitMausrad, KeyEvent.VK_G, GlobalSettings.isBeiMausradGroesseAendern()));
 				menu.add(createMenuItem("Zoomeinstellungen...", XActionCommands.zoomeinstellungen, KeyEvent.VK_Z));
-				menu.add(createMenuItem("Alle Vergr��erungen r�ckg�ngig machen", XActionCommands.vergroesserungenRuckgaengigMachen, KeyEvent.VK_A));
+				menu.add(createMenuItem("Alle Vergrößerungen rückgängig machen", XActionCommands.vergroesserungenRuckgaengigMachen, KeyEvent.VK_A));
 				menu.add(new JSeparator());
-				menu.add(createMenuItem("Shortcuts zum Elementeinf�gen benutzen", XActionCommands.elementShortcutsVerwenden, KeyEvent.VK_C, GlobalSettings.isElementShortcutsVerwenden()));
+				menu.add(createMenuItem("Shortcuts zum Elementeinfügen benutzen", XActionCommands.elementShortcutsVerwenden, KeyEvent.VK_C, GlobalSettings.isElementShortcutsVerwenden()));
 				menu.add(new JSeparator());
-				menu.add(createMenuItem("Kantengl�ttung verwenden", XActionCommands.kantenglaettungVerwenden, KeyEvent.VK_K, GlobalSettings.isKantenglaettungVerwenden()));
+				menu.add(createMenuItem("Kantenglättung verwenden", XActionCommands.kantenglaettungVerwenden, KeyEvent.VK_K, GlobalSettings.isKantenglaettungVerwenden()));
 			}
 			menubar.add(menu);
 
@@ -195,7 +195,7 @@ public class GUI extends JFrame implements Konstanten{
 			{
 				menu.add(createMenuItem("Homepage", XActionCommands.homepage, KeyEvent.VK_M));
 				menu.add(createMenuItem("Changelog", XActionCommands.changelog, KeyEvent.VK_C));
-				menu.add(createMenuItem("Kontakt, Feedback, Verbesserungsvorschl�ge, Fehler melden", XActionCommands.kontaktformular, KeyEvent.VK_K));
+				menu.add(createMenuItem("Kontakt, Feedback, Verbesserungsvorschläge, Fehler melden", XActionCommands.kontaktformular, KeyEvent.VK_K));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Hilfedatei", XActionCommands.hilfe, KeyEvent.VK_L));
 				menu.add(new JSeparator());
@@ -217,7 +217,7 @@ public class GUI extends JFrame implements Konstanten{
 
 
 
-		//tabbedpane.changeListenerAktivieren(); //wenn der ChangeListener fr�her aktiviert wird, kommt es zu Problemen, da darin graphicsInitialisieren aufgerufen wird, was nicht funktioniert wenn die entsprechende Komponente noch nicht vollst�ndig erzeugt ist
+		//tabbedpane.changeListenerAktivieren(); //wenn der ChangeListener früher aktiviert wird, kommt es zu Problemen, da darin graphicsInitialisieren aufgerufen wird, was nicht funktioniert wenn die entsprechende Komponente noch nicht vollständig erzeugt ist
 
 
 	}
