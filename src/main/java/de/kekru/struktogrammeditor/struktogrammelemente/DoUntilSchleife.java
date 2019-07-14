@@ -21,7 +21,7 @@ public class DoUntilSchleife extends Schleife {//erbt von Schleife
    @Override
    protected void textZeichnen(){
       int texthoehe = gibTexthoehe(text[0]);
-      int yVerschiebungAktuell = gibHoehe() -15; //Position der untersten Zeile: 15 Pixel über dem unteren Rand
+      int yVerschiebungAktuell = gibHoehe() -15; //Position der untersten Zeile: 15 Pixel Ã¼ber dem unteren Rand
 
       g.setColor(getFarbeSchrift());
       
@@ -37,13 +37,13 @@ public class DoUntilSchleife extends Schleife {//erbt von Schleife
    
    @Override
    public boolean neuesElementMussOberhalbPlatziertWerden(int y){
-      return y < gibY() + gibHoehe() - getUntererRand()/2;//hier wird anhand der Position der Maus im Kopfteil (der unten ist) entschieden, weil man beim ganzer Betrachtung nicht unterhalb einfügen kann
+      return y < gibY() + gibHoehe() - getUntererRand()/2;//hier wird anhand der Position der Maus im Kopfteil (der unten ist) entschieden, weil man beim ganzer Betrachtung nicht unterhalb einfÃ¼gen kann
    }
    
    
    @Override
    protected void randGroesseSetzen(){
-      setUntererRand(obererRandZusatz + text.length * gibTexthoehe(text[0]));//der untere Rand ist der Zusatzrand plus die Höhe aller Textzeilen (obererRandZusatz heißt nur oberer..., weil DoUntilSchleife von Schleife erbt und dort von einem oberen Rand ausgegangen wird)
+      setUntererRand(obererRandZusatz + text.length * gibTexthoehe(text[0]));//der untere Rand ist der Zusatzrand plus die HÃ¶he aller Textzeilen (obererRandZusatz heiÃŸt nur oberer..., weil DoUntilSchleife von Schleife erbt und dort von einem oberen Rand ausgegangen wird)
    }
    
    
@@ -68,9 +68,9 @@ public class DoUntilSchleife extends Schleife {//erbt von Schleife
             break;
       }
 
-      textarea.hinzufuegen(wandleZuAusgabe(vorher,typ,anzahlEingerueckt,alsKommentar));//"do{\n" bzw. "repeat\n" wird ausgegeben, richtig eingerückt
-      liste.quellcodeAllerUnterelementeGenerieren(typ,anzahlEingerueckt+anzahlEinzuruecken,anzahlEinzuruecken,alsKommentar,textarea);//Quellcode für die Unterelemente wird ausgegeben
-      textarea.hinzufuegen(wandleZuAusgabe(nachher,typ,anzahlEingerueckt,alsKommentar));//Schleifenende wird ausgegeben, Kommentare bei Bedarf hinzugefügt und alles richtig eingerückt
+      textarea.hinzufuegen(wandleZuAusgabe(vorher,typ,anzahlEingerueckt,alsKommentar));//"do{\n" bzw. "repeat\n" wird ausgegeben, richtig eingerÃ¼ckt
+      liste.quellcodeAllerUnterelementeGenerieren(typ,anzahlEingerueckt+anzahlEinzuruecken,anzahlEinzuruecken,alsKommentar,textarea);//Quellcode fÃ¼r die Unterelemente wird ausgegeben
+      textarea.hinzufuegen(wandleZuAusgabe(nachher,typ,anzahlEingerueckt,alsKommentar));//Schleifenende wird ausgegeben, Kommentare bei Bedarf hinzugefÃ¼gt und alles richtig eingerÃ¼ckt
    }
    
    

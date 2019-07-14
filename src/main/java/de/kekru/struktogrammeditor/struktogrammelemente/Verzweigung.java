@@ -17,7 +17,7 @@ public class Verzweigung extends Fallauswahl { //erbt von Fallauswahl
       gibLinkeSeite().setzeBeschreibung(jaText);
       gibRechteSeite().setzeBeschreibung(neinText);
       xVerschiebungFuerTrennlinie = 0;
-      yVerschiebungFuerTrennLinie = 0; //die schr‰gen Linien sollen bis zum Boden des Kopfteils gehen
+      yVerschiebungFuerTrennLinie = 0; //die schr√§gen Linien sollen bis zum Boden des Kopfteils gehen
       obererRandZusatz = 20;
       seitenSindVertauscht = false;
       setzeText(GlobalSettings.gibElementBeschriftung(Struktogramm.typVerzweigung));

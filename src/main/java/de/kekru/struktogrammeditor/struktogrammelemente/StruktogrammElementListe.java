@@ -15,7 +15,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 	private static final long serialVersionUID = -122818269830027765L;
 	private Rectangle bereich;
 	private Graphics2D g;
-	private String beschreibung = ""; //hier wird bei einer Fallauswahl und bei einer Verzweigung gespeichert, was über der jeweiligen Spalte stehen soll
+	private String beschreibung = ""; //hier wird bei einer Fallauswahl und bei einer Verzweigung gespeichert, was Ã¼ber der jeweiligen Spalte stehen soll
 
 	public StruktogrammElementListe(Graphics2D g){
 		super();
@@ -51,7 +51,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 
 
 	public void schreibeXMLDatenAllerUnterElemente(Element parent){
-		//if (!(get(0) instanceof LeerElement)){//alle Struktogrammelemente, außer LeerElement, müssen XML-Daten schreiben
+		//if (!(get(0) instanceof LeerElement)){//alle Struktogrammelemente, auÃŸer LeerElement, mÃ¼ssen XML-Daten schreiben
 		for (int i=0; i < size(); i++){
 			get(i).schreibeXMLDaten(parent);
 		}
@@ -86,7 +86,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 	public boolean istUnterelement(StruktogrammElement eventuellesUnterelement){
 
 		for (int i=0; i < size(); i++){
-			if((get(i) == eventuellesUnterelement) || (get(i).istUnterelement(eventuellesUnterelement))){//wenn get(i) das Gesuchte ist, oder wenn get(i) das gesuchte Unterelement beinhaltet, wird true zurückgegeben
+			if((get(i) == eventuellesUnterelement) || (get(i).istUnterelement(eventuellesUnterelement))){//wenn get(i) das Gesuchte ist, oder wenn get(i) das gesuchte Unterelement beinhaltet, wird true zurÃ¼ckgegeben
 				return true;
 			}
 		}
@@ -96,7 +96,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 
 
 
-	public void hinzufuegen(StruktogrammElement neues){//am Ende einfügen
+	public void hinzufuegen(StruktogrammElement neues){//am Ende einfÃ¼gen
 		hinzufuegen(neues,null,true);
 	}
 
@@ -119,21 +119,21 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 
 		if (naechstesOderVorheriges != null){
 
-			int position = indexOf(naechstesOderVorheriges); //Position des Elementes hinter oder vor dem das Neue eingefügt werden soll
+			int position = indexOf(naechstesOderVorheriges); //Position des Elementes hinter oder vor dem das Neue eingefÃ¼gt werden soll
 
-			if (!vorDemAltenEinfuegen){//wenn nach dem alten Element eingefügt werden soll, wird die Position um 1 inkrementiert
+			if (!vorDemAltenEinfuegen){//wenn nach dem alten Element eingefÃ¼gt werden soll, wird die Position um 1 inkrementiert
 				position++;
 			}
 
 			for(StruktogrammElement strElem : neue){
-				add(position, strElem);//Einfügen an der Stelle position; das Element, das vorher an dieser Position war, wird um eine Stelle weiter geschoben
+				add(position, strElem);//EinfÃ¼gen an der Stelle position; das Element, das vorher an dieser Position war, wird um eine Stelle weiter geschoben
 				position++;
 			}
 
 		}else{
 
 			for(StruktogrammElement strElem : neue){ 
-				add(strElem); //Am Ende einfügen
+				add(strElem); //Am Ende einfÃ¼gen
 			}
 		}
 
@@ -152,7 +152,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 		remove(indexOf(zuLoeschen));
 
 		if (size() == 0){
-			add(new LeerElement(g)); //wenn die Liste jetzt leer ist, ein LeerElement einfügen
+			add(new LeerElement(g)); //wenn die Liste jetzt leer ist, ein LeerElement einfÃ¼gen
 		}
 	}
 
@@ -174,13 +174,13 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 			for (int i=0; i < size(); i++){
 				tmp = get(i).gibElementAnPos(x,y,nurListe);
 				if (tmp != null){
-					return tmp; //das Listen-Element mit dem Index i beinhaltet den Punkt, dieses oder eines seiner Unterelemente wird zurückgegeben
+					return tmp; //das Listen-Element mit dem Index i beinhaltet den Punkt, dieses oder eines seiner Unterelemente wird zurÃ¼ckgegeben
 				}
 			}
 
 
-			if (nurListe){ //es wurde noch kein Element zurückgegeben (auch keine weiter innere Liste), wenn also nach einer Liste gefragt ist...
-				return this; //...wird diese zurückgeliefert
+			if (nurListe){ //es wurde noch kein Element zurÃ¼ckgegeben (auch keine weiter innere Liste), wenn also nach einer Liste gefragt ist...
+				return this; //...wird diese zurÃ¼ckgeliefert
 			}
 
 		}
@@ -211,7 +211,7 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 
 
 
-	//gibt die Breite des breitesten Unterelementes und die addierte Höhe aller Unterelemente an
+	//gibt die Breite des breitesten Unterelementes und die addierte HÃ¶he aller Unterelemente an
 	public Dimension gibDimensionDerUnterelemente(){
 		int breite = 0;
 		int hoehe = 0;
@@ -253,11 +253,11 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 
 
 
-	public void gesamtHoeheSetzen(int neueHoehe){//Höhe des letzten Elementes wird verändert
+	public void gesamtHoeheSetzen(int neueHoehe){//HÃ¶he des letzten Elementes wird verÃ¤ndert
 		if(size() > 0){
-			int hoeheVorher = get(size() -1).gibHoehe(); //Höhe des letzten Elementes ermitteln
+			int hoeheVorher = get(size() -1).gibHoehe(); //HÃ¶he des letzten Elementes ermitteln
 
-			get(size() -1).setzeHoehe(neueHoehe - (bereich.height - hoeheVorher)); //neue Höhe des letzten Elementes setzen
+			get(size() -1).setzeHoehe(neueHoehe - (bereich.height - hoeheVorher)); //neue HÃ¶he des letzten Elementes setzen
 		}
 
 		bereich.height = neueHoehe;
@@ -270,10 +270,10 @@ public class StruktogrammElementListe extends ArrayList<StruktogrammElement> {//
 		int neueYPos = y;
 
 		for (int i = 0; i < size(); i++){
-			neueYPos += get(i).zeichenbereichAktualisieren(x,neueYPos).getHeight();//Zeichenbereich von Element get(i) wird aktualisiert mit den Koordinaten x und neueYPos; neueYPos wird dabei für das nächste Element um die Höhe des aktuellen Elementes vergrößert
+			neueYPos += get(i).zeichenbereichAktualisieren(x,neueYPos).getHeight();//Zeichenbereich von Element get(i) wird aktualisiert mit den Koordinaten x und neueYPos; neueYPos wird dabei fÃ¼r das nÃ¤chste Element um die HÃ¶he des aktuellen Elementes vergrÃ¶ÃŸert
 		}
 
-		Dimension dim = gibDimensionDerUnterelemente();//größte Breite eines Unterlementes und Gesamthöhe aller Unterelemente
+		Dimension dim = gibDimensionDerUnterelemente();//grÃ¶ÃŸte Breite eines Unterlementes und GesamthÃ¶he aller Unterelemente
 
 		if (dim.width < gibTextbreite(gibBeschreibung() +8)){//Beschreibung ist bei Verzweigung und Fallauswahl kein leerer String (wird gesetzt in setzeFaelle(...) durch den EingabeDialog)
 			dim.width = gibTextbreite(gibBeschreibung()) +8;

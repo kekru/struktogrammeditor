@@ -101,7 +101,7 @@ public class EingabeDialog extends JDialog {
 			c.gridx = 0;
 			c.gridy = 2;
 			c.weightx = 1;
-			add(new JLabel(element instanceof Verzweigung ? "Beschriftungen links und rechts:" : "Beschriftungen der F‰lle:"), c);
+			add(new JLabel(element instanceof Verzweigung ? "Beschriftungen links und rechts:" : "Beschriftungen der F√§lle:"), c);
 
 			c.gridx = 0;
 			c.gridy = 3;
@@ -119,7 +119,7 @@ public class EingabeDialog extends JDialog {
 			c.gridx = 2;
 			c.gridy = 4;
 			c.weightx = 100;
-			button = new JButton("Fallbeschriftung ‰ndern");
+			button = new JButton("Fallbeschriftung √§ndern");
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -130,8 +130,8 @@ public class EingabeDialog extends JDialog {
 			
 			
 			
-			//Element ist Verzweigung oder Fallauswahl, anzahlListen ist f¸r Schleifen 0, weil diese keine ‹berschrift brauchen
-			//JListEasy erzeugen, die die Fallnamen, oder bei einer Verzweigung "Ja" und "Nein" enth‰lt, um diese umbenennen zu kˆnnen
+			//Element ist Verzweigung oder Fallauswahl, anzahlListen ist f√ºr Schleifen 0, weil diese keine √úberschrift brauchen
+			//JListEasy erzeugen, die die Fallnamen, oder bei einer Verzweigung "Ja" und "Nein" enth√§lt, um diese umbenennen zu k√∂nnen
 			String[] inhaltVorher = element.gibFaelle();
 			for(int i=0; i < anzahlListen; i++){
 				list.fuegeHinzu(inhaltVorher[i]);
@@ -204,11 +204,11 @@ public class EingabeDialog extends JDialog {
 
 		setSize(400,500);
 		setLocationRelativeTo(owner);
-		setVisible(true); //alles nach setVisible(true) wird erst beim Schlieﬂen des Dialogs gemacht
+		setVisible(true); //alles nach setVisible(true) wird erst beim Schlie√üen des Dialogs gemacht
 	}
 	
 
-	//OK-Button wurde gedr¸ckt
+	//OK-Button wurde gedr√ºckt
 	public void buttonOK_ActionPerformed(ActionEvent evt) {
 		if (element instanceof Fallauswahl){//Element ist vom Typ Fallauswahl oder Verzweigung
 
@@ -218,7 +218,7 @@ public class EingabeDialog extends JDialog {
 				fallBezeichnungen[i] = list.gibInhalt(i);
 			}
 
-			element.setzeFaelle(fallBezeichnungen);//Fall¸berschriften setzen
+			element.setzeFaelle(fallBezeichnungen);//Fall√ºberschriften setzen
 		}
 		
 		
@@ -243,13 +243,13 @@ public class EingabeDialog extends JDialog {
 		aktualisiereButtonfarben();
 	}
 
-	//Abbrechen-Button wurde gedr¸ckt
+	//Abbrechen-Button wurde gedr√ºckt
 	public void buttonAbbrechen_ActionPerformed(ActionEvent evt) {
 		setVisible(false);
 	}
 
 
-	//Button zum ƒndern der Fallnamen wurde gedr¸ckt
+	//Button zum √Ñndern der Fallnamen wurde gedr√ºckt
 	public void buttonFallname_ActionPerformed(ActionEvent evt) {
 		if(list.gibIndex() >= 0){
 
@@ -257,19 +257,19 @@ public class EingabeDialog extends JDialog {
 
 			if (fallname != null){
 				if (fallname.equals("")){
-					fallname = " ";//wenn der Fallname ein leerer String ist, daraus einen String mit einem Leerzeichen machen, ansonsten ist die Zeile nur noch sehr klein in der Liste (von der Hˆhe her), wenn nichts drin steht
+					fallname = " ";//wenn der Fallname ein leerer String ist, daraus einen String mit einem Leerzeichen machen, ansonsten ist die Zeile nur noch sehr klein in der Liste (von der H√∂he her), wenn nichts drin steht
 				}
 				list.setzeText(fallname,list.gibIndex());//Fallname setzen
 			}
 
-		}else{//es ist noch kein Fall in der JListEasy ausgew‰hlt
-			JOptionPane.showMessageDialog(null, "Bitte eine Fallbeschreibung ausw‰hlen", "Ausw‰hlen", JOptionPane.ERROR_MESSAGE);
+		}else{//es ist noch kein Fall in der JListEasy ausgew√§hlt
+			JOptionPane.showMessageDialog(null, "Bitte eine Fallbeschreibung ausw√§hlen", "Ausw√§hlen", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 
 
-	//wenn zuvor der OK-Button gedr¸ckt wurde, wird der Inhalt der TextArea zur¸ckgegeben, ansonsten null (dann soll nichts ver‰ndert werden, weil der User Abbrechen oder das Schlieﬂen-X angeklickt hat)
+	//wenn zuvor der OK-Button gedr√ºckt wurde, wird der Inhalt der TextArea zur√ºckgegeben, ansonsten null (dann soll nichts ver√§ndert werden, weil der User Abbrechen oder das Schlie√üen-X angeklickt hat)
 	public String[] gibTextArray(){
 		return okWurdeGedrueckt ? rueckgabeInhalt : null;
 	}

@@ -17,7 +17,7 @@ public class WhileSchleife extends Schleife { //erbt von Schleife
    
    @Override
    public boolean neuesElementMussOberhalbPlatziertWerden(int y){
-      return y < gibY() + getObererRand()/2;//hier wird anhand der Position der Maus im Kopfteil entschieden, weil man beim ganzer Betrachtung nicht unterhalb einfügen kann
+      return y < gibY() + getObererRand()/2;//hier wird anhand der Position der Maus im Kopfteil entschieden, weil man beim ganzer Betrachtung nicht unterhalb einfÃ¼gen kann
    }
    
    

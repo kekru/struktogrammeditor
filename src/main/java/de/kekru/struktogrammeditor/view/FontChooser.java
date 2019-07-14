@@ -49,7 +49,7 @@ public class FontChooser extends JDialog {
 
 	public FontChooser(Controlling controlling, boolean modal) {
 
-		super(controlling.getGUI(), "Schriftart ‰ndern", modal);
+		super(controlling.getGUI(), "Schriftart √§ndern", modal);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);   
 		setSize(465, 120);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();    
@@ -116,7 +116,7 @@ public class FontChooser extends JDialog {
 
 
 			buttonZuruecksetzen.setBounds(220, 40, 91, 25);
-			buttonZuruecksetzen.setText("Zur¸cksetzen");
+			buttonZuruecksetzen.setText("Zur√ºcksetzen");
 			buttonZuruecksetzen.setMargin(new Insets(2, 2, 2, 2));
 			buttonZuruecksetzen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
@@ -128,7 +128,7 @@ public class FontChooser extends JDialog {
 		}
 		add(panel, BorderLayout.SOUTH);
 
-		setVisible(true); //alles nach setVisible(true) wird erst beim Schlieﬂen des Dialogs gemacht
+		setVisible(true); //alles nach setVisible(true) wird erst beim Schlie√üen des Dialogs gemacht
 	}
 
 

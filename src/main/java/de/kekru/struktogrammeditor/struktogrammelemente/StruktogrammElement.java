@@ -16,9 +16,9 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	protected Rectangle bereich; //Koordinaten, Breite und Hoehe des jeweiligen StruktogrammElemente
 	protected boolean markiert; //speichert, ob dieses StruktogrammElement gelb unterlegt gezeichnet werden soll
 	protected Graphics2D g; //Graphics-Kontext des BufferedImage bild des Struktogramms
-	protected static final int vorschauHoehe = 20; //Höhe des roten Vorschau-Rechteckes
-	private int obererRand; //verändert sich je nach Anzahl der Textzeilen
-	protected int obererRandZusatz; //wird pro von StruktogrammElement abgeleitete Klasse einmal gesetzt; beschreibt zusätzliche Pixelzahl zum für den oberen Rand
+	protected static final int vorschauHoehe = 20; //HÃ¶he des roten Vorschau-Rechteckes
+	private int obererRand; //verÃ¤ndert sich je nach Anzahl der Textzeilen
+	protected int obererRandZusatz; //wird pro von StruktogrammElement abgeleitete Klasse einmal gesetzt; beschreibt zusÃ¤tzliche Pixelzahl zum fÃ¼r den oberen Rand
 	private int xVergroesserung, yVergroesserung;
 	private Color farbeSchrift = Color.black, farbeHintergrund = Color.white;
 
@@ -38,7 +38,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 
-	//wandelt codierten String für die Quelltextgenerierung in einen auszugebenen String um
+	//wandelt codierten String fÃ¼r die Quelltextgenerierung in einen auszugebenen String um
 	protected String wandleZuAusgabe(String codierung, int typ, int anzahlEinzuruecken, boolean alsKommentare){
 		codierung = einruecken(codierung,anzahlEinzuruecken);
 
@@ -52,25 +52,25 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 		int x = codierung.indexOf(co("text")); //x ist die Position, wo das erste Zeichen des Textes erscheinen soll
 		if(x > -1){
-			x = x - codierung.substring(0,x).lastIndexOf("\n") -1; // x minus die Position des letzten Zeilenumbruchs im Bereich 0 bis x ist der Abstand (in Zeichen) des ersten Textzeichens vom linken Rand; alle weiteren Zeilen sollen um x Leerzeichen eingerückt werden, um einen linksbündigen Textblock zu erhalten
+			x = x - codierung.substring(0,x).lastIndexOf("\n") -1; // x minus die Position des letzten Zeilenumbruchs im Bereich 0 bis x ist der Abstand (in Zeichen) des ersten Textzeichens vom linken Rand; alle weiteren Zeilen sollen um x Leerzeichen eingerÃ¼ckt werden, um einen linksbÃ¼ndigen Textblock zu erhalten
 		}else{
 			x = 0; //co("text") war nicht im Eingabestring
 		}
 
 
 
-		return codierung.replace(co("text"),textzeilenAusgeben(anzahlEinzuruecken, x)) //co("text") wird durch die eingerückten Textzeilen ersetzt
-		.replaceAll(co("zwangkommentar"),CodeErzeuger.gibKommentarZeichen(true,typ)) //Zwangkommentare werden eingefügt
+		return codierung.replace(co("text"),textzeilenAusgeben(anzahlEinzuruecken, x)) //co("text") wird durch die eingerÃ¼ckten Textzeilen ersetzt
+		.replaceAll(co("zwangkommentar"),CodeErzeuger.gibKommentarZeichen(true,typ)) //Zwangkommentare werden eingefÃ¼gt
 		.replaceAll(co("zwangkommentarzu"),CodeErzeuger.gibKommentarZeichen(false,typ));
 	}
 
 
-	protected String co(String s){ //codiert s, damit es sehr unwahrscheinlich wird, dass der User zufällig den Schlüsselstring eingibt
+	protected String co(String s){ //codiert s, damit es sehr unwahrscheinlich wird, dass der User zufÃ¤llig den SchlÃ¼sselstring eingibt
 		return "%%"+s+"SbGRXEJUz4ZbvaaN%%";
 	}
 
 
-	//gibt einen String zurück, in dem alle Textzeilen mit Zeilenumbrüchen eingerückt enthalten sind
+	//gibt einen String zurÃ¼ck, in dem alle Textzeilen mit ZeilenumbrÃ¼chen eingerÃ¼ckt enthalten sind
 	protected String textzeilenAusgeben(int anzahlEinzuruecken, int xPosErsteZeile){
 		String rueckgabe = "";
 
@@ -79,7 +79,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 			if (i > 0){
 				rueckgabe += einruecken(text[i], xPosErsteZeile);
 			}else{
-				rueckgabe += text[i];//erste Zeile nicht einrücken, damit z.B. zwischen while( und der Zeile keine Leerschritte sind
+				rueckgabe += text[i];//erste Zeile nicht einrÃ¼cken, damit z.B. zwischen while( und der Zeile keine Leerschritte sind
 			}
 
 
@@ -95,17 +95,17 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 
-	/*wird von den abgeleiteten Klassen überschrieben;
-     typ gibt an, welche Sprache erzeugt werden soll, anzahlEingerueckt, wie weit bisher eingerückt worden ist,
-     anzahlEinzuruecken, wie weit pro Einrückung eingerückt werden soll,
+	/*wird von den abgeleiteten Klassen Ã¼berschrieben;
+     typ gibt an, welche Sprache erzeugt werden soll, anzahlEingerueckt, wie weit bisher eingerÃ¼ckt worden ist,
+     anzahlEinzuruecken, wie weit pro EinrÃ¼ckung eingerÃ¼ckt werden soll,
      alsKommentar, ob die Textzeilen und Fallnamen auskommentiert erscheinen sollen und
-     textarea ist die JTextAreaEasy, in die der Code eingefügt werden soll*/
+     textarea ist die JTextAreaEasy, in die der Code eingefÃ¼gt werden soll*/
 	public void quellcodeGenerieren(int typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
 
 	}
 
 	protected String einruecken(String codeZeile, int anzahlStellen){
-		for (int i=0; i < anzahlStellen; i++){ //gewünschte Anzahl an Leerzeichen vorne anhängen
+		for (int i=0; i < anzahlStellen; i++){ //gewÃ¼nschte Anzahl an Leerzeichen vorne anhÃ¤ngen
 			codeZeile = " "+codeZeile;
 		}
 		return codeZeile;
@@ -115,7 +115,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 	public void schreibeXMLDaten(Element elem){
-		Element neues = new Element("strelem")//strelem-Tag mit dem Attribut typ, welches die Typnummer für das StruktogrammElement angibt, wird eingefügt
+		Element neues = new Element("strelem")//strelem-Tag mit dem Attribut typ, welches die Typnummer fÃ¼r das StruktogrammElement angibt, wird eingefÃ¼gt
 			.setAttribute("typ",""+Struktogramm.strElementZuTypnummer(this))
 			.setAttribute("zx",""+xVergroesserung)
 			.setAttribute("zy",""+yVergroesserung)
@@ -123,16 +123,16 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 			.setAttribute("bgcolor",""+getFarbeHintergrund().getRGB());
 
 		for (int i=0; i < text.length; i++){
-			neues.addContent(new Element("text").addContent(XMLLeser.encodeS(text[i])));//in den strelem-Tag wird pro Textzeile ein text-Tag eingefügt, mit der Textzeile als Inhalt, die Textzeile ist dabei codiert, weil es beim laden später Probleme u.a. mit Umlauten gibt
+			neues.addContent(new Element("text").addContent(XMLLeser.encodeS(text[i])));//in den strelem-Tag wird pro Textzeile ein text-Tag eingefÃ¼gt, mit der Textzeile als Inhalt, die Textzeile ist dabei codiert, weil es beim laden spÃ¤ter Probleme u.a. mit Umlauten gibt
 		}
 
 		zusaetzlicheXMLDatenSchreiben(neues);
 
-		elem.addContent(neues); //strelem-Tag wird in den übergeordneten Tag eingefügt
+		elem.addContent(neues); //strelem-Tag wird in den Ã¼bergeordneten Tag eingefÃ¼gt
 	}
 
 
-	//wird von Schleife und von Fallauswahl überschrieben
+	//wird von Schleife und von Fallauswahl Ã¼berschrieben
 	protected void zusaetzlicheXMLDatenSchreiben(Element aktuelles){
 
 	}
@@ -146,7 +146,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 
-	//wird in Fallauswahl überschrieben
+	//wird in Fallauswahl Ã¼berschrieben
 	public String[] gibFaelle(){
 		String[] faelle = new String[1];
 		faelle[0] = "";
@@ -193,12 +193,12 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	}
 
 
-	//gibt den Bereich zurück, der die Größe und Position des roten Vorschaurechteckes angibt, wenn die Maus an der Position vorschauPoint ist
+	//gibt den Bereich zurÃ¼ck, der die GrÃ¶ÃŸe und Position des roten Vorschaurechteckes angibt, wenn die Maus an der Position vorschauPoint ist
 	public Rectangle gibVorschauRect(Point vorschauPoint){
 		int anYPos;
 
 		if (neuesElementMussOberhalbPlatziertWerden(vorschauPoint.y)){
-			//der Point ist auf der obere Hälfte -> Vorschau über diesem Element zeichnen
+			//der Point ist auf der obere HÃ¤lfte -> Vorschau Ã¼ber diesem Element zeichnen
 			anYPos = gibY() - vorschauHoehe / 2;
 		}else{
 			//Vorschau muss unter diesem Element gezeichnet werden
@@ -257,7 +257,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	}
 
 
-	protected Object gibElementAnPos(int x, int y, boolean nurListe){//Elemente mit UnterElementen überschreiben diese Methode
+	protected Object gibElementAnPos(int x, int y, boolean nurListe){//Elemente mit UnterElementen Ã¼berschreiben diese Methode
 
 		if (nurListe){
 			return null;//Ich bin keine StruktogrammElementListe
@@ -276,7 +276,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	}
 
 
-	public abstract Rectangle zeichenbereichAktualisieren(int x, int y);//wird in den Tochterklassen überschrieben
+	public abstract Rectangle zeichenbereichAktualisieren(int x, int y);//wird in den Tochterklassen Ã¼berschrieben
 	
 
 	public void setzeText(String[] text){
@@ -299,7 +299,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	}
 
 
-	public void zeichne(){ //wird überschrieben, aber mit super.zeichne(); aufgerufen
+	public void zeichne(){ //wird Ã¼berschrieben, aber mit super.zeichne(); aufgerufen
 		eigenenBereichZeichnen();
 		textZeichnen();
 	}
@@ -330,22 +330,22 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 			g.setFont(fontVorher);
 		}*/
 		
-		//TODO Vielleicht später wieder einbauen, das Anzeigen der Kästchen geht mit obigem Code bereits
+		//TODO Vielleicht spÃ¤ter wieder einbauen, das Anzeigen der KÃ¤stchen geht mit obigem Code bereits
 	}
 
 
 	protected void eigenenBereichZeichnen(){
 		if (!markiert){
-			g.setColor(farbeHintergrund);//für Rechteck mit eingestellter Farbe
+			g.setColor(farbeHintergrund);//fÃ¼r Rechteck mit eingestellter Farbe
 		}else{
-			g.setColor(Color.yellow);//für gelbes Rechteck als Markierung
+			g.setColor(Color.yellow);//fÃ¼r gelbes Rechteck als Markierung
 		}
-		g.fillRect(gibX(), gibY(), gibBreite(), gibHoehe());//ausgefülltes Rechteck zeichnen
+		g.fillRect(gibX(), gibY(), gibBreite(), gibHoehe());//ausgefÃ¼lltes Rechteck zeichnen
 		g.setColor(Color.black);
 		g.drawRect(gibX(), gibY(), gibBreite(), gibHoehe());//schwarzer Rand
 	}
 
-	//Nicht löschen, wird vielleicht später noch genutzt
+	//Nicht lÃ¶schen, wird vielleicht spÃ¤ter noch genutzt
 	/*private void zeichneGroessenaenderungskaestchen(final String text, final int x, final int y, final int kantenlaenge){
 		g.setColor(Color.white);
 		g.fillRect(x, y, kantenlaenge, kantenlaenge);
@@ -397,13 +397,13 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 		return gibXVerschiebungFuerMittig(textzeile, gibBreite());
 	}
 
-	//gibt die x-Verschiebung zurück, damit der Text s mittig in einem Bereich der Breite breiteUntergrund dargestellt wird
+	//gibt die x-Verschiebung zurÃ¼ck, damit der Text s mittig in einem Bereich der Breite breiteUntergrund dargestellt wird
 	protected int gibXVerschiebungFuerMittig(String s, int breiteUntergrund){
-		return (int)((breiteUntergrund - gibTextbreite(s)) / 2);//breiteUntergrund - gibTextbreite(s) ist, wie weit der Untergrund übersteht gegenüber der Textbreite; durch 2 dividieren des Überstehenden und eine Hälfe nach links packen, dann ist der Text in der Mitte
+		return (int)((breiteUntergrund - gibTextbreite(s)) / 2);//breiteUntergrund - gibTextbreite(s) ist, wie weit der Untergrund Ã¼bersteht gegenÃ¼ber der Textbreite; durch 2 dividieren des Ãœberstehenden und eine HÃ¤lfe nach links packen, dann ist der Text in der Mitte
 	}
 	
 	/*private int gibYVerschiebungFuerMittig(String s, int hoeheUntergrund){
-		return (int)((hoeheUntergrund - gibTexthoehe(s)) / 2);//breiteUntergrund - gibTextbreite(s) ist, wie weit der Untergrund übersteht gegenüber der Textbreite; durch 2 dividieren des Überstehenden und eine Hälfe nach links packen, dann ist der Text in der Mitte
+		return (int)((hoeheUntergrund - gibTexthoehe(s)) / 2);//breiteUntergrund - gibTextbreite(s) ist, wie weit der Untergrund Ã¼bersteht gegenÃ¼ber der Textbreite; durch 2 dividieren des Ãœberstehenden und eine HÃ¤lfe nach links packen, dann ist der Text in der Mitte
 	}*/
 
 

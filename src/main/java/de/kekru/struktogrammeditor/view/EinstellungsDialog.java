@@ -40,7 +40,7 @@ public class EinstellungsDialog extends JDialog{
 		"Endlosschleife",
 		"Aussprung",
 		"Aufruf",
-	"ø"};
+	"Ã¸"};
 
 
 	// Ende Attribute
@@ -60,8 +60,8 @@ public class EinstellungsDialog extends JDialog{
 		//this.gui = gui;
 
 		//labelUeberschrift.setBounds(10,10,280,20);
-		//labelUeberschrift.setText("Beschriftungen von neu eingefügten Elementen:");
-		add(new JLabel("Beschriftungen von neu eingefügten Elementen:"), BorderLayout.NORTH);
+		//labelUeberschrift.setText("Beschriftungen von neu eingefÃ¼gten Elementen:");
+		add(new JLabel("Beschriftungen von neu eingefÃ¼gten Elementen:"), BorderLayout.NORTH);
 
 		JPanel panel = new JPanel(new GridLayout(anzahlStruktogrammElemente, 2, 4, 4));
 		{
@@ -123,7 +123,7 @@ public class EinstellungsDialog extends JDialog{
 
 
 		
-		setVisible(true); //alles nach setVisible(true) wird erst beim Schließen des Dialogs gemacht
+		setVisible(true); //alles nach setVisible(true) wird erst beim SchlieÃŸen des Dialogs gemacht
 
 
 	}
