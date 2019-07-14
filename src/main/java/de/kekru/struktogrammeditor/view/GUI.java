@@ -200,6 +200,7 @@ public class GUI extends JFrame implements Konstanten{
 				menu.add(createMenuItem("Hilfedatei", XActionCommands.hilfe, KeyEvent.VK_L));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Info", XActionCommands.info, KeyEvent.VK_I));
+				menu.add(createMenuItem("Quellcode", XActionCommands.sourceCode, KeyEvent.VK_Q));
 			}
 			menubar.add(menu);
 		}

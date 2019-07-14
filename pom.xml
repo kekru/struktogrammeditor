@@ -4,12 +4,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kekru.struktogrammeditor</groupId>
 	<artifactId>struktogrammeditor</artifactId>
-	<version>1.7.2-SNAPSHOT</version>
+	<version>1.7.3-SNAPSHOT</version>
 	<name>Struktogrammeditor</name>
 
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	</properties>
+
+	<scm>
+		<url>https://github.com/kekru/struktogrammeditor</url>
+		<connection>scm:git:git://github.com/kekru/struktogrammeditor.git</connection>
+		<developerConnection>scm:git:git@github.com:kekru/struktogrammeditor.git</developerConnection>
+	</scm>
 
 	<dependencies>
 		<dependency>
@@ -26,6 +32,42 @@
 
 	<build>
 		<plugins>
+		    <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<resources>          
+								<resource>
+									<directory>${basedir}/target/generated/build-metadata</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>              
+						</configuration>            
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

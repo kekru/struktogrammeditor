@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import de.kekru.struktogrammeditor.other.Helpers;
@@ -18,11 +21,15 @@ import de.kekru.struktogrammeditor.view.EinstellungsDialog;
 public class GlobalSettings implements Konstanten{
 
 	public static final int updateNummer = 8;
-	public static final String versionsString = "1.7.2";
-	public static final String guiTitel = "Struktogrammeditor (Miniupdate) "+versionsString;
+	public static String versionsString = "";
+	public static String guiTitel = "";
 	public static final String[] updateDaten = {"30.05.2011", "31.05.2011", "05.06.2011", "11.09.2011", "18.01.2012", "17.02.2012", "02.05.2012", "16.08.2012", "13.05.2014", "10.07.2014"};
 	
 	public static final String logoName = "/icons/logostr.png";
+	
+	public static final String BUILDINFO_FILE = "/build.properties";
+	public static String buildInfoGitHash = "";
+	public static String buildInfoBuildTime = "";
 	
 	private static final String[][] elementAuswahlBeschriftungen = {
 		{"Anweisung","if (Verzweigung)","switch (Auswahl)","For Schleife","While Schleife","Do-While Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
@@ -56,6 +63,9 @@ public class GlobalSettings implements Konstanten{
 	
 	public static final int strgOderApfelMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
+	static {
+		readBuildInfoFile();
+	}
 
 	public static void init(){
 		for(int i=0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
@@ -63,6 +73,45 @@ public class GlobalSettings implements Konstanten{
 		}
 		
 		loadSettings();
+	}
+	
+	private static void readBuildInfoFile(){
+
+		try {
+	
+			Properties pr = new Properties();
+
+			InputStream in = null;
+			try {
+				in = new BufferedInputStream(GlobalSettings.class.getResourceAsStream(BUILDINFO_FILE));
+				pr.load(in);
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			String s;
+			
+			s = pr.getProperty("version");
+			if(s != null){
+				versionsString = s;
+				guiTitel = "Struktogrammeditor "+versionsString;
+			}
+
+			s = pr.getProperty("revision");
+			if(s != null){
+				buildInfoGitHash = s;
+			}
+			
+			s = pr.getProperty("timestamp");
+			if(s != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+				buildInfoBuildTime = sdf.format(new Date(Long.parseLong(s)));
+			}
+
+		} catch (RuntimeException e){
+			e.printStackTrace();
+		}
 	}
 	
 	
