@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import de.kekru.struktogrammeditor.other.Helpers;
@@ -18,15 +21,19 @@ import de.kekru.struktogrammeditor.view.EinstellungsDialog;
 public class GlobalSettings implements Konstanten{
 
 	public static final int updateNummer = 8;
-	public static final String versionsString = "1.7.2";
-	public static final String guiTitel = "Struktogrammeditor (Miniupdate) "+versionsString;
+	public static String versionsString = "";
+	public static String guiTitel = "";
 	public static final String[] updateDaten = {"30.05.2011", "31.05.2011", "05.06.2011", "11.09.2011", "18.01.2012", "17.02.2012", "02.05.2012", "16.08.2012", "13.05.2014", "10.07.2014"};
 	
 	public static final String logoName = "/icons/logostr.png";
 	
+	public static final String BUILDINFO_FILE = "/build.properties";
+	public static String buildInfoGitHash = "";
+	public static String buildInfoBuildTime = "";
+	
 	private static final String[][] elementAuswahlBeschriftungen = {
 		{"Anweisung","if (Verzweigung)","switch (Auswahl)","For Schleife","While Schleife","Do-While Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
-		{"Anweisung","Verzweigung","Fallauswahl","Zählergesteuerte Schleife","Kopfgesteuerte Schleife","Fußgesteuerte Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
+		{"Anweisung","Verzweigung","Fallauswahl","Zï¿½hlergesteuerte Schleife","Kopfgesteuerte Schleife","Fuï¿½gesteuerte Schleife","Endlosschleife","Aussprung","Aufruf","Leeres Element"},
 		{"A","I","S","F","W","D","E","B","M","Leeres Element"}
 	};
 	private static int beschriftungsStilAktuell = 1;
@@ -35,7 +42,7 @@ public class GlobalSettings implements Konstanten{
 	private static String zuletztGenutzterSpeicherpfad = "";
 	private static String zuletztGenutzterPfadFuerBild = "";
 	private static boolean letzteElementeStrecken = false;
-	//private String[] elementBeschriftungen = EinstellungsDialog.standardWerte;//hier wird ja nur der Zeiger kopiert (wie bei Objekten üblich), nicht der Inhalt
+	//private String[] elementBeschriftungen = EinstellungsDialog.standardWerte;//hier wird ja nur der Zeiger kopiert (wie bei Objekten ï¿½blich), nicht der Inhalt
 	private static String[] elementBeschriftungenZumEinfuegenInDasStruktogramm = new String[EinstellungsDialog.anzahlStruktogrammElemente];
 	public static final Font fontStandard = new Font("serif", Font.PLAIN, 15);
 	private static final String einstellungsDateiPfad = "struktogrammeditor.properties";
@@ -56,6 +63,9 @@ public class GlobalSettings implements Konstanten{
 	
 	public static final int strgOderApfelMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
+	static {
+		readBuildInfoFile();
+	}
 
 	public static void init(){
 		for(int i=0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
@@ -65,6 +75,45 @@ public class GlobalSettings implements Konstanten{
 		loadSettings();
 	}
 	
+	private static void readBuildInfoFile(){
+
+		try {
+	
+			Properties pr = new Properties();
+
+			InputStream in = null;
+			try {
+				in = new BufferedInputStream(GlobalSettings.class.getResourceAsStream(BUILDINFO_FILE));
+				pr.load(in);
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			String s;
+			
+			s = pr.getProperty("version");
+			if(s != null){
+				versionsString = s;
+				guiTitel = "Struktogrammeditor "+versionsString;
+			}
+
+			s = pr.getProperty("revision");
+			if(s != null){
+				buildInfoGitHash = s;
+			}
+			
+			s = pr.getProperty("timestamp");
+			if(s != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+				buildInfoBuildTime = sdf.format(new Date(Long.parseLong(s)));
+			}
+
+		} catch (RuntimeException e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public static String[] getCurrentElementBeschriftungsstil(){
 		return elementAuswahlBeschriftungen[beschriftungsStilAktuell >= 0 && beschriftungsStilAktuell < elementAuswahlBeschriftungen.length ? beschriftungsStilAktuell : 0];
@@ -72,7 +121,7 @@ public class GlobalSettings implements Konstanten{
 	
 	
 	private static void loadSettings(){
-		//Wenn eine alte Einstellungsdatei (bis einschließlich Version 1.4) existiert, diese laden...
+		//Wenn eine alte Einstellungsdatei (bis einschlieï¿½lich Version 1.4) existiert, diese laden...
 		File f = new File(einstellungsDateiPfadBisVersion1Punkt4);
 		if(f.exists()){
 			String[] einstellungsdaten = Helpers.readTextFile(einstellungsDateiPfadBisVersion1Punkt4);
@@ -83,7 +132,7 @@ public class GlobalSettings implements Konstanten{
 				}
 			}
 			
-			if(!f.delete()){//...und anschließend löschen
+			if(!f.delete()){//...und anschlieï¿½end lï¿½schen
 				f.deleteOnExit();
 			}
 			

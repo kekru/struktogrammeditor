@@ -11,6 +11,7 @@ public enum XActionCommands {
 	elementShortcutsVerwenden, kantenglaettungVerwenden,
 	
 	homepage, changelog, kontaktformular, hilfe, info,
+	sourceCode,
 	
 	beschriftungsStilJava, beschriftungsStilFormal, beschriftungsStilKeineBeschriftungen,
 	

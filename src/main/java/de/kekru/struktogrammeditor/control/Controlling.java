@@ -301,6 +301,10 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			Helpers.openWebsite("http://strukt.whiledo.de/hilfe.html");
 			break;
 
+		case sourceCode:
+			Helpers.openWebsite("https://github.com/kekru/struktogrammeditor/tree/" + GlobalSettings.buildInfoGitHash);
+			break;
+
 		case info:
 			showInfo();
 			break;
@@ -390,10 +394,12 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		JOptionPane.showMessageDialog(gui,
 				"Struktogrammeditor "+GlobalSettings.versionsString+separator+
 				"Kevin Krummenauer - 2011-2012"+separator+
-				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/M�rz 2011"+separator+				
+				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/M�rz 2011"+separator+	
 				separator+
-				"Updates:"+separator+
-				datumsfolge+separator+
+				"Git Hash: " + GlobalSettings.buildInfoGitHash +separator+
+				"Build-Zeit: " + GlobalSettings.buildInfoBuildTime +separator+
+				//"Updates:"+separator+
+				//datumsfolge+separator+
 				separator+
 				"This product includes software developed by the JDOM Project (http://www.jdom.org/).",
 				"Information - Struktogrammeditor "+GlobalSettings.versionsString, JOptionPane.INFORMATION_MESSAGE);
