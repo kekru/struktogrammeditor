@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,22 +18,23 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import de.kekru.struktogrammeditor.control.GlobalSettings;
+import de.kekru.struktogrammeditor.struktogrammelemente.AnweisungsTyp;
 
 
-public class EinstellungsDialog extends JDialog{
+public class EinstellungsDialog extends JDialog {
 
 	private static final long serialVersionUID = -6402017961524470279L;
 	// Anfang Attribute
-	public static final int anzahlStruktogrammElemente = 10; 
-	//private GUI gui;
-	//private JLabel labelUeberschrift = new JLabel();
-	private JLabel[] labels = new JLabel[anzahlStruktogrammElemente];
-	private JTextField[] textfields = new JTextField[anzahlStruktogrammElemente];
+	public static final int anzahlStruktogrammElemente = 10;
+	
+	List<JLabel> labels = new ArrayList<JLabel>();
+	List<JTextField> textfields = new ArrayList<JTextField>();
 	private JButton buttonOK = new JButton();
 	private JButton buttonAbbrechen = new JButton();
 	private JButton buttonStandardWerte = new JButton();
 	private final String[] beschreibungen = GlobalSettings.getCurrentElementBeschriftungsstil();
-	public static final String[] standardWerte = {"Anweisung",
+	public static final String[] standardWerte = {
+		"Anweisung",
 		"Verzweigung",
 		"Fallauswahl",
 		"0 < i < anzahl",
@@ -40,12 +43,8 @@ public class EinstellungsDialog extends JDialog{
 		"Endlosschleife",
 		"Aussprung",
 		"Aufruf",
-	"ø"};
-
-
+		"ø"};
 	// Ende Attribute
-
-
 
 	public EinstellungsDialog(GUI gui, boolean modal) {
 
@@ -54,28 +53,30 @@ public class EinstellungsDialog extends JDialog{
 		setSize(300, 440);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();    
 		setLocation((d.width - getSize().width) / 2, (d.height - getSize().height) / 2);
-		//Container cp = getContentPane();
-		//cp.setLayout(null);
 		setLayout(new BorderLayout());
-		//this.gui = gui;
 
 		//labelUeberschrift.setBounds(10,10,280,20);
 		//labelUeberschrift.setText("Beschriftungen von neu eingefügten Elementen:");
 		add(new JLabel("Beschriftungen von neu eingefügten Elementen:"), BorderLayout.NORTH);
 
 		JPanel panel = new JPanel(new GridLayout(anzahlStruktogrammElemente, 2, 4, 4));
+		
 		{
 
-			for(int i=0; i < anzahlStruktogrammElemente; i++){
-				labels[i] = new JLabel();
-				labels[i].setBounds(10, 40+30*i,100,20);
-				labels[i].setText(beschreibungen[i]);
-				panel.add(labels[i]);
-
-				textfields[i] = new JTextField();
-				textfields[i].setBounds(120, 40+30*i,150,20);
-				textfields[i].setText(GlobalSettings.gibElementBeschriftung(i));
-				panel.add(textfields[i]);
+			for(int i = 0; i < anzahlStruktogrammElemente; i++){
+				
+				{
+					JLabel act = new JLabel();
+					act.setBounds(10, 40+30*i,100,20);
+					act.setText(beschreibungen[i]);
+					panel.add(act);
+					labels.add(act);
+				}
+				JTextField act = new JTextField();
+				act.setBounds(120, 40+30*i,150,20);
+				act.setText(GlobalSettings.gibElementBeschriftung(AnweisungsTyp.getByNumber(i)));
+				panel.add(act);
+				textfields.add(act);
 			}
 		}
 		add(panel, BorderLayout.CENTER);
@@ -107,7 +108,6 @@ public class EinstellungsDialog extends JDialog{
 
 			panel.add(buttonAbbrechen);
 
-
 			buttonStandardWerte.setBounds(10, 380, 115, 25);
 			buttonStandardWerte.setText("Standardwerte");
 			buttonStandardWerte.setMargin(new Insets(2, 2, 2, 2));
@@ -124,20 +124,15 @@ public class EinstellungsDialog extends JDialog{
 
 		
 		setVisible(true); //alles nach setVisible(true) wird erst beim Schließen des Dialogs gemacht
-
-
 	}
 
 
-
 	public void buttonOK_ActionPerformed(ActionEvent evt) {
-		String[] neueWerte = new String[anzahlStruktogrammElemente];
-
-		for(int i=0; i < anzahlStruktogrammElemente; i++){
-			neueWerte[i] = textfields[i].getText();	 
+		List<String> neueWerte = new ArrayList<String>();
+		for(int i = 0; i < anzahlStruktogrammElemente; i++) {
+			neueWerte.add(textfields.get(i).getText());	 
 		}
-
-		GlobalSettings.setzeElementBeschriftungen(neueWerte); 
+		GlobalSettings.setzeElementBeschriftungen(neueWerte);
 		GlobalSettings.saveSettings();
 		setVisible(false);
 	}
@@ -148,8 +143,8 @@ public class EinstellungsDialog extends JDialog{
 	}
 
 	public void buttonStandardWerte_ActionPerformed(ActionEvent evt) {	 
-		for(int i=0; i < anzahlStruktogrammElemente; i++){
-			textfields[i].setText(standardWerte[i]);	        
+		for(int i = 0; i < anzahlStruktogrammElemente; i++){
+			textfields.get(i).setText(standardWerte[i]);	        
 		}
 	}
 

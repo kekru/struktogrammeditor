@@ -5,20 +5,22 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import de.kekru.struktogrammeditor.control.GlobalSettings;
-import de.kekru.struktogrammeditor.control.Struktogramm;
 import de.kekru.struktogrammeditor.control.XMLLeser;
 import de.kekru.struktogrammeditor.other.JTextAreaEasy;
-import de.kekru.struktogrammeditor.view.CodeErzeuger;
+import de.kekru.struktogrammeditor.other.SupportedLanguages;
 
 public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammElement
+	
 	//private Struktogramm str; //wird in hier gebraucht, um auf die Einstellung zugreifen zu können, ob die letzten Elemente bei Bedarf gestreckt werden sollen
 	protected int xVerschiebungFuerTrennlinie; //legt fest, wie weit vom linken Rand der Fallauswahl die Trennlinie zwischen Vorletztem- und Sonst-Fall sein soll
 	protected int yVerschiebungFuerTrennLinie; //legt fest, wie hoch die oben genannte Trennlinie sein soll
 	protected ArrayList<StruktogrammElementListe> listen; //Liste von StruktogrammElementListen, für die einzelnen Fälle; als Generische ArrayList: http://www.theserverside.de/java-generics-generische-methoden-klassen-und-interfaces/
-
+	private int oldy = 0;
+	private int oldheight = 0;
+	
 	public Fallauswahl(Graphics2D g){
 		this(g,3);//anderen Konstruktor aufrufen
 	}
@@ -37,15 +39,13 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 		obererRandZusatz = 40; //der Kopfteil soll 40 Pixel plus die Höhe des Textes sein
 
-		setzeText(GlobalSettings.gibElementBeschriftung(Struktogramm.typFallauswahl));
+		setzeText(GlobalSettings.gibElementBeschriftung(AnweisungsTyp.Fallauswahl));
 	}
 
 
 
-
-
 	@Override
-	public void quellcodeGenerieren(int typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
+	public void quellcodeGenerieren(SupportedLanguages typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
 		String vorher = "";
 		String nachher = "";
 		String fall = "";
@@ -53,14 +53,18 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 
 		switch(typ){
-		case CodeErzeuger.typJava:
-			vorher = "switch("+co("kommentar")+co("text")+co("kommentarzu")+"){\n";//Kopfteil besteht aus "switch(" plus eventuellem Kommentarzeichen plus die Textzeilen plus eventuellenm Kommentar-Zu Zeichen plus "){"
+		case Java:
+			vorher = "switch("+co("kommentar") +co("text")+co("kommentarzu")+"){\n";//Kopfteil besteht aus "switch(" plus eventuellem Kommentarzeichen plus die Textzeilen plus eventuellem Kommentar-Zu Zeichen plus "){"
 			nachher = "}\n";
 			break;
 
-		case CodeErzeuger.typDelphi:
+		case Delphi:
 			vorher = "case "+co("kommentar")+co("text")+co("kommentarzu")+" of\n";//+einruecken("begin",anzahlEingerueckt)+"\n";
 			nachher = "end;\n";
+			break;
+		case PHP:
+			vorher = "switch ("+co("kommentar") +co("text")+co("kommentarzu")+"){\n";//Kopfteil besteht aus "switch(" plus eventuellem Kommentarzeichen plus die Textzeilen plus eventuellem Kommentar-Zu Zeichen plus "){"
+			nachher = "}\n";
 			break;
 		}
 
@@ -69,30 +73,38 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 		//einzelnen Fälle ausgeben
 		for(int i=0; i < listen.size(); i++){//Listen durchgehen
 			switch(typ){
-			case CodeErzeuger.typJava:
+			case Java:
 				if(i < listen.size()-1){
-					fall = "case "+co("kommentar")+listen.get(i).gibBeschreibung()+co("kommentarzu")+":\n";//case und dann der Fallname
-				}else{
-					fall = "default: "+co("zwangkommentar")+listen.get(i).gibBeschreibung()+co("zwangkommentarzu")+"\n";//Sonsts-Fall erhält default, Beschriftung ist nicht relevant für fertigen Code, also auf jeden Fall Kommentare setzen
+					fall = "case " + co("kommentar") + listen.get(i).gibBeschreibung() + co("kommentarzu") + ":\n";//case und dann der Fallname
+				} else {
+					fall = "default: " + co("zwangkommentar") + listen.get(i).gibBeschreibung() + co("zwangkommentarzu") + "\n";//Sonsts-Fall erhält default, Beschriftung ist nicht relevant für fertigen Code, also auf jeden Fall Kommentare setzen
 				}
 				fallEnde = einruecken("break;\n",anzahlEinzuruecken);
 				break;
 
-			case CodeErzeuger.typDelphi:
+			case Delphi:
 				if(i < listen.size()-1){
-					fall = co("kommentar")+listen.get(i).gibBeschreibung()+co("kommentarzu")+":\n";
-				}else{
-					fall = "else "+co("zwangkommentar")+listen.get(i).gibBeschreibung()+co("zwangkommentarzu")+"\n";
+					fall = co("kommentar") + listen.get(i).gibBeschreibung() + co("kommentarzu") + ":\n";
+				} else {
+					fall = "else " + co("zwangkommentar") + listen.get(i).gibBeschreibung() + co("zwangkommentarzu") + "\n";
 				}
-				fall += einruecken("begin",anzahlEingerueckt+anzahlEinzuruecken)+"\n";
+				fall += einruecken("begin",anzahlEingerueckt + anzahlEinzuruecken) + "\n";
 				fallEnde = "end;\n";
-
+				break;
+				
+			case PHP:
+				if(i < listen.size()-1){
+					fall = "case " + co("kommentar") + listen.get(i).gibBeschreibung() + co("kommentarzu") + ":\n";//case und dann der Fallname
+				} else {
+					fall = "default: " + co("zwangkommentar") + listen.get(i).gibBeschreibung() + co("zwangkommentarzu") + "\n";//Sonsts-Fall erhält default, Beschriftung ist nicht relevant für fertigen Code, also auf jeden Fall Kommentare setzen
+				}
+				fallEnde = einruecken("break;\n", anzahlEinzuruecken);
 				break;
 			}
 
-			textarea.hinzufuegen(wandleZuAusgabe(fall,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Anfang für den aktuellen Fall ausgeben
-			listen.get(i).quellcodeAllerUnterelementeGenerieren(typ,anzahlEingerueckt+anzahlEinzuruecken*2,anzahlEinzuruecken,alsKommentar,textarea);//Unterelemente ausgeben
-			textarea.hinzufuegen(wandleZuAusgabe(fallEnde,typ,anzahlEingerueckt+anzahlEinzuruecken,alsKommentar));//Ende für den Fall ausgeben
+			textarea.hinzufuegen(wandleZuAusgabe(fall,typ,anzahlEingerueckt + anzahlEinzuruecken,alsKommentar));//Anfang für den aktuellen Fall ausgeben
+			listen.get(i).quellcodeAllerUnterelementeGenerieren(typ,anzahlEingerueckt + anzahlEinzuruecken*2,anzahlEinzuruecken,alsKommentar,textarea);//Unterelemente ausgeben
+			textarea.hinzufuegen(wandleZuAusgabe(fallEnde,typ,anzahlEingerueckt + anzahlEinzuruecken,alsKommentar));//Ende für den Fall ausgeben
 		}
 
 		textarea.hinzufuegen(wandleZuAusgabe(nachher,typ,anzahlEingerueckt,alsKommentar));//Ende der Fallauswahl ausgeben
@@ -107,7 +119,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 
 		for(int i=0; i < anzahlListen; i++){
 			listen.add(new StruktogrammElementListe(g));
-			listen.get(i).setzeBeschreibung(""+(i+1));
+			listen.get(i).setzeBeschreibung("" + (i + 1));
 		}
 	}
 
@@ -118,7 +130,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 		int listennummer = listen.size() -1;
 		listen.add(listennummer, new StruktogrammElementListe(g));
 
-		listen.get(listennummer).setzeBeschreibung(""+(listennummer+1));
+		listen.get(listennummer).setzeBeschreibung("" + (listennummer + 1));
 	}
 
 
@@ -129,7 +141,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 				listenTauschen(spaltenIndex, spaltenIndex -1);
 		}else{
 			if (spaltenIndex <= listen.size() -2)
-				listenTauschen(spaltenIndex, spaltenIndex +1);
+				listenTauschen(spaltenIndex, spaltenIndex  + 1);
 		}
 	}
 
@@ -274,7 +286,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 	@Override
 	public void setzeHoehe(int neueHoehe){
 
-		for(int i=0; i < listen.size(); i++){
+		for(int i = 0; i < listen.size(); i++){
 			listen.get(i).gesamtHoeheSetzen(neueHoehe -getObererRand());
 		}
 
@@ -342,7 +354,6 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 	}
 
 
-	@Override
 	public void zeichne(){
 		eigenenBereichZeichnen();//Umrandung und eventuell gelbe Unterlegung zeichnen
 
@@ -353,17 +364,16 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 			}
 		}
 
-
 		//die beiden Schrägen Linien zeichnen
 		g.drawLine(gibX(),gibY(),gibX() + xVerschiebungFuerTrennlinie, gibY() +getObererRand() +yVerschiebungFuerTrennLinie);
 		g.drawLine(gibX() + xVerschiebungFuerTrennlinie, gibY() +getObererRand() +yVerschiebungFuerTrennLinie, gibX() + gibBreite(), gibY());
 
-
 		//senkrechte Striche im Kopfteil der Fallauswahl und Fallbeschriftungen zeichnen
 		int x;
+		int margin = 5;
 		StruktogrammElementListe tmp;
 
-		for (int i=0; i < listen.size(); i++){
+		for (int i = 0; i < listen.size(); i++){
 			tmp = listen.get(i);
 
 			x = tmp.gibRechterRand();
@@ -374,13 +384,13 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 			}
 
 			//Fallbeschreibungen zeichnen
-			if (this instanceof Verzweigung){//ein bischen rumtricksen... bei der Verzweigung soll Ja und Nein ja ganz an den Rändern stehen
-				if (i==0){
-					x = gibX() + 5; //5 Pixel von linken Rand entfernt
-				}else{
-					x = tmp.gibRechterRand() - 5 - gibTextbreite(tmp.gibBeschreibung()); //5 Pixel vom rechten Rand entfernt
+			if (this instanceof Verzweigung) {//ein bischen rumtricksen... bei der Verzweigung soll Ja und Nein ja ganz an den Rändern stehen
+				if (i == 0) {
+					x = gibX() + margin; //5 Pixel von linken Rand entfernt
+				} else {
+					x = tmp.gibRechterRand() - margin - gibTextbreite(tmp.gibBeschreibung()); //5 Pixel vom rechten Rand entfernt
 				}
-			}else{ //bei der Fallauswahl sollen die Überschriften mittig über den Zeilen stehen
+			} else { //bei der Fallauswahl sollen die Überschriften mittig über den Zeilen stehen
 				x = tmp.gibX() + gibXVerschiebungFuerMittig(tmp.gibBeschreibung(), tmp.gibRechterRand() -tmp.gibX());
 			}
 
@@ -392,6 +402,7 @@ public class Fallauswahl extends StruktogrammElement { //erbt von StruktogrammEl
 		textZeichnen(); //Textzeilen zeichnen
 
 	}
+
 
 
 

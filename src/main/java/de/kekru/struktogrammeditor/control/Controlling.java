@@ -13,20 +13,25 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.kekru.struktogrammeditor.other.Helpers;
 import de.kekru.struktogrammeditor.other.XActionCommands;
+import de.kekru.struktogrammeditor.struktogrammelemente.AnweisungsTyp;
 import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
 import de.kekru.struktogrammeditor.view.CodeErzeuger;
 import de.kekru.struktogrammeditor.view.EinstellungsDialog;
@@ -34,11 +39,12 @@ import de.kekru.struktogrammeditor.view.FontChooser;
 import de.kekru.struktogrammeditor.view.GUI;
 import de.kekru.struktogrammeditor.view.ZoomEinstellungen;
 
+//Necessary because NotifyLookAndFeel is now restricted 
+@SuppressWarnings("restriction")
 public class Controlling implements Konstanten, ActionListener, WindowListener, KeyListener {
 
 	private GUI gui;
-	private enum Betriebssysteme {Windows, Mac, Linux};
-
+	
 	public Controlling(String[] params){
 		handleOSSettingsAndLookAndFeel();
 
@@ -46,9 +52,10 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		neuesStruktogramm();		
 
 		if(params != null){
-			for(int i=0; i < params.length; i++){
-				if(new File(params[i]).exists()){
-					openStruktogramm(params[i]);
+			for(int i = 0; i < params.length; i++){
+				File f = new File(params[i]);
+				if(f.exists()){
+					openStruktogramm(f);
 				}
 			}
 		}
@@ -81,7 +88,8 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 				lookAndFeel = new NimbusLookAndFeel();
 				break;
 
-			case lookAndFeelMotif: lookAndFeel = new MotifLookAndFeel();
+			case lookAndFeelMotif: 
+				lookAndFeel = new MotifLookAndFeel();
 			break;
 			}
 
@@ -94,7 +102,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			}
 
 
-			if(getOS() == Betriebssysteme.Mac){
+			if(isMac()){
 				new MacHandler(this);
 			}
 
@@ -104,22 +112,12 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	}
 
 
-
-	private static Betriebssysteme getOS(){
-		String s = System.getProperty("os.name").toLowerCase();
-
-		if(s.startsWith("windows")){
-			return Betriebssysteme.Windows;
-
-		}else if(s.startsWith("mac")){
-			return Betriebssysteme.Mac;
-
-		}else if(s.startsWith("linux")){
-			return Betriebssysteme.Linux;
-
-		}else{
-			return Betriebssysteme.Windows;
-		}
+	/** 
+	 * Checks if the current Computer is a Mac
+	 * @return
+	 */
+	private static boolean isMac(){
+		return System.getProperty("os.name").toLowerCase().startsWith("mac");
 	}
 
 
@@ -140,7 +138,6 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 	public void speichern(boolean neuenSpeicherpfadAuswaehlenLassen){
 		Struktogramm str = gibAktuellesStruktogramm();
-
 		if(str != null){
 			GlobalSettings.setzeSpeicherpfad(str.speichern(neuenSpeicherpfadAuswaehlenLassen,GlobalSettings.getZuletztGenutzterSpeicherpfad()));//Struktogramm wird gespeichert (zuletztGenutzterSpeicherpfad wird dabei übergeben, damit der JFileChooser, sofern er genutzt wird, dort startet) und der neue Speicherpfad wird gesichert
 			GlobalSettings.saveSettings();
@@ -148,18 +145,20 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		}
 	}
 
+	/**
+	 * Loads a Struktogramm
+	 */
 	public void laden(){
+		File pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);//Parameter ist der Startordner für den OpenDialog
 
-		String pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);//Parameter ist der Startordner für den OpenDialog
-
-		if(!pfad.equals("")){
+		if(pfad != null){
 			openStruktogramm(pfad);
 		}
 	}
 
 
 
-	private void openStruktogramm(String pfad) {
+	private void openStruktogramm(File pfad) {
 		Struktogramm str = neuesStruktogramm();
 		str.graphicsInitialisieren();
 		str.laden(pfad);
@@ -169,26 +168,31 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	}
 
 	public void bildSpeichern(){
-		Struktogramm str = gibAktuellesStruktogramm();
-
-		if(str != null){
-			GlobalSettings.setzeBildSpeicherpfad(str.alsBilddateiSpeichern(GlobalSettings.getZuletztGenutzterPfadFuerBild()));
-			GlobalSettings.saveSettings();
+		JFileChooser file = new JFileChooser(); 
+		file.setFileFilter(new FileNameExtensionFilter("PNG Bild", "png"));
+		int ret = file.showSaveDialog(gui);
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			File f = file.getSelectedFile();
+			gibAktuellesStruktogramm().printToPngFile(f);
+		} else {
+			JOptionPane.showMessageDialog(gui, "Keine Datei ausgewählt oder abgebrochen", "Fehler", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	public void titelleisteAktualisieren(){
-		String pfad = "";
+		File pfad = null;
 
 		Struktogramm str = gibAktuellesStruktogramm();
 		if(str != null){
 			pfad = str.gibAktuellenSpeicherpfad();
-			if (!pfad.equals("")){
-				pfad = " ["+pfad+"]";//wenn das aktuelle Struktogramm gespeichert oder geladen wurde, so wird sein Speicherpfad in der Titelleiste angezeigt
+			if (pfad != null){
+				gui.setTitle(GlobalSettings.guiTitel + " [" + pfad.getAbsolutePath() + "]"); //wenn das aktuelle Struktogramm gespeichert oder geladen wurde, so wird sein Speicherpfad in der Titelleiste angezeigt
+			} else {
+				gui.setTitle(GlobalSettings.guiTitel + " [Ungespeichertes Struktogram]");
 			}
 		}
 
-		gui.setTitle(GlobalSettings.guiTitel+pfad);
+		
 	}
 
 
@@ -293,16 +297,12 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			Helpers.openWebsite("http://strukt.whiledo.de/changelog.html");
 			break;
 
-		case kontaktformular:
-			Helpers.openWebsite("http://strukt.whiledo.de/kontakt.php");
-			break;
-
 		case hilfe:
 			Helpers.openWebsite("http://strukt.whiledo.de/hilfe.html");
 			break;
 
 		case sourceCode:
-			Helpers.openWebsite("https://github.com/kekru/struktogrammeditor/tree/" + GlobalSettings.buildInfoGitHash);
+			Helpers.openWebsite("https://github.com/kekru/struktogrammeditor/");
 			break;
 
 		case info:
@@ -340,12 +340,28 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		case struktogrammbeschreibungHinzufuegen:
 			addStruktogrammbeschriftung();
 			break;
-
+		case drucken:
+			//TODO: Implementing
+			
+			PrinterJob p = PrinterJob.getPrinterJob();
+			BufferedImage img = gibAktuellesStruktogramm().generateImage(true);
+			ImagePrintable printable = new ImagePrintable(p.defaultPage(), img);
+			
+			p.setPrintable(printable);
+			if (p.printDialog()) {
+				try {
+					p.print();
+				} catch (PrinterException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				JOptionPane.showMessageDialog(gui, "Drucken abgebrochen", "Drucken", JOptionPane.INFORMATION_MESSAGE);
+			}
+			break;
+			
 		}
-
 	}
-
-
+	
 	private void addStruktogrammbeschriftung() {
 		Struktogramm str = gibAktuellesStruktogramm();
 		String s = JOptionPane.showInputDialog("Beschriftung", str.getStruktogrammBeschreibung());
@@ -386,23 +402,18 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	public void showInfo(){
 		final String separator = System.getProperty("line.separator");
 
-		String datumsfolge = "";
-		for(String s : GlobalSettings.updateDaten){
-			datumsfolge += s + separator;
-		}
-
 		JOptionPane.showMessageDialog(gui,
-				"Struktogrammeditor "+GlobalSettings.versionsString+separator+
-				"Kevin Krummenauer - 2011-2012"+separator+
-				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/März 2011"+separator+				
-				separator+
-				"Git Hash: " + GlobalSettings.buildInfoGitHash +separator+
-				"Build-Zeit: " + GlobalSettings.buildInfoBuildTime +separator+
+				"Struktogrammeditor " + GlobalSettings.versionsString + 
+				separator + "Kevin Krummenauer - 2011-2012" +
+				separator +
+				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/März 2011" + separator 
+				+ separator + "Git Hash: " + GlobalSettings.buildInfoGitHash + separator+
+				"Build-Zeit: " + GlobalSettings.buildInfoBuildTime + separator +
 				//"Updates:"+separator+
 				//datumsfolge+separator+
-				separator+
+				separator +
 				"This product includes software developed by the JDOM Project (http://www.jdom.org/).",
-				"Information - Struktogrammeditor "+GlobalSettings.versionsString, JOptionPane.INFORMATION_MESSAGE);
+				"Information - Struktogrammeditor " + GlobalSettings.versionsString, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
@@ -447,31 +458,21 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 
 
-
-
-
 	public boolean programmBeendenGeklickt(){
 		if(gui.gibTabbedpane().einOderMehrereStruktogrammeNichtGespeichert()){                  
 			Object[] options = {"Ja", "Nein"}; //http://download.oracle.com/javase/1.4.2/docs/api/javax/swing/JOptionPane.html
 			if (0 == JOptionPane.showOptionDialog(gui, "Ein oder mehrere Struktogramme wurden noch nicht gespeichert.\nWirklich Beenden ohne zu speichern?", "Noch nicht gespeichert", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1])){
-
 				System.exit(0);
-				return true;
 			}
-
-			return false;
-
-		}else{
+		} else {
 			System.exit(0);
-			return true;
 		}
+		return false;
 	}
 
 
 	@Override
-	public void windowOpened(WindowEvent e) {
-
-	}
+	public void windowOpened(WindowEvent e) {}
 
 
 	@Override
@@ -481,38 +482,28 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 
 	@Override
-	public void windowClosed(WindowEvent e) {
-
-	}
+	public void windowClosed(WindowEvent e) {}
 
 
 	@Override
-	public void windowIconified(WindowEvent e) {
-
-	}
+	public void windowIconified(WindowEvent e) {}
 
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {
-
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
 
 	@Override
-	public void windowActivated(WindowEvent e) {
-
-	}
+	public void windowActivated(WindowEvent e) {}
 
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {
-
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if(e.getSource() == gui.gibTabbedpane() && e.getModifiers() != GlobalSettings.strgOderApfelMask){
+		if(e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask){
 
 			switch(e.getKeyChar()){
 			case '+':
@@ -528,67 +519,65 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-
-	}
+	public void keyPressed(KeyEvent e) {}
 
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getSource() == gui.gibTabbedpane() && e.getModifiers() != GlobalSettings.strgOderApfelMask){
+		if(e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask){
 
 			switch(e.getKeyCode()){
 			case KeyEvent.VK_A:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typAnweisung);
+				if(GlobalSettings.isElementShortcutsVerwenden()){//AnweisungsTyp.Verzweigung
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Anweisung);
 				}
 				break;
 
 			case KeyEvent.VK_I:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typVerzweigung);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Verzweigung);
 				}
 				break;
 
 			case KeyEvent.VK_S:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typFallauswahl);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Fallauswahl);
 				}
 				break;
 
 			case KeyEvent.VK_F:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typForSchleife);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.ForSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_W:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typWhileSchleife);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.WhileSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_D:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typDoUntilSchleife);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.DoUntilSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_E:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typEndlosschleife);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Endlosschleife);
 				}
 				break;
 
 			case KeyEvent.VK_B:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typAussprung);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Aussprung);
 				}
 				break;
 
 			case KeyEvent.VK_M:
 				if(GlobalSettings.isElementShortcutsVerwenden()){
-					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(Struktogramm.typAufruf);
+					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Aufruf);
 				}
 				break;
 
@@ -641,7 +630,4 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, clipboardOwner);
 
 	}
-
-
-
 }

@@ -1,5 +1,9 @@
 package de.kekru.struktogrammeditor.view;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JViewport;
@@ -34,13 +38,39 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
 //   }
    
    
-   public Struktogramm struktogrammHinzufuegen(){
-      Struktogramm str = new Struktogramm(this);
-      add("Unbenannt", new JScrollPane(str));
-      //stateChangedFreigegeben = false; //changeListener kurz deaktivieren...
-      setSelectedIndex(getTabCount() -1); //...weil es sonst in graphicsInitialisieren Probleme gibt
-      //stateChangedFreigegeben = true;
-      return str;
+   public Struktogramm struktogrammHinzufuegen () {
+	   Struktogramm str = new Struktogramm(this);
+	   add("Unbenannt", new JScrollPane(str));
+	   this.addMouseListener(new MouseListener() {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {} //Unused methods
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				int index = getUI().tabForCoordinate(str.gibTabbedPane(), e.getX(), e.getY());
+				if (index != -1) {
+					setSelectedIndex(index);
+					CustomJButton closebutton = new CustomJButton(str.gibTabbedPane());
+					JPopupMenu p = new JPopupMenu();
+					p.add(closebutton);
+					setComponentPopupMenu(p);
+				}
+			}
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {} //Unused methods
+		@Override
+		public void mouseEntered(MouseEvent e) {} //Unused methods
+		@Override
+		public void mouseClicked(MouseEvent e) {} //Unused methods
+	});
+	   //stateChangedFreigegeben = false; //changeListener kurz deaktivieren...
+	   setSelectedIndex(getTabCount() -1); //...weil es sonst in graphicsInitialisieren Probleme gibt
+	      //stateChangedFreigegeben = true;
+	   return str;
    }
    
    
@@ -68,7 +98,7 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
    }
    
    
-   public void aktuellesStruktogrammschliessen(){
+   public void aktuellesStruktogrammschliessen () {
       switch(JOptionPane.showConfirmDialog(controlling.getGUI(), "Vor dem Schließen aktuelles Struktogramm speichern?", "Vorher speichern?", JOptionPane.YES_NO_CANCEL_OPTION)){
          case JOptionPane.YES_OPTION:
             controlling.speichern(false);
@@ -81,13 +111,13 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
    }
    
    
-   public Struktogramm gibAktuellesStruktogramm(){
-      if(getTabCount() > 0){
+   public Struktogramm gibAktuellesStruktogramm () {
+      if (getTabCount() > 0) {
          /*getSelectedComponent() liefert das JScrollPane,
            dieses liefert mit getComponents()[0] seinen JViewPort,
            dieser liefert mit getComponents()[0] dann das Struktogramm*/
          return (Struktogramm)(((JViewport)(((JScrollPane)getSelectedComponent()).getComponents())[0]).getComponents())[0];
-      }else{
+      } else {
          return null;
       }
    }

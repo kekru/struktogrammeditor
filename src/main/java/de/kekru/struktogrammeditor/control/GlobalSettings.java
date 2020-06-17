@@ -11,19 +11,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import de.kekru.struktogrammeditor.other.Helpers;
-import de.kekru.struktogrammeditor.view.CodeErzeuger;
+import de.kekru.struktogrammeditor.other.SupportedLanguages;
+import de.kekru.struktogrammeditor.struktogrammelemente.AnweisungsTyp;
 import de.kekru.struktogrammeditor.view.EinstellungsDialog;
 
 public class GlobalSettings implements Konstanten{
 
-	public static final int updateNummer = 8;
+	public static final int updateNummer = 9;
 	public static String versionsString = "";
 	public static String guiTitel = "";
-	public static final String[] updateDaten = {"30.05.2011", "31.05.2011", "05.06.2011", "11.09.2011", "18.01.2012", "17.02.2012", "02.05.2012", "16.08.2012", "13.05.2014", "10.07.2014"};
+	public static final String[] updateDaten = {"30.05.2011", "31.05.2011", "05.06.2011", "11.09.2011", "18.01.2012", "17.02.2012", "02.05.2012", "16.08.2012", "13.05.2014", "10.07.2014", "03.06.2020"};
 	
 	public static final String logoName = "/icons/logostr.png";
 	
@@ -39,18 +42,17 @@ public class GlobalSettings implements Konstanten{
 	private static int beschriftungsStilAktuell = 1;
 	private static int lookAndFeelAktuell = 0;
 
-	private static String zuletztGenutzterSpeicherpfad = "";
-	private static String zuletztGenutzterPfadFuerBild = "";
+	private static File zuletztGenutzterSpeicherpfad = new File("");
+	private static File zuletztGenutzterPfadFuerBild = new File("");
 	private static boolean letzteElementeStrecken = false;
-	//private String[] elementBeschriftungen = EinstellungsDialog.standardWerte;//hier wird ja nur der Zeiger kopiert (wie bei Objekten üblich), nicht der Inhalt
-	private static String[] elementBeschriftungenZumEinfuegenInDasStruktogramm = new String[EinstellungsDialog.anzahlStruktogrammElemente];
+	private static List<String> elementBeschriftungenZumEinfuegenInDasStruktogramm = new ArrayList<>();
 	public static final Font fontStandard = new Font("serif", Font.PLAIN, 15);
-	private static final String einstellungsDateiPfad = "struktogrammeditor.properties";
-	private static final String einstellungsDateiPfadBisVersion1Punkt4 = "StruktogrammeditorEinstellungen.txt";
+	private static final File einstellungsDatei = new File("struktogrammeditor.properties");
+	private static final File einstellungsDateiBisVersion1Punkt4 = new File("StruktogrammeditorEinstellungen.txt");
 	
 	private static int codeErzeugerEinrueckungGesamt = 3;
 	private static int codeErzeugerEinrueckungProStufe = 3;
-	private static int codeErzeugerProgrammiersprache = CodeErzeuger.typJava;
+	private static SupportedLanguages codeErzeugerProgrammiersprache = SupportedLanguages.Java;
 	private static boolean codeErzeugerAlsKommentar = true;
 	
 	private static boolean beiMausradGroesseAendern = false;
@@ -67,25 +69,27 @@ public class GlobalSettings implements Konstanten{
 		readBuildInfoFile();
 	}
 
-	public static void init(){
-		for(int i=0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
-			elementBeschriftungenZumEinfuegenInDasStruktogramm[i] = EinstellungsDialog.standardWerte[i];
+	public static void init() {
+		for (int i = 0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
+			elementBeschriftungenZumEinfuegenInDasStruktogramm.add(EinstellungsDialog.standardWerte[i]);
 		}
 		
 		loadSettings();
 	}
 	
-	private static void readBuildInfoFile(){
-
+	private static void readBuildInfoFile () {
 		try {
-	
 			Properties pr = new Properties();
-
 			InputStream in = null;
 			try {
-				in = new BufferedInputStream(GlobalSettings.class.getResourceAsStream(BUILDINFO_FILE));
-				pr.load(in);
-				in.close();
+				if (GlobalSettings.class.getResourceAsStream(BUILDINFO_FILE) == null) {
+					System.err.println("Error no Buildinfo file could be found");
+				} else {
+					in = new BufferedInputStream(GlobalSettings.class.getResourceAsStream(BUILDINFO_FILE));
+					pr.load(in);
+					in.close();
+					return;
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -95,7 +99,7 @@ public class GlobalSettings implements Konstanten{
 			s = pr.getProperty("version");
 			if(s != null){
 				versionsString = s;
-				guiTitel = "Struktogrammeditor "+versionsString;
+				guiTitel = "Struktogrammeditor " + versionsString;
 			}
 
 			s = pr.getProperty("revision");
@@ -108,53 +112,39 @@ public class GlobalSettings implements Konstanten{
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 				buildInfoBuildTime = sdf.format(new Date(Long.parseLong(s)));
 			}
-
 		} catch (RuntimeException e){
 			e.printStackTrace();
 		}
 	}
 	
 	
-	public static String[] getCurrentElementBeschriftungsstil(){
+	public static String[] getCurrentElementBeschriftungsstil() {
 		return elementAuswahlBeschriftungen[beschriftungsStilAktuell >= 0 && beschriftungsStilAktuell < elementAuswahlBeschriftungen.length ? beschriftungsStilAktuell : 0];
 	}
 	
 	
-	private static void loadSettings(){
+	private static void loadSettings () {
 		//Wenn eine alte Einstellungsdatei (bis einschließlich Version 1.4) existiert, diese laden...
-		File f = new File(einstellungsDateiPfadBisVersion1Punkt4);
-		if(f.exists()){
-			String[] einstellungsdaten = Helpers.readTextFile(einstellungsDateiPfadBisVersion1Punkt4);
+		if(einstellungsDateiBisVersion1Punkt4.exists()){
+			List<String> einstellungen = Helpers.readTextFile(einstellungsDateiBisVersion1Punkt4);
 
-			if (einstellungsdaten != null){
-				for(int i=0; i < einstellungsdaten.length; i++){
-					elementBeschriftungenZumEinfuegenInDasStruktogramm[i] = einstellungsdaten[i];
+			if (einstellungen != null){
+				for(String einstellung : einstellungen){
+					elementBeschriftungenZumEinfuegenInDasStruktogramm.add(einstellung);
 				}
 			}
 			
-			if(!f.delete()){//...und anschließend löschen
-				f.deleteOnExit();
+			if(!einstellungsDateiBisVersion1Punkt4.delete()){//...und anschließend löschen
+				einstellungsDateiBisVersion1Punkt4.deleteOnExit();
 			}
-			
 		}
 		
-		
-		
 		//Neue Einstellungsdatei einlesen
-		File propertiesFile = new File(einstellungsDateiPfad);
-
-
-		if(propertiesFile.exists()){
-
-			
-
+		if(einstellungsDatei.exists()){
 			Properties pr = new Properties();
-
 			try {
-				BufferedInputStream in = new BufferedInputStream(new FileInputStream(propertiesFile));
-
+				BufferedInputStream in = new BufferedInputStream(new FileInputStream(einstellungsDatei));
 				pr.load(in);
-
 				in.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -180,7 +170,7 @@ public class GlobalSettings implements Konstanten{
 			
 			s = pr.getProperty("celanguage");
 			if(s != null){
-				codeErzeugerProgrammiersprache = Integer.parseInt(s);
+				codeErzeugerProgrammiersprache = SupportedLanguages.getByName(s);
 			}
 			
 			s = pr.getProperty("cecomments");
@@ -200,12 +190,12 @@ public class GlobalSettings implements Konstanten{
 			
 			s = pr.getProperty("pathfiles");
 			if(s != null){
-				zuletztGenutzterSpeicherpfad = s;
+				zuletztGenutzterSpeicherpfad = new File(s);
 			}
 			
 			s = pr.getProperty("pathpictures");
 			if(s != null){
-				zuletztGenutzterPfadFuerBild = s;
+				zuletztGenutzterPfadFuerBild = new File(s);
 			}
 			
 			s = pr.getProperty("zoomx");
@@ -236,50 +226,61 @@ public class GlobalSettings implements Konstanten{
 			for(int i=0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
 				s = pr.getProperty("caption"+i);//Startbeschriftung der Struktogrammelemente
 				if(s != null){
-					elementBeschriftungenZumEinfuegenInDasStruktogramm[i] = s;
+					elementBeschriftungenZumEinfuegenInDasStruktogramm.set(i, s);
 				}				 	
 			}		
-		}		
+		} else {
+			try {
+				einstellungsDatei.createNewFile();
+			} catch (IOException e) {
+				System.err.println("Could not create Settingsfile!");
+				System.err.println(e.getMessage());
+			}
+		}
 	}
 	
 	
-	public static void saveSettings(){
-		
+	public static void saveSettings() {
 		Properties properties = new Properties();
 		
 		properties.setProperty("stretchlast", letzteElementeStrecken ? "1" : "0");
 		
-		properties.setProperty("cespaces", ""+codeErzeugerEinrueckungGesamt);
-		properties.setProperty("cespacesperstep", ""+codeErzeugerEinrueckungProStufe);
-		properties.setProperty("celanguage", ""+codeErzeugerProgrammiersprache);
+		properties.setProperty("cespaces", "" + codeErzeugerEinrueckungGesamt);
+		properties.setProperty("cespacesperstep", "" + codeErzeugerEinrueckungProStufe);
+		properties.setProperty("celanguage", "" + codeErzeugerProgrammiersprache);
 		properties.setProperty("cecomments", codeErzeugerAlsKommentar ? "1" : "0");
 		
 		properties.setProperty("mousewheelresize", beiMausradGroesseAendern ? "1" : "0");
 		properties.setProperty("useelementshortcuts", elementShortcutsVerwenden ? "1" : "0");
+		if (zuletztGenutzterSpeicherpfad != null && zuletztGenutzterSpeicherpfad.getPath() != null) {
+			properties.setProperty("pathfiles", zuletztGenutzterSpeicherpfad.getPath());
+		} else {
+			properties.setProperty("pathfiles", "");
+		}
+		properties.setProperty("pathpictures", zuletztGenutzterPfadFuerBild.getPath());
+		properties.setProperty("zoomx", "" + xZoomProSchritt);
+		properties.setProperty("zoomy", "" + yZoomProSchritt);
 		
-		properties.setProperty("pathfiles", zuletztGenutzterSpeicherpfad);
-		properties.setProperty("pathpictures", zuletztGenutzterPfadFuerBild);
-		
-		properties.setProperty("zoomx", ""+xZoomProSchritt);
-		properties.setProperty("zoomy", ""+yZoomProSchritt);
-		
-		properties.setProperty("captionstyle", ""+beschriftungsStilAktuell);
-		properties.setProperty("lookandfeel", ""+lookAndFeelAktuell);
+		properties.setProperty("captionstyle", "" + beschriftungsStilAktuell);
+		properties.setProperty("lookandfeel", "" + lookAndFeelAktuell);
 		
 		properties.setProperty("useantialiasing", kantenglaettungVerwenden ? "1" : "0");
-		
-		for(int i=0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
-			
-			properties.setProperty("caption"+i, elementBeschriftungenZumEinfuegenInDasStruktogramm[i]);
+
+		for(int i = 0; i < EinstellungsDialog.anzahlStruktogrammElemente; i++){
+			properties.setProperty("caption" + i, elementBeschriftungenZumEinfuegenInDasStruktogramm.get(i));
 		}
 
 
 		try {
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(einstellungsDateiPfad)));
-
-			properties.store(out, "Struktogrammeditor Properties");			
+			//What if someone deleted it?
+			if (!einstellungsDatei.exists()) {
+				einstellungsDatei.createNewFile();
+			}
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(einstellungsDatei));
+			properties.store(out, "Struktogrammeditor Properties");
+			System.out.println(einstellungsDatei.getAbsolutePath());
+			out.flush();
 			out.close();
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}catch (IOException e) {
@@ -288,25 +289,21 @@ public class GlobalSettings implements Konstanten{
 	}
 
 
-	public static void setzeSpeicherpfad(String pfad){
-		if(!pfad.equals("")){
-			zuletztGenutzterSpeicherpfad = pfad; //letzter richtiger Pfad wird gespeichert
-		}
+	public static void setzeSpeicherpfad(File pfad){
+		zuletztGenutzterSpeicherpfad = pfad; //letzter richtiger Pfad wird gespeichert
 	}
 
-	public static void setzeBildSpeicherpfad(String pfad){
-		if(!pfad.equals("")){
-			zuletztGenutzterPfadFuerBild = pfad;
-		}
+	public static void setzeBildSpeicherpfad(File pfad){
+		zuletztGenutzterPfadFuerBild = pfad;
 	}
 
 
-	public static String getZuletztGenutzterSpeicherpfad() {
+	public static File getZuletztGenutzterSpeicherpfad() {
 		return zuletztGenutzterSpeicherpfad;
 	}
 
 
-	public static String getZuletztGenutzterPfadFuerBild() {
+	public static File getZuletztGenutzterPfadFuerBild() {
 		return zuletztGenutzterPfadFuerBild;
 	}
 
@@ -318,44 +315,41 @@ public class GlobalSettings implements Konstanten{
 		return letzteElementeStrecken;
 	}
 
-	public static String gibElementBeschriftung(int typNummer){
-		return elementBeschriftungenZumEinfuegenInDasStruktogramm[typNummer];
+	public static String gibElementBeschriftung(AnweisungsTyp anweisungsTyp){
+		return elementBeschriftungenZumEinfuegenInDasStruktogramm.get(anweisungsTyp.getNumber());
 	}
 
-	public static void setzeElementBeschriftungen(String[] neueBeschriftungen){
+	public static void setzeElementBeschriftungen(List<String> neueBeschriftungen){
 		elementBeschriftungenZumEinfuegenInDasStruktogramm = neueBeschriftungen; 
 	}
 
 	
-	public static void setCodeErzeugerEinrueckungGesamt(
-			int codeErzeugerEinrueckungGesamt) {
+	public static void setCodeErzeugerEinrueckungGesamt (int codeErzeugerEinrueckungGesamt) {
 		GlobalSettings.codeErzeugerEinrueckungGesamt = codeErzeugerEinrueckungGesamt;
 	}
 
 
-	public static int getCodeErzeugerEinrueckungGesamt() {
+	public static int getCodeErzeugerEinrueckungGesamt () {
 		return codeErzeugerEinrueckungGesamt;
 	}
 
 
-	public static void setCodeErzeugerEinrueckungProStufe(
-			int codeErzeugerEinrueckungProStufe) {
+	public static void setCodeErzeugerEinrueckungProStufe (int codeErzeugerEinrueckungProStufe) {
 		GlobalSettings.codeErzeugerEinrueckungProStufe = codeErzeugerEinrueckungProStufe;
 	}
 
 
-	public static int getCodeErzeugerEinrueckungProStufe() {
+	public static int getCodeErzeugerEinrueckungProStufe () {
 		return codeErzeugerEinrueckungProStufe;
 	}
 
 
-	public static int getCodeErzeugerProgrammiersprache() {
+	public static SupportedLanguages getCodeErzeugerProgrammiersprache() {
 		return codeErzeugerProgrammiersprache;
 	}
 
 
-	public static void setCodeErzeugerProgrammiersprache(
-			int codeErzeugerProgrammiersprache) {
+	public static void setCodeErzeugerProgrammiersprache(SupportedLanguages codeErzeugerProgrammiersprache) {
 		GlobalSettings.codeErzeugerProgrammiersprache = codeErzeugerProgrammiersprache;
 	}
 

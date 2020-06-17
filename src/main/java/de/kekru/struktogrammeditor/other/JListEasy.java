@@ -5,21 +5,21 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-public class JListEasy extends JList {
+public class JListEasy extends JList<Object> {
    
    private static final long serialVersionUID = -5302981897521724160L;
-   private DefaultListModel model;
+   private DefaultListModel<Object> model;
    private JScrollPane scrollpane;
    
    public JListEasy(){
-      super(new DefaultListModel());
-      model = (DefaultListModel)getModel();
+      super(new DefaultListModel<Object>());
+      model = (DefaultListModel<Object>) getModel();
       //setBounds(8, 16, 225, 137);
    }
 
    public JListEasy(int xpos, int ypos, int breite, int hoehe){
-      super(new DefaultListModel());
-      model = (DefaultListModel)getModel();
+      super(new DefaultListModel<Object>());
+      model = (DefaultListModel<Object>) getModel();
       setBounds(xpos, ypos, breite, hoehe);
    }
    

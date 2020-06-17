@@ -11,6 +11,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import de.kekru.struktogrammeditor.control.Struktogramm;
+import de.kekru.struktogrammeditor.struktogrammelemente.AnweisungsTyp;
 import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
 import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
 import de.kekru.struktogrammeditor.struktogrammelemente.Verzweigung;
@@ -21,7 +22,7 @@ import de.kekru.struktogrammeditor.struktogrammelemente.Verzweigung;
 public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 
 	private static final long serialVersionUID = -6394669590636692950L;
-	private int typ;
+	private AnweisungsTyp typ;
 	private StruktogrammElement element; //das Element, bei dem das PopupMenü geöffnet wurde
 	private Struktogramm struktogramm;
 
@@ -33,7 +34,7 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 		this.element = element;
 		this.struktogramm = struktogramm;
 
-		typ = Struktogramm.strElementZuTypnummer(element);
+		typ = Struktogramm.strElementZuTyp(element);
 
 		StrPopupUntermenue untermenue = unterMenueEinfuegen("Zoom");
 		untermenue.einfuegen("Größer",8,-1);
@@ -51,12 +52,12 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 		einfuegen("Löschen...",1);
 
 		switch(typ){
-		case Struktogramm.typVerzweigung: //Bei Verzweigung diesen Menüpunkt hinzufügen:
+		case Verzweigung: //Bei Verzweigung diesen Menüpunkt hinzufügen:
 			add(new JSeparator());
 			einfuegen("Ja- und Neinseite vertauschen",2);
 			break;
 
-		case Struktogramm.typFallauswahl: //Bei Fallauswahl diese Menüpunkte hinzufügen:
+		case Fallauswahl: //Bei Fallauswahl diese Menüpunkte hinzufügen:
 			add(new JSeparator());
 
 			einfuegen("Neuen Fall einfügen",3);
@@ -77,6 +78,8 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 				}
 
 			}
+			break;
+		default:
 			break;
 		}
 
@@ -215,7 +218,6 @@ public class StruktogrammPopup extends JPopupMenu implements PopupMenuListener{
 			case 13: //Weniger Hoch (y-Richtung)
 				struktogramm.zoom(0, -1, element);
 				break;
-
 			}
 
 
