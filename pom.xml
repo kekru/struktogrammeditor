@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kekru.struktogrammeditor</groupId>
 	<artifactId>struktogrammeditor</artifactId>
-	<version>1.7.4</version>
+	<version>1.7.4-SNAPSHOT</version>
 	<name>Struktogrammeditor</name>
 
 	<properties>
