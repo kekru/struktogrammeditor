@@ -1,5 +1,7 @@
 package de.kekru.struktogrammeditor.other;
 
+import java.util.stream.Stream;
+
 /**
 *
 * Struktogrammeditor
@@ -36,12 +38,10 @@ public enum SupportedLanguages {
 	}
 	
 	public static SupportedLanguages getById (int id) {
-		for (SupportedLanguages l : values()) {
-			if (l.id == id) {
-				return l;
-			}
-		}
-		return null;
+	    return Stream.of(values())
+	            .filter(entry -> entry.getId() == id)
+	            .findFirst()
+	            .orElseThrow(() -> new RuntimeException("No SupportedLanguages found with id " + id));
 	}
 	
 	public static SupportedLanguages getByName (String name) {
@@ -61,15 +61,6 @@ public enum SupportedLanguages {
 	public static boolean isSupported (String name) {
 		for (SupportedLanguages l : values()) {
 			if (l.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean isSupported (SupportedLanguages language) {
-		for (SupportedLanguages l : values()) {
-			if (l.getName().equals(language.getName())) {
 				return true;
 			}
 		}

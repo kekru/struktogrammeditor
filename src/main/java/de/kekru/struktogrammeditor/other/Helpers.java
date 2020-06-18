@@ -54,14 +54,14 @@ public class Helpers {
 		 return new ImageIcon(Helpers.class.getResource(resourcePath));
 	}
 	
-	public static Document getSAXParsedDocument(File file) {
+	public static Document getSAXParsedDocument(File file) throws RuntimeException {
 	    SAXBuilder builder = new SAXBuilder(); 
 	    Document document = null;
 	    try {
 	        document = builder.build(file);
 	    } 
 	    catch (JDOMException | IOException e) {
-	        e.printStackTrace();
+	    	throw new RuntimeException("Failed to parse xml file: " + file, e);
 	    }
 	    return document;
 	}

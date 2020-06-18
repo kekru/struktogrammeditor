@@ -1,6 +1,7 @@
 package de.kekru.struktogrammeditor.control;
 
 public class OS {
+
 	public static boolean windows = false, linux = false, mac = false;
 	
 	static {

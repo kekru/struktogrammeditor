@@ -75,8 +75,6 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 	private static final long serialVersionUID = 8269048981647964473L;
 	private StruktogrammElementListe liste; // Hauptliste, die alle weiteren Unterelemente hat
 	private Graphics2D g; // Graphics des BufferedImage bild
-	// private Graphics2D panelGraphics; //Graphics-Kontext des Struktogramms (es
-	// erbt von JPanel)
 	private StruktogrammElement markiertesElement; // das mit der Maus markierte Element
 	private BufferedImage bild; // hierauf zeichnen sich die StruktogrammElemente, anschließend wird alles auf
 								// das Struktogramm (also das JPanel) gezeichnet -> DoubleBuffering
@@ -233,56 +231,11 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 		}
 	}
 
-	// erzeugt JScrollPane, legt dieses Struktogramm in das JScrollPane und gibt das
-	// JScrollPane zurück, damit es in das JTabbedPane gelegt werden kann (siehe
-	// StrTabbedPane.struktogrammHinzufuegen())
-	// public JScrollPane gibScrollPaneFuerContainer(){
-	// // scrollpane = new
-	// JScrollPane(this);//http://www.dpunkt.de/java/Programmieren_mit_Java/Oberflaechenprogrammierung/14.html
-	// // scrollpane.setBounds(getBounds());
-	// //
-	// //
-	// scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	// //
-	// scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-	// //
-	// // setBounds(scrollpane.getBounds());
-	// //
-	// // scrollpane.addComponentListener(new ComponentListener() { //Listener zum
-	// Mitverfolgen von Größenveränderungen durch den User
-	// // public void componentResized(ComponentEvent e){
-	// // if((g != null) && (ueberwacheResize)){//nur wenn die GUI ueberwacheResize
-	// true gesetzt hat, sonst wird es beim einfügen neuer Elemente ausgeführt, wenn
-	// der Anzeigebereich verlassen wird, und beim Scrollpane gibt es Probleme
-	// // zeichenbereichAktualisieren(); //wenn die Größe geändert wurde, muss der
-	// Zeichenbereich aktualisiert werden, sonst wird das Struktogramm gestreckt
-	// oder verkleinert dargestellt
-	// // zeichne();
-	// // ueberwacheResize = false;
-	// // }
-	// // }
-	// // public void componentMoved(ComponentEvent e){}
-	// // public void componentShown(ComponentEvent e){}
-	// // public void componentHidden(ComponentEvent e){}
-	// // });
-	// //
-	// // return scrollpane;
-	//
-	//
-	// return new JScrollPane(this);
-	//
-	// }
-
 	// Graphics-Kontext Panel (Struktogramm) wird gespeichert und ein BufferedImage
 	// wird erzeugt und dessen Graphics-Kontext an alle StruktogrammElemente
 	// weitergegeben
 	public boolean graphicsInitialisieren() {
-		// panelGraphics = (Graphics2D)getGraphics();//Panel Graphics-Kontext speichern
-
-		// if((getWidth() > 0) || (getHeight() > 0)){
 		if ((dimGroesse.width > 0) || (dimGroesse.height > 0)) {
-			// bild = (BufferedImage)createImage(getWidth(),getHeight());//BufferedImage
-			// erzeugen
 			bild = (BufferedImage) createImage(dimGroesse.width, dimGroesse.height);
 			g = bild.createGraphics();// Graphics-Kontext in g speichern
 
@@ -290,14 +243,10 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			}
 
-			// g.setFont(new Font("serif", Font.PLAIN, 15)); //Schriftart für die
-			// StruktogrammElemente setzen
 			g.setFont(font);
 			liste.graphicsAllerUnterlementeSetzen(g); // g an alle StruktogrammElemente weitergeben
-
 			return true;
 		}
-
 		return false;
 	}
 
@@ -324,25 +273,16 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 	}
 
 	public void printToPngFile(File f) {
-
 		try {
 			if (!f.getName().endsWith(".png")) {
 				f = new File(f.getAbsolutePath() + ".png");
 			}
 			ImageIO.write(generateImage(false), "png", f);
-			System.out.println("Panel saved as Image.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-
-	// public void revalidate(){
-	// super.revalidate();
-	// if(liste != null){
-	// zeichenbereichAktualisieren();
-	// }
-	// }
 
 	public void zeichne() {
 		repaint();
@@ -393,19 +333,8 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 			if (pointMarkierungEckPunkte != null) {
 				// TODO Markierungsfunktion einbauen, Markierungs-Rechteck zeichnen geht
 				// (nächsten beiden Zeilen benutzen)
-				// g.setColor(Color.black);
-				// g.drawRect(Math.min(pointMarkierungEckPunkte[0].x,
-				// pointMarkierungEckPunkte[1].x), Math.min(pointMarkierungEckPunkte[0].y,
-				// pointMarkierungEckPunkte[1].y),
-				// Math.abs(Math.min(pointMarkierungEckPunkte[0].x, dimGroesse.width -1) -
-				// Math.min(pointMarkierungEckPunkte[1].x, dimGroesse.width -1)),
-				// Math.abs(Math.min(pointMarkierungEckPunkte[0].y, dimGroesse.height -1) -
-				// Math.min(pointMarkierungEckPunkte[1].y, dimGroesse.height -1)));
 			}
 
-			// Point scrollweite = scrollpane.getViewport().getViewPosition();
-
-			// panelGraphics.drawImage(bild,-scrollweite.x,-scrollweite.y,getWidth(),getHeight(),this);//auf
 			// Bild auf Panel zeichnen, dabei so verschieben, dass es mit den Scrollbalken
 			// passt
 			panelGraphics.drawImage(bild, 0, 0, dimGroesse.width, dimGroesse.height, this);
@@ -429,17 +358,9 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 		return (int) ((breiteUntergrund - i) / 2);
 	}
 
-	// @Override //bevorzugte Größe soll die Größe des Panels sein (wichtig für das
-	// JScrollPane
-	// public Dimension
-	// getPreferredSize(){//http://www.java-forum.org/allgemeine-java-themen/95703-jscrollpane-jpanel-scrollen-nur-groesse-jpanels.html
-	// return dimGroesse;
-	// }
-
 	// die Zeichenbereiche aller StruktogrammElemente werden gesetzt
 	public void zeichenbereichAktualisieren() {
 
-		// Point viewportPositionVorher = scrollpane.getViewport().getViewPosition();
 		// //Abspeichern der aktuellen Position des gescrollten Bildes
 		// scrollpane.getViewport().setViewPosition(new Point(0,0)); //zurücksetzen der
 		// ViewPosition auf (0/0), sonst entstehen Probleme weiter unten und am Ende
@@ -477,28 +398,10 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 		dimGroesse.width += randLinksNeu * 2; // links und rechts Rand hinzufügen, sonst würde das Struktogramm bis ganz
 												// an den Rand des scrollpane-Ausschnittes gehen
 		dimGroesse.height += randObenNeu * 2; // oben und unten Rand hinzufügen
-
-		// Dimension scrollpaneSichtbarerBereich =
-		// scrollpane.getViewport().getExtentSize();//Größe des sichtbaren Bereiches
-		// ermitteln, siehe:
-		// http://download.oracle.com/javase/1.4.2/docs/api/javax/swing/JViewport.html
-
-		// Wenn der sichtbare Bereich Größer ist als das Struktogramm, wird die
-		// Struktogrammgröße vergrößert
-		// if (dimGroesse.width < scrollpaneSichtbarerBereich.width){
-		// dimGroesse.width = scrollpaneSichtbarerBereich.width;
-		// }
-		//
-		// if (dimGroesse.height < scrollpaneSichtbarerBereich.height){
-		// dimGroesse.height = scrollpaneSichtbarerBereich.height;
-		// }
-
 		setSize(dimGroesse);
 		setPreferredSize(dimGroesse);
 		graphicsInitialisieren(); // sonst ist alles später gestretcht, weil das BufferedImage noch immer die
 									// gleichen Ausmaße hat
-		// scrollpane.getViewport().setViewPosition(viewportPositionVorher);//ViewPosition
-		// des JScrollPane auf die vorherige Position setzen
 	}
 
 	private void rueckgaengigListeInitialisieren() {// wird im Konstruktor und beim laden einer xml aus einer Datei
@@ -1172,7 +1075,6 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 			zeichne();
 			sperre = sperreAktualisierung;
 		} else {
-
 			sperre--;
 		}
 	}

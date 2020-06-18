@@ -142,14 +142,11 @@ public class GlobalSettings implements Konstanten{
 		//Neue Einstellungsdatei einlesen
 		if(einstellungsDatei.exists()){
 			Properties pr = new Properties();
-			try {
-				BufferedInputStream in = new BufferedInputStream(new FileInputStream(einstellungsDatei));
+			try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(einstellungsDatei))){
 				pr.load(in);
-				in.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 			
 			String s;
 			

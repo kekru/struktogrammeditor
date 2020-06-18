@@ -32,7 +32,7 @@ public class XMLLeser {
 	 * @param pfad
 	 * @param struktogramm
 	 */
-	public void ladeXLM(File pfad, Struktogramm struktogramm){
+	public void ladeXLM(File pfad, Struktogramm struktogramm) throws RuntimeException {
 		this.ladeXML(pfad, null, struktogramm);
 	}
 
@@ -41,7 +41,7 @@ public class XMLLeser {
 	 * @param pfad
 	 * @param struktogramm
 	 */
-	public void ladeXLM(Document document, Struktogramm struktogramm){
+	public void ladeXLM(Document document, Struktogramm struktogramm) throws RuntimeException {
 		this.ladeXML(null, document, struktogramm);
 	}
 
@@ -145,7 +145,7 @@ public class XMLLeser {
 	}
 
 
-	private void ladeXML(File file, Document document, Struktogramm struktogramm) {
+	private void ladeXML(File file, Document document, Struktogramm struktogramm) throws RuntimeException {
 
 		Document doc = null;
 

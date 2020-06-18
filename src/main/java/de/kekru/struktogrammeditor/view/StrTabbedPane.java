@@ -52,7 +52,7 @@ public class StrTabbedPane extends JTabbedPane implements ChangeListener{
 				int index = getUI().tabForCoordinate(str.gibTabbedPane(), e.getX(), e.getY());
 				if (index != -1) {
 					setSelectedIndex(index);
-					CustomJButton closebutton = new CustomJButton(str.gibTabbedPane());
+					TabbedPaneClosingButton closebutton = new TabbedPaneClosingButton(str.gibTabbedPane());
 					JPopupMenu p = new JPopupMenu();
 					p.add(closebutton);
 					setComponentPopupMenu(p);

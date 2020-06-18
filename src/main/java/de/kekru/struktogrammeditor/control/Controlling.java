@@ -17,6 +17,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -44,29 +45,20 @@ import de.kekru.struktogrammeditor.view.ZoomEinstellungen;
 public class Controlling implements Konstanten, ActionListener, WindowListener, KeyListener {
 
 	private GUI gui;
-	
-	public Controlling(String[] params){
+
+	public Controlling(String[] params) {
 		handleOSSettingsAndLookAndFeel();
 
 		gui = new GUI(this);
-		neuesStruktogramm();		
+		neuesStruktogramm();
 
-		if(params != null){
-			for(int i = 0; i < params.length; i++){
-				File f = new File(params[i]);
-				if(f.exists()){
-					openStruktogramm(f);
-				}
-			}
+		if (params != null && params.length > 0) {
+			Stream.of(params).filter((f) -> new File(f).exists()).forEach((s) -> openStruktogramm(new File(s)));
 		}
 	}
 
-
-
-	public void handleOSSettingsAndLookAndFeel(){
-
-		try{
-
+	public void handleOSSettingsAndLookAndFeel() {
+		try {
 			LookAndFeel lookAndFeel = null;
 
 			switch (GlobalSettings.getLookAndFeelAktuell()) {
@@ -88,58 +80,76 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 				lookAndFeel = new NimbusLookAndFeel();
 				break;
 
-			case lookAndFeelMotif: 
+			case lookAndFeelMotif:
 				lookAndFeel = new MotifLookAndFeel();
-			break;
+				break;
 			}
 
-			if(lookAndFeel != null){
+			if (lookAndFeel != null) {
 				try {
-					UIManager.setLookAndFeel(lookAndFeel);//Standard Swing Look And Feel
+					UIManager.setLookAndFeel(lookAndFeel);// Standard Swing Look And Feel
 				} catch (UnsupportedLookAndFeelException e) {
 					e.printStackTrace();
 				}
 			}
 
-
-			if(isMac()){
+			if (isMac()) {
 				new MacHandler(this);
 			}
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-
-	/** 
+	/**
 	 * Checks if the current Computer is a Mac
+	 * 
 	 * @return
 	 */
-	private static boolean isMac(){
-		return System.getProperty("os.name").toLowerCase().startsWith("mac");
+	private static boolean isMac() {
+		return OS.mac;
 	}
 
-
-	public Struktogramm gibAktuellesStruktogramm(){
+	public Struktogramm gibAktuellesStruktogramm() {
 		return gui.gibTabbedpane().gibAktuellesStruktogramm();
 	}
 
-
-
-	public Struktogramm neuesStruktogramm(){
+	public Struktogramm neuesStruktogramm() {
 		Struktogramm str = gui.gibTabbedpane().struktogrammHinzufuegen();
-		str.graphicsInitialisieren();//erst nach setVisible(true); sonst gibt es Probleme in Struktogramm.graphicsInitialisieren()
+		str.graphicsInitialisieren();// erst nach setVisible(true); sonst gibt es Probleme in
+										// Struktogramm.graphicsInitialisieren()
 		str.zeichenbereichAktualisieren();
 		str.zeichne();
 		return str;
 	}
 
-
-	public void speichern(boolean neuenSpeicherpfadAuswaehlenLassen){
+	public void speichern(boolean neuenSpeicherpfadAuswaehlenLassen) {
 		Struktogramm str = gibAktuellesStruktogramm();
-		if(str != null){
-			GlobalSettings.setzeSpeicherpfad(str.speichern(neuenSpeicherpfadAuswaehlenLassen,GlobalSettings.getZuletztGenutzterSpeicherpfad()));//Struktogramm wird gespeichert (zuletztGenutzterSpeicherpfad wird dabei übergeben, damit der JFileChooser, sofern er genutzt wird, dort startet) und der neue Speicherpfad wird gesichert
+		if (str != null) {
+			GlobalSettings.setzeSpeicherpfad(
+					str.speichern(neuenSpeicherpfadAuswaehlenLassen, GlobalSettings.getZuletztGenutzterSpeicherpfad()));// Struktogramm
+																														// wird
+																														// gespeichert
+																														// (zuletztGenutzterSpeicherpfad
+																														// wird
+																														// dabei
+																														// übergeben,
+																														// damit
+																														// der
+																														// JFileChooser,
+																														// sofern
+																														// er
+																														// genutzt
+																														// wird,
+																														// dort
+																														// startet)
+																														// und
+																														// der
+																														// neue
+																														// Speicherpfad
+																														// wird
+																														// gesichert
 			GlobalSettings.saveSettings();
 			titelleisteAktualisieren();
 		}
@@ -148,15 +158,17 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	/**
 	 * Loads a Struktogramm
 	 */
-	public void laden(){
-		File pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);//Parameter ist der Startordner für den OpenDialog
+	public void laden() {
+		File pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);// Parameter ist
+																										// der
+																										// Startordner
+																										// für den
+																										// OpenDialog
 
-		if(pfad != null){
+		if (pfad != null && !pfad.getName().equals("")) {
 			openStruktogramm(pfad);
 		}
 	}
-
-
 
 	private void openStruktogramm(File pfad) {
 		Struktogramm str = neuesStruktogramm();
@@ -167,40 +179,44 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		titelleisteAktualisieren();
 	}
 
-	public void bildSpeichern(){
-		JFileChooser file = new JFileChooser(); 
+	public void bildSpeichern() {
+		JFileChooser file = new JFileChooser();
 		file.setFileFilter(new FileNameExtensionFilter("PNG Bild", "png"));
 		int ret = file.showSaveDialog(gui);
 		if (ret == JFileChooser.APPROVE_OPTION) {
 			File f = file.getSelectedFile();
 			gibAktuellesStruktogramm().printToPngFile(f);
 		} else {
-			JOptionPane.showMessageDialog(gui, "Keine Datei ausgewählt oder abgebrochen", "Fehler", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(gui, "Keine Datei ausgewählt oder abgebrochen", "Fehler",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public void titelleisteAktualisieren(){
+	public void titelleisteAktualisieren() {
 		File pfad = null;
 
 		Struktogramm str = gibAktuellesStruktogramm();
-		if(str != null){
+		if (str != null) {
 			pfad = str.gibAktuellenSpeicherpfad();
-			if (pfad != null){
-				gui.setTitle(GlobalSettings.guiTitel + " [" + pfad.getAbsolutePath() + "]"); //wenn das aktuelle Struktogramm gespeichert oder geladen wurde, so wird sein Speicherpfad in der Titelleiste angezeigt
+			if (pfad != null) {
+				gui.setTitle(GlobalSettings.guiTitel + " [" + pfad.getAbsolutePath() + "]"); // wenn das aktuelle
+																								// Struktogramm
+																								// gespeichert oder
+																								// geladen wurde, so
+																								// wird sein
+																								// Speicherpfad in der
+																								// Titelleiste angezeigt
 			} else {
 				gui.setTitle(GlobalSettings.guiTitel + " [Ungespeichertes Struktogram]");
 			}
 		}
 
-		
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		switch(XActionCommands.valueOf(e.getActionCommand())){
+		switch (XActionCommands.valueOf(e.getActionCommand())) {
 		case neu:
 			neuesStruktogramm();
 			break;
@@ -262,11 +278,11 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			break;
 
 		case startbeschriftungAendern:
-			new EinstellungsDialog(gui,true);
+			new EinstellungsDialog(gui, true);
 			break;
 
 		case schriftartAendern:
-			new FontChooser(this,true);
+			new FontChooser(this, true);
 			break;
 
 		case groesseAendernMitMausrad:
@@ -336,17 +352,15 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		case lookAndFeelMotif:
 			changeLookAndFeel(lookAndFeelMotif);
 			break;
-			
+
 		case struktogrammbeschreibungHinzufuegen:
 			addStruktogrammbeschriftung();
 			break;
 		case drucken:
-			//TODO: Implementing
-			
 			PrinterJob p = PrinterJob.getPrinterJob();
 			BufferedImage img = gibAktuellesStruktogramm().generateImage(true);
 			ImagePrintable printable = new ImagePrintable(p.defaultPage(), img);
-			
+
 			p.setPrintable(printable);
 			if (p.printDialog()) {
 				try {
@@ -358,75 +372,67 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 				JOptionPane.showMessageDialog(gui, "Drucken abgebrochen", "Drucken", JOptionPane.INFORMATION_MESSAGE);
 			}
 			break;
-			
+
 		}
 	}
-	
+
 	private void addStruktogrammbeschriftung() {
 		Struktogramm str = gibAktuellesStruktogramm();
 		String s = JOptionPane.showInputDialog("Beschriftung", str.getStruktogrammBeschreibung());
-		if(s == null){
+		if (s == null) {
 			return;
 		}
 		str.setStruktogrammBeschreibung(s);
 		str.rueckgaengigPunktSetzen();
 		str.zeichenbereichAktualisieren();
-		str.zeichne();		
+		str.zeichne();
 	}
 
-
-
-	private void kopiereElement(){
+	private void kopiereElement() {
 		StruktogrammElement element = gibAktuellesStruktogramm().getElementUnterMaus();
 
-		if(element != null){
+		if (element != null) {
 			getGUI().gibAuswahlPanel().setzeKopiertesStrElement(gibAktuellesStruktogramm().xmlErstellen(element));
 		}
 	}
 
-
-	private void changeLookAndFeel(int beschriftungsStilIndex){
+	private void changeLookAndFeel(int beschriftungsStilIndex) {
 		GlobalSettings.setLookAndFeelAktuell(beschriftungsStilIndex);
 		GlobalSettings.saveSettings();
-		JOptionPane.showMessageDialog(gui, "Die Änderungen werden beim Neustart des Programms wirksam.", "Look And Feel Änderung", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(gui, "Die Änderungen werden beim Neustart des Programms wirksam.",
+				"Look And Feel Änderung", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-
-	private void changeBeschriftungsStil(int beschriftungsStilIndex){
+	private void changeBeschriftungsStil(int beschriftungsStilIndex) {
 		GlobalSettings.setBeschriftungsStilAktuell(beschriftungsStilIndex);
 		GlobalSettings.saveSettings();
 		gui.gibAuswahlPanel().aktualisiereBeschriftungen();
 	}
 
-
-	public void showInfo(){
+	public void showInfo() {
 		final String separator = System.getProperty("line.separator");
 
 		JOptionPane.showMessageDialog(gui,
-				"Struktogrammeditor " + GlobalSettings.versionsString + 
-				separator + "Kevin Krummenauer - 2011-2012" +
-				separator +
-				"Informatik Projekt Stufe 13.2, AMG Beckum, Februar/März 2011" + separator 
-				+ separator + "Git Hash: " + GlobalSettings.buildInfoGitHash + separator+
-				"Build-Zeit: " + GlobalSettings.buildInfoBuildTime + separator +
-				//"Updates:"+separator+
-				//datumsfolge+separator+
-				separator +
-				"This product includes software developed by the JDOM Project (http://www.jdom.org/).",
+				"Struktogrammeditor " + GlobalSettings.versionsString + separator + "Kevin Krummenauer - 2011-2012"
+						+ separator + "Informatik Projekt Stufe 13.2, AMG Beckum, Februar/März 2011" + separator
+						+ separator + "Git Hash: " + GlobalSettings.buildInfoGitHash + separator + "Build-Zeit: "
+						+ GlobalSettings.buildInfoBuildTime + separator +
+						// "Updates:"+separator+
+						// datumsfolge+separator+
+						separator
+						+ "This product includes software developed by the JDOM Project (http://www.jdom.org/).",
 				"Information - Struktogrammeditor " + GlobalSettings.versionsString, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-
-	private void letzteElementeStreckenGeklickt(Object source){
-		GlobalSettings.setzeLetzteElementeStrecken(((JCheckBoxMenuItem)source).isSelected());
+	private void letzteElementeStreckenGeklickt(Object source) {
+		GlobalSettings.setzeLetzteElementeStrecken(((JCheckBoxMenuItem) source).isSelected());
 		GlobalSettings.saveSettings();
 		gibAktuellesStruktogramm().zeichenbereichAktualisieren();
 		gibAktuellesStruktogramm().zeichne();
 	}
 
-
-	private void mitMausradElementeVergroessernGeklickt(Object source){
-		boolean einOderAus = ((JCheckBoxMenuItem)source).isSelected();
+	private void mitMausradElementeVergroessernGeklickt(Object source) {
+		boolean einOderAus = ((JCheckBoxMenuItem) source).isSelected();
 		GlobalSettings.setBeiMausradGroesseAendern(einOderAus);
 		GlobalSettings.saveSettings();
 		gibAktuellesStruktogramm().mausradScrollEinOderAusschalten(einOderAus);
@@ -434,78 +440,72 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		gibAktuellesStruktogramm().zeichne();
 	}
 
-
-	private void elementEinfuegenShortcutsVerwendenGeklickt(Object source){
-		boolean einOderAus = ((JCheckBoxMenuItem)source).isSelected();
+	private void elementEinfuegenShortcutsVerwendenGeklickt(Object source) {
+		boolean einOderAus = ((JCheckBoxMenuItem) source).isSelected();
 		GlobalSettings.setElementShortcutsVerwenden(einOderAus);
 		GlobalSettings.saveSettings();
 	}
 
-
-	private void kantenglaettungVerwendenGeklickt(Object source){
-		GlobalSettings.setKantenglaettungVerwenden(((JCheckBoxMenuItem)source).isSelected());
+	private void kantenglaettungVerwendenGeklickt(Object source) {
+		GlobalSettings.setKantenglaettungVerwenden(((JCheckBoxMenuItem) source).isSelected());
 		GlobalSettings.saveSettings();
 		gibAktuellesStruktogramm().graphicsInitialisieren();
 		gibAktuellesStruktogramm().zeichenbereichAktualisieren();
 		gibAktuellesStruktogramm().zeichne();
 	}
 
-
-
-	public GUI getGUI(){
+	public GUI getGUI() {
 		return gui;
 	}
 
-
-
-	public boolean programmBeendenGeklickt(){
-		if(gui.gibTabbedpane().einOderMehrereStruktogrammeNichtGespeichert()){                  
-			Object[] options = {"Ja", "Nein"}; //http://download.oracle.com/javase/1.4.2/docs/api/javax/swing/JOptionPane.html
-			if (0 == JOptionPane.showOptionDialog(gui, "Ein oder mehrere Struktogramme wurden noch nicht gespeichert.\nWirklich Beenden ohne zu speichern?", "Noch nicht gespeichert", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1])){
+	public void programmBeendenGeklickt() {
+		if (gui.gibTabbedpane().einOderMehrereStruktogrammeNichtGespeichert()) {
+			Object[] options = { "Ja", "Nein" }; // http://download.oracle.com/javase/1.4.2/docs/api/javax/swing/JOptionPane.html
+			if (0 == JOptionPane.showOptionDialog(gui,
+					"Ein oder mehrere Struktogramme wurden noch nicht gespeichert.\nWirklich Beenden ohne zu speichern?",
+					"Noch nicht gespeichert", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
+					options[1])) {
 				System.exit(0);
 			}
 		} else {
 			System.exit(0);
 		}
-		return false;
 	}
 
-
 	@Override
-	public void windowOpened(WindowEvent e) {}
-
+	public void windowOpened(WindowEvent e) {
+	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 		programmBeendenGeklickt();
 	}
 
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
 
 	@Override
-	public void windowClosed(WindowEvent e) {}
-
-
-	@Override
-	public void windowIconified(WindowEvent e) {}
-
+	public void windowIconified(WindowEvent e) {
+	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {}
-
-
-	@Override
-	public void windowActivated(WindowEvent e) {}
-
+	public void windowDeiconified(WindowEvent e) {
+	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {
+	}
 
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if(e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask){
+		if (e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask) {
 
-			switch(e.getKeyChar()){
+			switch (e.getKeyChar()) {
 			case '+':
 				gibAktuellesStruktogramm().zoomAktuellesElement(true);
 				break;
@@ -517,66 +517,65 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		}
 	}
 
-
 	@Override
-	public void keyPressed(KeyEvent e) {}
-
+	public void keyPressed(KeyEvent e) {
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask){
+		if (e.getSource() == gui.gibTabbedpane() && e.getModifiersEx() != GlobalSettings.strgOderApfelMask) {
 
-			switch(e.getKeyCode()){
+			switch (e.getKeyCode()) {
 			case KeyEvent.VK_A:
-				if(GlobalSettings.isElementShortcutsVerwenden()){//AnweisungsTyp.Verzweigung
+				if (GlobalSettings.isElementShortcutsVerwenden()) {// AnweisungsTyp.Verzweigung
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Anweisung);
 				}
 				break;
 
 			case KeyEvent.VK_I:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Verzweigung);
 				}
 				break;
 
 			case KeyEvent.VK_S:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Fallauswahl);
 				}
 				break;
 
 			case KeyEvent.VK_F:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.ForSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_W:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.WhileSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_D:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.DoUntilSchleife);
 				}
 				break;
 
 			case KeyEvent.VK_E:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Endlosschleife);
 				}
 				break;
 
 			case KeyEvent.VK_B:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Aussprung);
 				}
 				break;
 
 			case KeyEvent.VK_M:
-				if(GlobalSettings.isElementShortcutsVerwenden()){
+				if (GlobalSettings.isElementShortcutsVerwenden()) {
 					gibAktuellesStruktogramm().neuesElementAnAktuellerStelleEinfuegen(AnweisungsTyp.Aufruf);
 				}
 				break;
@@ -589,29 +588,27 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 
 	}
 
-
-
-	//http://stackoverflow.com/questions/4552045/copy-bufferedimage-to-clipboard
+	// http://stackoverflow.com/questions/4552045/copy-bufferedimage-to-clipboard
 	public static void copyImagetoClipBoard(final BufferedImage image) {
 
 		Transferable transferable = new Transferable() {
 
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-				if(flavor.equals(DataFlavor.imageFlavor) && image != null) {
+				if (flavor.equals(DataFlavor.imageFlavor) && image != null) {
 					return image;
-				}else{
+				} else {
 					throw new UnsupportedFlavorException(flavor);
 				}
 			}
 
 			public DataFlavor[] getTransferDataFlavors() {
-				return new DataFlavor[] {DataFlavor.imageFlavor};
+				return new DataFlavor[] { DataFlavor.imageFlavor };
 			}
 
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				DataFlavor[] flavors = getTransferDataFlavors();
-				for(DataFlavor f : flavors){
-					if(flavor.equals(f)) {
+				for (DataFlavor f : flavors) {
+					if (flavor.equals(f)) {
 						return true;
 					}
 				}
@@ -620,7 +617,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			}
 		};
 
-		ClipboardOwner clipboardOwner = new ClipboardOwner() {				
+		ClipboardOwner clipboardOwner = new ClipboardOwner() {
 			@Override
 			public void lostOwnership(Clipboard clipboard, Transferable contents) {
 
