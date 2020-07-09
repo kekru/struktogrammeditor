@@ -123,7 +123,7 @@ public class GlobalSettings implements Konstanten{
 	}
 	
 	
-	private static void loadSettings () {
+	private static void loadSettings () throws RuntimeException {
 		//Wenn eine alte Einstellungsdatei (bis einschließlich Version 1.4) existiert, diese laden...
 		if(einstellungsDateiBisVersion1Punkt4.exists()){
 			List<String> einstellungen = Helpers.readTextFile(einstellungsDateiBisVersion1Punkt4);
@@ -145,7 +145,7 @@ public class GlobalSettings implements Konstanten{
 			try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(einstellungsDatei))){
 				pr.load(in);
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new RuntimeException("Couldn't load settingsfile", e.getCause());
 			}
 			
 			String s;
@@ -230,8 +230,7 @@ public class GlobalSettings implements Konstanten{
 			try {
 				einstellungsDatei.createNewFile();
 			} catch (IOException e) {
-				System.err.println("Could not create Settingsfile!");
-				System.err.println(e.getMessage());
+				throw new RuntimeException("Could not create Settingsfile", e.getCause());
 			}
 		}
 	}

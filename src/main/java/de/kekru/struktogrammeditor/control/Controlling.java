@@ -159,13 +159,9 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 	 * Loads a Struktogramm
 	 */
 	public void laden() {
-		File pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);// Parameter ist
-																										// der
-																										// Startordner
-																										// für den
-																										// OpenDialog
-
-		if (pfad != null && !pfad.getName().equals("")) {
+		// Parameter ist der Startordner für den OpenDialog
+		File pfad = Struktogramm.oeffnenDialog(GlobalSettings.getZuletztGenutzterSpeicherpfad(), gui);
+		if (pfad != null && !pfad.getName().isEmpty()) {
 			openStruktogramm(pfad);
 		}
 	}
@@ -199,13 +195,8 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 		if (str != null) {
 			pfad = str.gibAktuellenSpeicherpfad();
 			if (pfad != null) {
-				gui.setTitle(GlobalSettings.guiTitel + " [" + pfad.getAbsolutePath() + "]"); // wenn das aktuelle
-																								// Struktogramm
-																								// gespeichert oder
-																								// geladen wurde, so
-																								// wird sein
-																								// Speicherpfad in der
-																								// Titelleiste angezeigt
+				// wenn das aktuelle Struktogramm gespeichert oder geladen wurde, so wird sein Speicherpfad in der Titelleiste angezeigt
+				gui.setTitle(GlobalSettings.guiTitel + " [" + pfad.getAbsolutePath() + "]"); 
 			} else {
 				gui.setTitle(GlobalSettings.guiTitel + " [Ungespeichertes Struktogram]");
 			}
@@ -318,7 +309,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 			break;
 
 		case sourceCode:
-			Helpers.openWebsite("https://github.com/kekru/struktogrammeditor/");
+			Helpers.openWebsite("https://github.com/kekru/struktogrammeditor/tree/" + GlobalSettings.buildInfoGitHash);
 			break;
 
 		case info:

@@ -290,7 +290,6 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 
 	// Das Struktogramm zeichnen
 	public void zeichne(Graphics panelGraphics) {
-
 		if (g != null) {
 			// Zunächst wird auf das BufferedImage bild mit dem Graphics-Kontext g
 			// gezeichnet
@@ -370,31 +369,9 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 		int randLinksNeu = randLinks + (!struktogrammBeschreibung.isEmpty() ? 20 : 0);
 		int randObenNeu = randOben + (!struktogrammBeschreibung.isEmpty() ? 40 : 0);
 
-		dimGroesse = liste.zeichenbereichAllerElementeAktualisieren(randLinksNeu, randObenNeu).getSize();// Zeichenbereich
-																											// aller
-																											// Unterelemente
-																											// wird
-																											// gesetzt
-																											// (rekursiv),
-																											// das erste
-																											// hat seine
-																											// linke
-																											// obere
-																											// Ecke bei
-																											// (randLinks/randOben),
-																											// zurückgegeben
-																											// wird ein
-																											// Rectangle,
-																											// dessen
-																											// Größe
-																											// (getSize())
-																											// (Breite
-																											// und
-																											// Hoehe) in
-																											// dimGroesse
-																											// (Dimension-Objekt)
-																											// gespeichert
-																											// wird
+		dimGroesse = liste.zeichenbereichAllerElementeAktualisieren(randLinksNeu, randObenNeu).getSize();
+		// Zeichenbereich aller Unterelemente wird gesetzt (rekursiv), das erste hat seine linke obere Ecke bei (randLinks/randOben),
+		// zurückgegeben wird ein Rectangle, dessen Größe (getSize()) (Breite und Hoehe) in dimGroesse (Dimension-Objekt) gespeichert wird
 		dimGroesse.width += randLinksNeu * 2; // links und rechts Rand hinzufügen, sonst würde das Struktogramm bis ganz
 												// an den Rand des scrollpane-Ausschnittes gehen
 		dimGroesse.height += randObenNeu * 2; // oben und unten Rand hinzufügen
@@ -428,9 +405,7 @@ public class Struktogramm extends JPanel implements MouseListener, MouseMotionLi
 																	// zurückgesetzt
 				posInRueckgaengigListeWoZuletztGespeichert = -1;
 			}
-
 		}
-
 		rueckgaengigListe.add(xmlErstellen()); // der Rückgängig-Liste wird ein xml-Document angehangen, welches das
 												// aktuelle Struktogramm darstellt
 		posInRueckgaengigListe = rueckgaengigListe.size() - 1; // aktuelle Position ist die Letzte in der Liste

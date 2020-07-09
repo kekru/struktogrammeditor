@@ -52,7 +52,6 @@ public class XMLLeser {
 	private void erstelleElementeRek(Element elem, StruktogrammElement tmp){//elem ist der strelem-Tag zu tmp
 		List<?> alleTextzeilen = (List<?>)elem.getChildren("text"); //alle text-Tags auslesen
 		String[] textzeilen = new String[alleTextzeilen.size()];
-		// String s; //Unused methods
 
 		for(int i=0; i < alleTextzeilen.size(); i++){
 			//eine Textzeile besteht aus Zahlen mit ";" getrennt, eine Zahl steht für das entsprechende Unicode-Zeichen
@@ -90,16 +89,6 @@ public class XMLLeser {
 		
 		listenelementeErstellen(elem, liste);
 		return liste;
-		
-//		Element wurzelElement = elem.getChildren("strelem");
-//		int typ = Integer.parseInt(wurzelElement.getAttributeValue("typ"));
-//		StruktogrammElement neues = struktogramm.neuesStruktogrammElement(typ);
-//
-//		setAttribute(neues,wurzelElement);
-//
-//		erstelleElementeRek(wurzelElement,neues);
-//
-//		return neues;
 	}
 
 
@@ -195,21 +184,9 @@ public class XMLLeser {
 
 		if(document != null){
 			this.struktogramm = struktogramm;
-
-			//StruktogrammElement neues =
 			return wurzelStruktogrammElementErstellen(document.getRootElement());
-
-//			if(struktogramm.gibGraphics() != null){
-//				struktogramm.zeichenbereichAktualisieren();
-//				struktogramm.zeichne();
-//			}
-//
-//			return neues;
-
-		}else{
-
-			return null;
-		}
+		} 
+		return null;
 	}
 
 
@@ -217,23 +194,20 @@ public class XMLLeser {
 	//wandelt die Zeichen eines Strings in entsprechende Unicode-Zahlen um, mit ";" getrennt, weil es beim Laden von XML-Dateien mit Sonderzeichen und Umlauten zu Problemen kommt
 	public static String encodeS(String s){
 		String ausgabe = "";
-		if (s.equals("")){
+		if (s.equals("")) {
 			ausgabe = "-1;"; //-1 markiert eine leere Zeile
-
-		}else{
-
+		} else {
 			for (int i=0; i < s.length(); i++){
 				ausgabe += (int)s.charAt(i) +";";
 			}
 		}
-
 		return ausgabe;
 	}
 
 
 
 	//Zahlen wieder in Zeichen umwandeln
-	private static String decodeS(String codiert){
+	private static String decodeS(String codiert) {
 		String[] textzeileAlsZahlen = codiert.split(";"); //an allen ; splitten
 		String s = "";
 		int zeichenNummer;
@@ -243,12 +217,10 @@ public class XMLLeser {
 
 			if (zeichenNummer == -1){
 				s = ""; //zeichenNummer ist -1, also eine leere Zeile -> s wird zum leeren String
-			}else{
+			} else {
 				s += (char)zeichenNummer;//Zahl wird zu Unicode-Zeichen umgewandelt
 			}
 		}
-
 		return s;
 	}
-
 }
