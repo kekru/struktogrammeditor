@@ -16,7 +16,7 @@ public class StrFileFilter extends FileFilter {
 
 	//accept(...)-Methode überschreiben, damit der JFileChooser weis, ob er eine bestimmte Datei anzeigen soll
 	public boolean accept(File f){
-		return f.isDirectory() || dateiAkzeptiert(f.getAbsolutePath());//Ordner anzeigen und Dateien anzeigen die durch dateiAkzeptiert(...) akzeptiert werden
+		return f.isDirectory() || dateiAkzeptiert(f);//Ordner anzeigen und Dateien anzeigen die durch dateiAkzeptiert(...) akzeptiert werden
 	}
 
 
@@ -36,7 +36,7 @@ public class StrFileFilter extends FileFilter {
 	}
 
 
-	private String gibAktuelleErweiterung(){//Dateierweiterung bei diesem Filter
+	private String gibAktuelleErweiterung() {//Dateierweiterung bei diesem Filter
 		switch(filtertyp){
 		case filterAlleSpeicherdateien: return ".strk";
 		case 1: return ".strk";
@@ -51,28 +51,26 @@ public class StrFileFilter extends FileFilter {
 	}
 
 
-	public String erweiterungBeiBedarfAnhaengen(String pfad){
+	public File erweiterungBeiBedarfAnhaengen(File pfad) {
 		/*if (!pfad.endsWith(gibAktuelleErweiterung())){//wenn der Pfad nicht mit der richtigen Dateierweiterung endet...
          return pfad + gibAktuelleErweiterung();//...wird diese angehangen
       }else{
          return pfad;
       }*/
 
-		if(dateiAkzeptiert(pfad)){
+		if (dateiAkzeptiert(pfad)) {
 			return pfad;
-		}else{
-			return pfad + gibAktuelleErweiterung();
+		} else {
+			return new File(pfad.getAbsolutePath() + gibAktuelleErweiterung());
 		}
 	}
 
 
-	private boolean dateiAkzeptiert(String pfad){
-		pfad = pfad.toLowerCase();
+	private boolean dateiAkzeptiert(File pfad){
 		switch(filtertyp){
-		case filterAlleSpeicherdateien: return pfad.endsWith(".xml") || pfad.endsWith(".strk"); //wenn der Filter "XML Dateien und strk Dateien" ist, werden .xml und .strk Dateien akzeptiert
-		case filterAlleBilddateien: return pfad.endsWith(".bmp") || pfad.endsWith(".gif") || pfad.endsWith(".jpg") || pfad.endsWith(".jpeg") || pfad.endsWith(".png"); //wenn der Filter "Bilddateien" ist, werden alle Bilddateien akzeptiert
-		default: return pfad.endsWith(gibAktuelleErweiterung()); //es werden nur die Dateien mit genau der ausgesuchten Endung akzeptiert
+		case filterAlleSpeicherdateien: return pfad.getName().endsWith(".xml") || pfad.getName().endsWith(".strk"); //wenn der Filter "XML Dateien und strk Dateien" ist, werden .xml und .strk Dateien akzeptiert
+		case filterAlleBilddateien: return pfad.getName().endsWith(".bmp") || pfad.getName().endsWith(".gif") || pfad.getName().endsWith(".jpg") || pfad.getName().endsWith(".jpeg") || pfad.getName().endsWith(".png"); //wenn der Filter "Bilddateien" ist, werden alle Bilddateien akzeptiert
+		default: return pfad.getName().endsWith(gibAktuelleErweiterung()); //es werden nur die Dateien mit genau der ausgesuchten Endung akzeptiert
 		}
 	}
-
 }

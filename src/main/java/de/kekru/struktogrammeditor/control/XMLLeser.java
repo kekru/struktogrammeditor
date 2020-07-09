@@ -1,15 +1,14 @@
 package de.kekru.struktogrammeditor.control;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-
+import org.jdom2.Document;
+import org.jdom2.Element;
+import de.kekru.struktogrammeditor.other.Helpers;
+import de.kekru.struktogrammeditor.struktogrammelemente.AnweisungsTyp;
 import de.kekru.struktogrammeditor.struktogrammelemente.Fallauswahl;
 import de.kekru.struktogrammeditor.struktogrammelemente.Schleife;
 import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElement;
@@ -21,16 +20,29 @@ import de.kekru.struktogrammeditor.struktogrammelemente.StruktogrammElementListe
 public class XMLLeser {
 	private Struktogramm struktogramm;
 
-	public XMLLeser(){
+	/**
+	 * Just why?
+	 */
+	public XMLLeser() {
 
 	}
 
-	public void ladeXLM(String pfad, Struktogramm struktogramm){
-		ladeXML(pfad, null, struktogramm);
+	/**
+	 * Loads a Struktogram from File "pfad"
+	 * @param pfad
+	 * @param struktogramm
+	 */
+	public void ladeXLM(File pfad, Struktogramm struktogramm) throws RuntimeException {
+		this.ladeXML(pfad, null, struktogramm);
 	}
 
-	public void ladeXLM(Document document, Struktogramm struktogramm){
-		ladeXML(null, document, struktogramm);
+	/**
+	 * Loads a Struktogram from Document
+	 * @param pfad
+	 * @param struktogramm
+	 */
+	public void ladeXLM(Document document, Struktogramm struktogramm) throws RuntimeException {
+		this.ladeXML(null, document, struktogramm);
 	}
 
 
@@ -40,7 +52,6 @@ public class XMLLeser {
 	private void erstelleElementeRek(Element elem, StruktogrammElement tmp){//elem ist der strelem-Tag zu tmp
 		List<?> alleTextzeilen = (List<?>)elem.getChildren("text"); //alle text-Tags auslesen
 		String[] textzeilen = new String[alleTextzeilen.size()];
-		// String s;
 
 		for(int i=0; i < alleTextzeilen.size(); i++){
 			//eine Textzeile besteht aus Zahlen mit ";" getrennt, eine Zahl steht für das entsprechende Unicode-Zeichen
@@ -54,9 +65,9 @@ public class XMLLeser {
 		if (tmp instanceof Schleife){ //wenn das StruktogrammElement eine Schleife ist, müssen ihre Unterelemente generiert werden
 			listenelementeErstellen(elem.getChild("schleifeninhalt"),((Schleife)tmp).gibListe()); //Unterelemente sind im schleifeninhalt-Tag
 
-		}else if(tmp instanceof Fallauswahl){ //Fallauswahl oder Verzweigung
+		} else if(tmp instanceof Fallauswahl) { //Fallauswahl oder Verzweigung
 
-			List<?> alleFaelle = (List<?>)elem.getChildren("fall");
+			List<?> alleFaelle = (List<?>) elem.getChildren("fall");
 
 			Fallauswahl fallauswahl = ((Fallauswahl)tmp);
 			fallauswahl.erstelleNeueListen(alleFaelle.size());//so viele Fall-Listen, wie fall-Tags vorhanden sind, werden erstellt
@@ -78,27 +89,17 @@ public class XMLLeser {
 		
 		listenelementeErstellen(elem, liste);
 		return liste;
-		
-//		Element wurzelElement = elem.getChildren("strelem");
-//		int typ = Integer.parseInt(wurzelElement.getAttributeValue("typ"));
-//		StruktogrammElement neues = struktogramm.neuesStruktogrammElement(typ);
-//
-//		setAttribute(neues,wurzelElement);
-//
-//		erstelleElementeRek(wurzelElement,neues);
-//
-//		return neues;
 	}
 
 
 	private void listenelementeErstellen(Element elem, StruktogrammElementListe liste){
 		List<?> alleUnterelemente = (List<?>)elem.getChildren("strelem"); //alle strelem-Tags ermitteln
-		int typ;
+		AnweisungsTyp typ;
 		Element tmp;
 
 		for(int i=0; i < alleUnterelemente.size(); i++){
 			tmp = (Element)alleUnterelemente.get(i);
-			typ = Integer.parseInt(tmp.getAttributeValue("typ"));
+			typ = AnweisungsTyp.getByNumber(Integer.parseInt(tmp.getAttributeValue("typ")));
 			StruktogrammElement neues = struktogramm.neuesStruktogrammElement(typ); //neues StruktogrammElement anhand des gespeicherten Typs erzeugen...
 
 			setAttribute(neues,tmp);
@@ -112,77 +113,67 @@ public class XMLLeser {
 
 	private void setAttribute(StruktogrammElement struktogrammelement, Element zugehoerigesKopfelement){
 		String s = zugehoerigesKopfelement.getAttributeValue("zx");	   
-		if(s != null){
+		if (s != null) {
 			struktogrammelement.setXVergroesserung(Integer.parseInt(s));
 		}
 
 		s = zugehoerigesKopfelement.getAttributeValue("zy");	   
-		if(s != null){
+		if (s != null) {
 			struktogrammelement.setYVergroesserung(Integer.parseInt(s));
 		}
 		
 		s = zugehoerigesKopfelement.getAttributeValue("textcolor");	   
-		if(s != null){
+		if (s != null) {
 			struktogrammelement.setFarbeSchrift(Color.decode(s));
 		}
 		
 		s = zugehoerigesKopfelement.getAttributeValue("bgcolor");	   
-		if(s != null){
+		if (s != null) {
 			struktogrammelement.setFarbeHintergrund(Color.decode(s));
 		}
 	}
 
 
-	private void ladeXML(String pfad, Document document, Struktogramm struktogramm){
+	private void ladeXML(File file, Document document, Struktogramm struktogramm) throws RuntimeException {
 
 		Document doc = null;
 
-		try{//http://www.javabeginners.de/XML/XML-Datei_lesen.php
+		if (document != null) {
+			doc = document;
+		} else {
+			//Das Document erstellen, aus einer Datei
+			doc = Helpers.getSAXParsedDocument(file);
+		}
+		
+		Element element = null;
+		
+		element = doc.getRootElement(); //WurzelElement ermitteln
+		
+		this.struktogramm = struktogramm;
 
-			if (document != null){
-				doc = document;
-			}else{
-				//Das Document erstellen, aus einer Datei
-				SAXBuilder builder = new SAXBuilder();
-				doc = builder.build(new File(pfad));
-			}
+		//Schriftart für dieses Struktgramm einlesen
+		String fontFamily, fontSize, fontStyle;
+		fontFamily = element.getAttributeValue("fontfamily");
+		fontSize = element.getAttributeValue("fontsize");
+		fontStyle = element.getAttributeValue("fontstyle");
+		
+		String struktogrammBeschreibung = element.getAttributeValue("caption");
 
+		if(fontFamily != null && fontSize != null && fontStyle != null){				
+			struktogramm.setFont(new Font(decodeS(fontFamily),Integer.parseInt(fontStyle),Integer.parseInt(fontSize)));
+		}
 
-			Element element = doc.getRootElement(); //WurzelElement ermitteln
+		if(struktogrammBeschreibung != null){
+			struktogramm.setStruktogrammBeschreibung(decodeS(struktogrammBeschreibung));
+		}
 
-
-			this.struktogramm = struktogramm;
-
-			//Schriftart für dieses Struktgramm einlesen
-			String fontFamily, fontSize, fontStyle;
-			fontFamily = element.getAttributeValue("fontfamily");
-			fontSize = element.getAttributeValue("fontsize");
-			fontStyle = element.getAttributeValue("fontstyle");
-			
-			String struktogrammBeschreibung = element.getAttributeValue("caption");
-
-			if(fontFamily != null && fontSize != null && fontStyle != null){				
-				struktogramm.setFontStr(new Font(decodeS(fontFamily),Integer.parseInt(fontStyle),Integer.parseInt(fontSize)));
-			}
-
-			if(struktogrammBeschreibung != null){
-				struktogramm.setStruktogrammBeschreibung(decodeS(struktogrammBeschreibung));
-			}
-
-			struktogramm.gibListe().alleEntfernen(); //Liste des Struktogramms leeren
-			listenelementeErstellen(element,struktogramm.gibListe()); //Struktogramm mit neuen Elementen füllen, Ausgangspunkt ist das Wurzelelement der XML-Datei
+		struktogramm.gibListe().alleEntfernen(); //Liste des Struktogramms leeren
+		listenelementeErstellen(element,struktogramm.gibListe()); //Struktogramm mit neuen Elementen füllen, Ausgangspunkt ist das Wurzelelement der XML-Datei
 
 
-			if(struktogramm.gibGraphics() != null){
-				struktogramm.zeichenbereichAktualisieren();
-				struktogramm.zeichne();
-			}
-
-
-		}catch(JDOMException e) {
-			e.printStackTrace();
-		}catch(IOException e) {
-			e.printStackTrace();
+		if(struktogramm.gibGraphics() != null){
+			struktogramm.zeichenbereichAktualisieren();
+			struktogramm.zeichne();
 		}
 	}
 
@@ -193,21 +184,9 @@ public class XMLLeser {
 
 		if(document != null){
 			this.struktogramm = struktogramm;
-
-			//StruktogrammElement neues =
 			return wurzelStruktogrammElementErstellen(document.getRootElement());
-
-//			if(struktogramm.gibGraphics() != null){
-//				struktogramm.zeichenbereichAktualisieren();
-//				struktogramm.zeichne();
-//			}
-//
-//			return neues;
-
-		}else{
-
-			return null;
-		}
+		} 
+		return null;
 	}
 
 
@@ -215,23 +194,20 @@ public class XMLLeser {
 	//wandelt die Zeichen eines Strings in entsprechende Unicode-Zahlen um, mit ";" getrennt, weil es beim Laden von XML-Dateien mit Sonderzeichen und Umlauten zu Problemen kommt
 	public static String encodeS(String s){
 		String ausgabe = "";
-		if (s.equals("")){
+		if (s.equals("")) {
 			ausgabe = "-1;"; //-1 markiert eine leere Zeile
-
-		}else{
-
+		} else {
 			for (int i=0; i < s.length(); i++){
 				ausgabe += (int)s.charAt(i) +";";
 			}
 		}
-
 		return ausgabe;
 	}
 
 
 
 	//Zahlen wieder in Zeichen umwandeln
-	private static String decodeS(String codiert){
+	private static String decodeS(String codiert) {
 		String[] textzeileAlsZahlen = codiert.split(";"); //an allen ; splitten
 		String s = "";
 		int zeichenNummer;
@@ -241,12 +217,10 @@ public class XMLLeser {
 
 			if (zeichenNummer == -1){
 				s = ""; //zeichenNummer ist -1, also eine leere Zeile -> s wird zum leeren String
-			}else{
+			} else {
 				s += (char)zeichenNummer;//Zahl wird zu Unicode-Zeichen umgewandelt
 			}
 		}
-
 		return s;
 	}
-
 }

@@ -1,7 +1,6 @@
 package de.kekru.struktogrammeditor.view;
+
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
@@ -31,7 +30,7 @@ import de.kekru.struktogrammeditor.other.XActionCommands;
  * @author Kevin Krummenauer
  */
 
-public class GUI extends JFrame implements Konstanten{
+public class GUI extends JFrame implements Konstanten {
 
 	private static final long serialVersionUID = -3526840402506170333L;
 	private AuswahlPanel auswahlPanel; //Panel an der linken Seite, wo die Labels zu finden sind, von denen man neue StruktogrammElemente in das Struktogramm ziehen kann
@@ -46,11 +45,9 @@ public class GUI extends JFrame implements Konstanten{
 		int frameWidth = 1016;
 		int frameHeight = 522;
 		setSize(frameWidth, frameHeight);
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (d.width - getSize().width) / 2;
-		int y = (d.height - getSize().height) / 2;
-		setLocation(x, y);
-
+		
+		//Center the pane
+		setLocationRelativeTo(null);
 
 		this.controlling = controlling;
 
@@ -90,6 +87,7 @@ public class GUI extends JFrame implements Konstanten{
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Als Bild speichern", XActionCommands.bildSpeichern, KeyEvent.VK_A));
 				menu.add(createMenuItem("Bild in Zwischenablage kopieren", XActionCommands.bildInZwischenAblage, KeyEvent.VK_Z, KeyEvent.VK_K));
+				menu.add(createMenuItem("Drucken", XActionCommands.drucken, -1));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Quellcode erzeugen", XActionCommands.quellcodeErzeugen, KeyEvent.VK_Q));
 				menu.add(new JSeparator());
@@ -188,25 +186,22 @@ public class GUI extends JFrame implements Konstanten{
 				menu.add(createMenuItem("Shortcuts zum Elementeinfügen benutzen", XActionCommands.elementShortcutsVerwenden, KeyEvent.VK_C, GlobalSettings.isElementShortcutsVerwenden()));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Kantenglättung verwenden", XActionCommands.kantenglaettungVerwenden, KeyEvent.VK_K, GlobalSettings.isKantenglaettungVerwenden()));
-			}
-			menubar.add(menu);
+				menubar.add(menu);
 
-			menu = createMenu("Hilfe", KeyEvent.VK_H);
-			{
+				
+				menu = createMenu("Hilfe", KeyEvent.VK_H);
 				menu.add(createMenuItem("Homepage", XActionCommands.homepage, KeyEvent.VK_M));
 				menu.add(createMenuItem("Changelog", XActionCommands.changelog, KeyEvent.VK_C));
-				menu.add(createMenuItem("Kontakt, Feedback, Verbesserungsvorschläge, Fehler melden", XActionCommands.kontaktformular, KeyEvent.VK_K));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Hilfedatei", XActionCommands.hilfe, KeyEvent.VK_L));
 				menu.add(new JSeparator());
 				menu.add(createMenuItem("Info", XActionCommands.info, KeyEvent.VK_I));
 				menu.add(createMenuItem("Quellcode", XActionCommands.sourceCode, KeyEvent.VK_Q));
+				menubar.add(menu);
 			}
-			menubar.add(menu);
+			
 		}
 		setJMenuBar(menubar);
-
-
 
 		addWindowListener(controlling);
 
@@ -214,16 +209,13 @@ public class GUI extends JFrame implements Konstanten{
 		setVisible(true);
 		//addComponentListener(this);
 
-
-
-
 		//tabbedpane.changeListenerAktivieren(); //wenn der ChangeListener früher aktiviert wird, kommt es zu Problemen, da darin graphicsInitialisieren aufgerufen wird, was nicht funktioniert wenn die entsprechende Komponente noch nicht vollständig erzeugt ist
 
 
 	}
 
 
-	private JMenu createMenu(String name, int auswahlBuchstabe){
+	private JMenu createMenu(String name, int auswahlBuchstabe) {
 		JMenu neuMenu = new JMenu(name);
 		neuMenu.setMnemonic(auswahlBuchstabe);
 		return neuMenu;
@@ -248,20 +240,20 @@ public class GUI extends JFrame implements Konstanten{
 	private JMenuItem createMenuItem(String name, XActionCommands actionCommand, int auswahlBuchstabe, int shortcutBuchstabe, int shortcutMask, boolean isCheckBox, boolean isChecked){
 		JMenuItem menuitem;
 
-		if(isCheckBox){
+		if (isCheckBox) {
 			menuitem = new JCheckBoxMenuItem(name);
 			((JCheckBoxMenuItem)menuitem).setSelected(isChecked);
-		}else{
+		} else {
 			menuitem = new JMenuItem(name);
 		}
 
 		menuitem.setActionCommand(actionCommand.toString());
 
-		if(auswahlBuchstabe > -1){
+		if(auswahlBuchstabe > -1) {
 			menuitem.setMnemonic(auswahlBuchstabe);
 		}
 
-		if(shortcutBuchstabe > -1){
+		if(shortcutBuchstabe > -1) {
 			menuitem.setAccelerator(KeyStroke.getKeyStroke(shortcutBuchstabe, shortcutMask));
 		}
 

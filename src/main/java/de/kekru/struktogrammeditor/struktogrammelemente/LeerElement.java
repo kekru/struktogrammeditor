@@ -6,15 +6,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import de.kekru.struktogrammeditor.control.GlobalSettings;
-import de.kekru.struktogrammeditor.control.Struktogramm;
 import de.kekru.struktogrammeditor.other.JTextAreaEasy;
-
-
+import de.kekru.struktogrammeditor.other.SupportedLanguages;
 
 public class LeerElement extends Anweisung {//erbt von Anweisung
 
    public LeerElement(Graphics2D g){
-      super(GlobalSettings.gibElementBeschriftung(Struktogramm.typLeerElement),g); //"ø"
+      super(GlobalSettings.gibElementBeschriftung(AnweisungsTyp.LeerElement),g); //"ø"
    }
    
    /*@Override
@@ -28,10 +26,7 @@ public class LeerElement extends Anweisung {//erbt von Anweisung
       return new Rectangle(gibX(),gibY(),gibBreite(),gibHoehe());//Voraschaurect geht über das ganze LeerElement, um zu zeigen, dass es beim Einfügen ersetzt wird
    }
    
-   
    @Override
-   public void quellcodeGenerieren(int typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
-      //LeerElement soll keinen QuellCode generieren
-   }
-   
+   public void quellcodeGenerieren(SupportedLanguages typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea) {}
+
 }

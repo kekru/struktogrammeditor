@@ -4,11 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import de.kekru.struktogrammeditor.control.Struktogramm;
 import de.kekru.struktogrammeditor.control.XMLLeser;
 import de.kekru.struktogrammeditor.other.JTextAreaEasy;
+import de.kekru.struktogrammeditor.other.SupportedLanguages;
 import de.kekru.struktogrammeditor.view.CodeErzeuger;
 
 public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte davon erzeugbar
@@ -39,13 +40,13 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 	//wandelt codierten String für die Quelltextgenerierung in einen auszugebenen String um
-	protected String wandleZuAusgabe(String codierung, int typ, int anzahlEinzuruecken, boolean alsKommentare){
+	protected String wandleZuAusgabe(String codierung, SupportedLanguages typ, int anzahlEinzuruecken, boolean alsKommentare){
 		codierung = einruecken(codierung,anzahlEinzuruecken);
 
-		if(alsKommentare){
-			codierung = codierung.replaceAll(co("kommentar"),CodeErzeuger.gibKommentarZeichen(true,typ))//Codierung von "kommentar" wird zum entsprechenden Zeichen umgewandelt
+		if (alsKommentare) {
+			codierung = codierung.replaceAll(co("kommentar"), CodeErzeuger.gibKommentarZeichen(true,typ))//Codierung von "kommentar" wird zum entsprechenden Zeichen umgewandelt
 			.replaceAll(co("kommentarzu"),CodeErzeuger.gibKommentarZeichen(false,typ));//Codierung von "kommentarzu" wird zum entsprechenden Zeichen umgewandelt
-		}else{
+		} else {
 			codierung = codierung.replaceAll(co("kommentar"),"") //Codierung der Kommentare wird entfernt, weil der User den Quelltext ohne Kommentare will
 			.replaceAll(co("kommentarzu"),"");
 		}
@@ -53,7 +54,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 		int x = codierung.indexOf(co("text")); //x ist die Position, wo das erste Zeichen des Textes erscheinen soll
 		if(x > -1){
 			x = x - codierung.substring(0,x).lastIndexOf("\n") -1; // x minus die Position des letzten Zeilenumbruchs im Bereich 0 bis x ist der Abstand (in Zeichen) des ersten Textzeichens vom linken Rand; alle weiteren Zeilen sollen um x Leerzeichen eingerückt werden, um einen linksbündigen Textblock zu erhalten
-		}else{
+		} else {
 			x = 0; //co("text") war nicht im Eingabestring
 		}
 
@@ -100,13 +101,11 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
      anzahlEinzuruecken, wie weit pro Einrückung eingerückt werden soll,
      alsKommentar, ob die Textzeilen und Fallnamen auskommentiert erscheinen sollen und
      textarea ist die JTextAreaEasy, in die der Code eingefügt werden soll*/
-	public void quellcodeGenerieren(int typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
-
-	}
-
+	public abstract void quellcodeGenerieren(SupportedLanguages typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea);
+	
 	protected String einruecken(String codeZeile, int anzahlStellen){
 		for (int i=0; i < anzahlStellen; i++){ //gewünschte Anzahl an Leerzeichen vorne anhängen
-			codeZeile = " "+codeZeile;
+			codeZeile = " " + codeZeile;
 		}
 		return codeZeile;
 	}
@@ -116,11 +115,11 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 	public void schreibeXMLDaten(Element elem){
 		Element neues = new Element("strelem")//strelem-Tag mit dem Attribut typ, welches die Typnummer für das StruktogrammElement angibt, wird eingefügt
-			.setAttribute("typ",""+Struktogramm.strElementZuTypnummer(this))
-			.setAttribute("zx",""+xVergroesserung)
-			.setAttribute("zy",""+yVergroesserung)
-			.setAttribute("textcolor",""+getFarbeSchrift().getRGB())
-			.setAttribute("bgcolor",""+getFarbeHintergrund().getRGB());
+			.setAttribute("typ", "" + Struktogramm.strElementZuTyp(this).getNumber())
+			.setAttribute("zx", "" + xVergroesserung)
+			.setAttribute("zy", "" + yVergroesserung)
+			.setAttribute("textcolor", "" + getFarbeSchrift().getRGB())
+			.setAttribute("bgcolor","" + getFarbeHintergrund().getRGB());
 
 		for (int i=0; i < text.length; i++){
 			neues.addContent(new Element("text").addContent(XMLLeser.encodeS(text[i])));//in den strelem-Tag wird pro Textzeile ein text-Tag eingefügt, mit der Textzeile als Inhalt, die Textzeile ist dabei codiert, weil es beim laden später Probleme u.a. mit Umlauten gibt
@@ -133,14 +132,11 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 
 
 	//wird von Schleife und von Fallauswahl überschrieben
-	protected void zusaetzlicheXMLDatenSchreiben(Element aktuelles){
-
-	}
+	protected abstract void zusaetzlicheXMLDatenSchreiben(Element aktuelles);
 
 
 
-
-	public boolean istUnterelement(StruktogrammElement eventuellesUnterelement){
+	public boolean istUnterelement(StruktogrammElement eventuellesUnterelement) {
 		return false;//eventuellesUnterelement ist nicht Unterelement von this
 	}
 
@@ -154,15 +150,7 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	}
 
 
-	public void setzeFaelle(String[] faelle){
-		//nichts, wird nur in Verzweigung und Fallauswahl gebraucht
-	}
-
-
-
-
-
-
+	public abstract void setzeFaelle(String[] faelle);
 
 	public int gibAnzahlListen(){
 		return 0;
@@ -231,9 +219,6 @@ public abstract class StruktogrammElement { //abstrakte Klasse -> keine Objekte 
 	public void setXVergroesserung(int xVergroesserung) {
 		this.xVergroesserung = xVergroesserung;
 	}
-
-
-
 
 	public void setYVergroesserung(int yVergroesserung) {
 		this.yVergroesserung = yVergroesserung;

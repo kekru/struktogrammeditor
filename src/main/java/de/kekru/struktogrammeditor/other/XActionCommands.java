@@ -10,11 +10,11 @@ public enum XActionCommands {
 	groesseAendernMitMausrad, zoomeinstellungen, vergroesserungenRuckgaengigMachen,
 	elementShortcutsVerwenden, kantenglaettungVerwenden,
 	
-	homepage, changelog, kontaktformular, hilfe, info,
+	homepage, changelog, hilfe, info,
 	sourceCode,
 	
 	beschriftungsStilJava, beschriftungsStilFormal, beschriftungsStilKeineBeschriftungen,
 	
-	lookAndFeelOSStandard, lookAndFeelSwingStandard, lookAndFeelNimbus, lookAndFeelMotif, struktogrammbeschreibungHinzufuegen
+	lookAndFeelOSStandard, lookAndFeelSwingStandard, lookAndFeelNimbus, lookAndFeelMotif, struktogrammbeschreibungHinzufuegen, drucken
 	
 }

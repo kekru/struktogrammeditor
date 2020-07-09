@@ -3,6 +3,7 @@ import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
 
@@ -21,25 +22,25 @@ public class JNumberField extends JTextField {
 
   /** Gets a double-value from the JNumberField. */
   public double getDouble() {
-    Double d = new Double(getText());
+    Double d = Double.valueOf(getText());
     return d.doubleValue();
   }
 
   /** Gets a float-value from the JNumberField. */
   public float getFloat() {
-    Double d = new Double(getText());
+    Double d = Double.valueOf(getText());
     return d.floatValue();
   }
 
   /** Gets an int-value from the JNumberField. */
   public int getInt() {
-    Double d = new Double(getText());
+    Double d = Double.valueOf(getText());
     return d.intValue();
   }
 
   /** Gets a long-value from the JNumberField. */
   public long getLong() {
-    Double d = new Double(getText());
+    Double d = Double.valueOf(getText());
     return d.longValue();
   }
 
@@ -84,7 +85,7 @@ public class JNumberField extends JTextField {
              "[fFdD]?))" +
              "[\\x00-\\x20]*");// Optional trailing "whitespace"
 
-    return java.util.regex.Pattern.matches(fpRegex, getText());
+    return Pattern.matches(fpRegex, getText());
   }
 
   /** Sets a double-value into the JNumberField. */

@@ -2,18 +2,18 @@ package de.kekru.struktogrammeditor.struktogrammelemente;
 
 import java.awt.Graphics2D;
 
+import org.jdom2.Element;
+
 import de.kekru.struktogrammeditor.control.GlobalSettings;
-import de.kekru.struktogrammeditor.control.Struktogramm;
 import de.kekru.struktogrammeditor.other.JTextAreaEasy;
-import de.kekru.struktogrammeditor.view.CodeErzeuger;
+import de.kekru.struktogrammeditor.other.SupportedLanguages;
 
 
 public class DoUntilSchleife extends Schleife {//erbt von Schleife
-
+	
    public DoUntilSchleife(Graphics2D g){
       super(g);
-      
-      setzeText(GlobalSettings.gibElementBeschriftung(Struktogramm.typDoUntilSchleife));
+      setzeText(GlobalSettings.gibElementBeschriftung(AnweisungsTyp.DoUntilSchleife));
    }
    
    
@@ -51,20 +51,24 @@ public class DoUntilSchleife extends Schleife {//erbt von Schleife
    
 
    @Override
-   public void quellcodeGenerieren(int typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
+   public void quellcodeGenerieren(SupportedLanguages typ, int anzahlEingerueckt, int anzahlEinzuruecken, boolean alsKommentar, JTextAreaEasy textarea){
      String vorher = "";
       String nachher = "";
 
 
       switch(typ){
-         case CodeErzeuger.typJava:
+         case Java:
             vorher = "do{\n";
-            nachher = "}while("+co("kommentar")+co("text")+co("kommentarzu")+");\n";//Schleifenende ist "}while(" plus Kommentar-Auf (bei Bedarf), plus die Textzeilen, plus Kommentar-Zu (bei Bedarf)
+            nachher = "}while(" + co("kommentar") + co("text") + co("kommentarzu") + ");\n";//Schleifenende ist "}while(" plus Kommentar-Auf (bei Bedarf), plus die Textzeilen, plus Kommentar-Zu (bei Bedarf)
             break;
 
-         case CodeErzeuger.typDelphi:
+         case Delphi:
             vorher = "repeat\n";
-            nachher = "until "+co("kommentar")+co("text")+co("kommentarzu")+";\n";
+            nachher = "until " + co("kommentar") + co("text") + co("kommentarzu") + ";\n";
+            break;
+         case PHP:
+        	vorher = "do{\n";
+            nachher = "}while(" + co("kommentar") + co("text") + co("kommentarzu") + ");\n";//Schleifenende ist "}while(" plus Kommentar-Auf (bei Bedarf), plus die Textzeilen, plus Kommentar-Zu (bei Bedarf)
             break;
       }
 
@@ -84,5 +88,15 @@ public class DoUntilSchleife extends Schleife {//erbt von Schleife
 	public int getUntererRand(){
 		return super.getUntererRand() + getYVergroesserung();
 	}
+
+
+
+   @Override
+	public void setzeFaelle(String[] faelle){}
+
+
+
+   @Override
+   protected void zusaetzlicheXMLDatenSchreiben(Element aktuelles) {}
    
 }
