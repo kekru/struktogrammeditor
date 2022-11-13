@@ -22,7 +22,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.kekru.struktogrammeditor.other.Helpers;
@@ -81,7 +81,7 @@ public class Controlling implements Konstanten, ActionListener, WindowListener, 
 				lookAndFeel = new NimbusLookAndFeel();
 				break;
 
-			case lookAndFeelMotif: lookAndFeel = new MotifLookAndFeel();
+			case lookAndFeelMotif: lookAndFeel = new MetalLookAndFeel();
 			break;
 			}
 
